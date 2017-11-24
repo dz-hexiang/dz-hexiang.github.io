@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="hexo,next,blog," />
 
 
 
@@ -80,15 +80,16 @@
 
 
 <meta name="description" content="安装hexo及所需的环境1.下载安装git2.下载安装node3.利用node附带安装好的npn命令安装hexo1npm install -g hexo-cli 4.安装部署插件 hexo-deployer-git。 1npm install hexo-deployer-git --save 安装 Hexo 完成后，请">
+<meta name="keywords" content="hexo,next,blog">
 <meta property="og:type" content="article">
-<meta property="og:title" content="windows查看端口是否被占用并结束进程">
+<meta property="og:title" content="利用hexo创建个人静态博客">
 <meta property="og:url" content="http://yoursite.com/2017/09/26/利用hexo创建个人静态博客/index.html">
-<meta property="og:site_name" content="水东流">
+<meta property="og:site_name" content="Mr.HeXiang Blog">
 <meta property="og:description" content="安装hexo及所需的环境1.下载安装git2.下载安装node3.利用node附带安装好的npn命令安装hexo1npm install -g hexo-cli 4.安装部署插件 hexo-deployer-git。 1npm install hexo-deployer-git --save 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。123$ hexo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-22T12:14:30.295Z">
+<meta property="og:updated_time" content="2017-11-24T07:00:15.555Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="windows查看端口是否被占用并结束进程">
+<meta name="twitter:title" content="利用hexo创建个人静态博客">
 <meta name="twitter:description" content="安装hexo及所需的环境1.下载安装git2.下载安装node3.利用node附带安装好的npn命令安装hexo1npm install -g hexo-cli 4.安装部署插件 hexo-deployer-git。 1npm install hexo-deployer-git --save 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。123$ hexo">
 
 
@@ -125,7 +126,7 @@
 
 
 
-  <title>windows查看端口是否被占用并结束进程 | 水东流</title>
+  <title>利用hexo创建个人静态博客 | Mr.HeXiang Blog</title>
   
 
 
@@ -155,7 +156,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">水东流</span>
+        <span class="site-title">Mr.HeXiang Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -281,7 +282,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="水东流">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
     </span>
 
     
@@ -289,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">windows查看端口是否被占用并结束进程</h1>
+          <h1 class="post-title" itemprop="name headline">利用hexo创建个人静态博客</h1>
         
 
         <div class="post-meta">
@@ -311,6 +312,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -347,6 +370,20 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure>
 <p>6.更换主题</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd your-hexo-site</span><br><span class="line">$ git clone https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+<p>7.自定义字体及样式<br>\themes\next\source\css_variables\custom.styl 中增加自定义字体及样式<br>下面是修改站点标题的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$font-family-logo =  Yesteryear</span><br><span class="line">$logo-font-size = 26px</span><br><span class="line">@font-face&#123;</span><br><span class="line">    font-family: Yesteryear;</span><br><span class="line">    src: url(&apos;/fonts/Yesteryear-Regular.woff.ttf&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>8.语言设置<br>hexo中设置language: zh-Hans #语言<br>next会自动去找翻译的中文</p>
+<p>9.头像设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">avatar: http://avatar.csdn.net/D/6/D/1_dz_hexiang.jpg  #头像设置</span><br></pre></td></tr></table></figure></p>
+<p>10.站点普通设置<br>设置站点名字、描述、座右铭、等其他信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">title: Mr.HeXiang Blog</span><br><span class="line">subtitle:  能够阻挡自己脚步的只有自己！</span><br><span class="line">description: 除了奋斗，还是奋斗！唯有奋斗！</span><br><span class="line">author: 贺祥</span><br><span class="line">language: zh-Hans #语言</span><br><span class="line">timezone: Asia/Shanghai #时区</span><br></pre></td></tr></table></figure>
+<p>11.添加标签<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure></p>
+<p>编辑站点的source/tags/index.md，Front-matter 中添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: 2015-10-20 06:49:50</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure></p>
+<p>随后可以在其他文章Front-matter 中加入标签<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 文章</span><br><span class="line">date: 2017-11-23 18:52:54</span><br><span class="line">categories:</span><br><span class="line">- 前端</span><br><span class="line">- Hexo</span><br><span class="line">---</span><br></pre></td></tr></table></figure></p>
+<p>12.添加分类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure></p>
+<p>编辑站点的source/categories/index.md， Front-matter 中添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: categories</span><br><span class="line">date: 2015-10-20 06:49:50</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure></p>
+<p>随后可以在其他文章Front-matter 中加入分类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 文章</span><br><span class="line">date: 2017-11-23 18:52:54</span><br><span class="line">tags:</span><br><span class="line">- 前端</span><br><span class="line">- Hexo</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>12.添加404和关于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo new page 404</span><br><span class="line">hexo new page about</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -361,6 +398,16 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+            <a href="/tags/next/" rel="tag"># next</a>
+          
+            <a href="/tags/blog/" rel="tag"># blog</a>
+          
+        </div>
       
 
       
@@ -454,7 +501,7 @@
                 alt="贺祥" />
             
               <p class="site-author-name" itemprop="name">贺祥</p>
-              <p class="site-description motion-element" itemprop="description">除了奋斗，还是奋斗！唯有奋斗！</p>
+              <p class="site-description motion-element" itemprop="description">小目标还是要有的，万一实现了呢！</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -464,14 +511,32 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
             
 
           </nav>

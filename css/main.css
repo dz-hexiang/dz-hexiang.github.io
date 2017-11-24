@@ -1,3 +1,7 @@
+@font-face {
+  font-family: Yesteryear;
+  src: url("/fonts/Yesteryear-Regular.woff.ttf");
+}
 /* normalize.css v3.0.2 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif; /* 1 */
@@ -1129,9 +1133,9 @@ pre .javascript .function {
   display: inline-block;
   vertical-align: top;
   line-height: 36px;
-  font-size: 20px;
+  font-size: 26px;
   font-weight: normal;
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: Yesteryear;
 }
 .site-subtitle {
   margin-top: 10px;
@@ -1823,7 +1827,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #58a6ff;
+  background: #b63cff;
 }
 .links-of-blogroll {
   font-size: 13px;
