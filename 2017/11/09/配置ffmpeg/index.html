@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="执行如下命令123456789101112131415cd /home/ffmpegNDK=/home/ndkPLATFORM=$NDK/platforms/android-23/arch-armPREBUILT=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/li">
+<meta name="description" content="执行如下命令123456789101112cd /home/ffmpegNDK=/home/ndkPLATFORM=$NDK/platforms/android-23/arch-armPREBUILT=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x8">
 <meta name="keywords" content="shell,linux,FFMPEG">
 <meta property="og:type" content="article">
 <meta property="og:title" content="配置ffmpeg">
 <meta property="og:url" content="http://yoursite.com/2017/11/09/配置ffmpeg/index.html">
 <meta property="og:site_name" content="Mr.HeXiang Blog">
-<meta property="og:description" content="执行如下命令123456789101112131415cd /home/ffmpegNDK=/home/ndkPLATFORM=$NDK/platforms/android-23/arch-armPREBUILT=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64PREFIX=/home/android-ffmpeg./c">
+<meta property="og:description" content="执行如下命令123456789101112cd /home/ffmpegNDK=/home/ndkPLATFORM=$NDK/platforms/android-23/arch-armPREBUILT=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64PREFIX=/home/android-ffmpeg./configu">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-24T07:04:21.375Z">
+<meta property="og:updated_time" content="2017-12-13T08:00:16.524Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="配置ffmpeg">
-<meta name="twitter:description" content="执行如下命令123456789101112131415cd /home/ffmpegNDK=/home/ndkPLATFORM=$NDK/platforms/android-23/arch-armPREBUILT=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64PREFIX=/home/android-ffmpeg./c">
+<meta name="twitter:description" content="执行如下命令123456789101112cd /home/ffmpegNDK=/home/ndkPLATFORM=$NDK/platforms/android-23/arch-armPREBUILT=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64PREFIX=/home/android-ffmpeg./configu">
 
 
 
@@ -362,8 +362,8 @@
       
 
       
-        <h4 id="执行如下命令"><a href="#执行如下命令" class="headerlink" title="执行如下命令"></a>执行如下命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">cd /home/ffmpeg</span><br><span class="line">NDK=/home/ndk</span><br><span class="line">PLATFORM=$NDK/platforms/android-23/arch-arm</span><br><span class="line">PREBUILT=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64</span><br><span class="line">PREFIX=/home/android-ffmpeg</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">./configure --target-os=linux --prefix=$PREFIX --enable-cross-compile --enable-runtime-cpudetect --disable-asm --arch=arm --cc=$PREBUILT/bin/arm-linux-androideabi-gcc --cross-prefix=$PREBUILT/bin/arm-linux-androideabi- --disable-stripping \--nm=$PREBUILT/bin/arm-linux-androideabi-nm --sysroot=$PLATFORM --enable-nonfree --enable-version3 --disable-everything --enable-gpl --disable-doc --enable-avresample --enable-demuxer=rtsp --enable-muxer=rtsp --disable-ffplay --disable-ffserver --enable-ffmpeg --disable-ffprobe --enable-libx264 --enable-encoder=libx264 --enable-decoder=h264 --enable-protocol=rtp --enable-hwaccels --enable-zlib --disable-devices --disable-avdevice --extra-cflags=&quot;-I/home/android-ffmpeg/include -fPIC -DANDROID -D__thumb__ -mthumb -Wfatal-errors -Wno-deprecated -mfloat-abi=softfp -mfpu=vfpv3-d16 -marm -march=armv7-a&quot; --extra-ldflags=&quot;-L/home/android-ffmpeg/lib&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">make&amp;make -j8 install</span><br><span class="line"></span><br><span class="line">$PREBUILT/bin/arm-linux-androideabi-ar d libavcodec/libavcodec.a inverse.o</span><br><span class="line">$PREBUILT/bin/arm-linux-androideabi-ld -rpath-link=$PLATFORM/usr/lib -L$PLATFORM/usr/lib -L$PREFIX/lib  -soname libffmpeg.so -shared -nostdlib   -Bsymbolic --whole-archive --no-undefined -o $PREFIX/libffmpeg.so libavcodec/libavcodec.a libavfilter/libavfilter.a libavresample/libavresample.a libavformat/libavformat.a libavutil/libavutil.a libswscale/libswscale.a libpostproc/libpostproc.a -lc -lm -lz -ldl -llog -lx264 --dynamic-linker=/system/bin/linker $PREBUILT/lib/gcc/arm-linux-androideabi/4.9.x/libgcc.a</span><br></pre></td></tr></table></figure>
-<h4 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$PREBUILT/bin/arm-linux-androideabi-strip --strip-unneeded libffmpeg.so</span><br></pre></td></tr></table></figure>
+        <h5 id="执行如下命令"><a href="#执行如下命令" class="headerlink" title="执行如下命令"></a>执行如下命令</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cd /home/ffmpeg</span><br><span class="line">NDK=/home/ndk</span><br><span class="line">PLATFORM=$NDK/platforms/android-23/arch-arm</span><br><span class="line">PREBUILT=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64</span><br><span class="line">PREFIX=/home/android-ffmpeg</span><br><span class="line"></span><br><span class="line">./configure --target-os=linux --prefix=$PREFIX --enable-cross-compile --enable-runtime-cpudetect --disable-asm --arch=arm --cc=$PREBUILT/bin/arm-linux-androideabi-gcc --cross-prefix=$PREBUILT/bin/arm-linux-androideabi- --disable-stripping \--nm=$PREBUILT/bin/arm-linux-androideabi-nm --sysroot=$PLATFORM --enable-nonfree --enable-version3 --disable-everything --enable-gpl --disable-doc --enable-avresample --enable-demuxer=rtsp --enable-muxer=rtsp --disable-ffplay --disable-ffserver --enable-ffmpeg --disable-ffprobe --enable-libx264 --enable-encoder=libx264 --enable-decoder=h264 --enable-protocol=rtp --enable-hwaccels --enable-zlib --disable-devices --disable-avdevice --extra-cflags=&quot;-I/home/android-ffmpeg/include -fPIC -DANDROID -D__thumb__ -mthumb -Wfatal-errors -Wno-deprecated -mfloat-abi=softfp -mfpu=vfpv3-d16 -marm -march=armv7-a&quot; --extra-ldflags=&quot;-L/home/android-ffmpeg/lib&quot;</span><br><span class="line"></span><br><span class="line">make&amp;make -j8 install</span><br><span class="line"></span><br><span class="line">$PREBUILT/bin/arm-linux-androideabi-ar d libavcodec/libavcodec.a inverse.o</span><br><span class="line">$PREBUILT/bin/arm-linux-androideabi-ld -rpath-link=$PLATFORM/usr/lib -L$PLATFORM/usr/lib -L$PREFIX/lib  -soname libffmpeg.so -shared -nostdlib   -Bsymbolic --whole-archive --no-undefined -o $PREFIX/libffmpeg.so libavcodec/libavcodec.a libavfilter/libavfilter.a libavresample/libavresample.a libavformat/libavformat.a libavutil/libavutil.a libswscale/libswscale.a libpostproc/libpostproc.a -lc -lm -lz -ldl -llog -lx264 --dynamic-linker=/system/bin/linker $PREBUILT/lib/gcc/arm-linux-androideabi/4.9.x/libgcc.a</span><br></pre></td></tr></table></figure>
+<h5 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$PREBUILT/bin/arm-linux-androideabi-strip --strip-unneeded libffmpeg.so</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -481,7 +481,7 @@
                 alt="贺祥" />
             
               <p class="site-author-name" itemprop="name">贺祥</p>
-              <p class="site-description motion-element" itemprop="description">小目标还是要有的，万一实现了呢！</p>
+              <p class="site-description motion-element" itemprop="description">坚持是件了不起的事情</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -491,7 +491,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -502,7 +502,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -513,7 +513,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -548,7 +548,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#执行如下命令"><span class="nav-number">1.</span> <span class="nav-text">执行如下命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩"><span class="nav-number">2.</span> <span class="nav-text">压缩</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#执行如下命令"><span class="nav-number">1.</span> <span class="nav-text">执行如下命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#压缩"><span class="nav-number">2.</span> <span class="nav-text">压缩</span></a></li></ol></div>
             
 
           </div>

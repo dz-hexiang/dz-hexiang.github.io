@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="系统uname -a # 查看内核/操作系统/CPU信息 head -n 1 /etc/issue # 查看操作系统版本 cat /proc/cpuinfo # 查看CPU信息 hostname # 查看计算机名 lspci -tv # 列出所有PCI设备 lsusb -tv # 列出所有USB设备 lsmod # 列">
+<meta name="description" content="系统 uname -a # 查看内核/操作系统/CPU信息  head -n 1 /etc/issue # 查看操作系统版本  cat /proc/cpuinfo # 查看CPU信息  hostname # 查看计算机名  lspci -tv # 列出所有PCI设备  lsusb -tv # 列出所有USB设备  ls">
 <meta name="keywords" content="shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用linux命令">
 <meta property="og:url" content="http://yoursite.com/2017/11/11/常用linux命令/index.html">
 <meta property="og:site_name" content="Mr.HeXiang Blog">
-<meta property="og:description" content="系统uname -a # 查看内核/操作系统/CPU信息 head -n 1 /etc/issue # 查看操作系统版本 cat /proc/cpuinfo # 查看CPU信息 hostname # 查看计算机名 lspci -tv # 列出所有PCI设备 lsusb -tv # 列出所有USB设备 lsmod # 列出加载的内核模块 env # 查看环境变量 资源 free -m # 查看内存使">
+<meta property="og:description" content="系统 uname -a # 查看内核/操作系统/CPU信息  head -n 1 /etc/issue # 查看操作系统版本  cat /proc/cpuinfo # 查看CPU信息  hostname # 查看计算机名  lspci -tv # 列出所有PCI设备  lsusb -tv # 列出所有USB设备  lsmod # 列出加载的内核模块  env # 查看环境变量 资源  free -">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-24T07:01:43.450Z">
+<meta property="og:updated_time" content="2017-12-13T07:43:42.534Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用linux命令">
-<meta name="twitter:description" content="系统uname -a # 查看内核/操作系统/CPU信息 head -n 1 /etc/issue # 查看操作系统版本 cat /proc/cpuinfo # 查看CPU信息 hostname # 查看计算机名 lspci -tv # 列出所有PCI设备 lsusb -tv # 列出所有USB设备 lsmod # 列出加载的内核模块 env # 查看环境变量 资源 free -m # 查看内存使">
+<meta name="twitter:description" content="系统 uname -a # 查看内核/操作系统/CPU信息  head -n 1 /etc/issue # 查看操作系统版本  cat /proc/cpuinfo # 查看CPU信息  hostname # 查看计算机名  lspci -tv # 列出所有PCI设备  lsusb -tv # 列出所有USB设备  lsmod # 列出加载的内核模块  env # 查看环境变量 资源  free -">
 
 
 
@@ -362,14 +362,15 @@
       
 
       
-        <h4 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h4><p><code>uname -a</code> # 查看内核/操作系统/CPU信息<br> <code>head -n 1 /etc/issue</code> # 查看操作系统版本<br> <code>cat /proc/cpuinfo</code> # 查看CPU信息<br> <code>hostname</code> # 查看计算机名<br> <code>lspci -tv</code> # 列出所有PCI设备<br> <code>lsusb -tv</code> # 列出所有USB设备<br> <code>lsmod</code> # 列出加载的内核模块<br> <code>env</code> # 查看环境变量</p>
-<h4 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h4><p> <code>free -m</code> # 查看内存使用量和交换区使用量<br> <code>df -h</code> # 查看各分区使用情况<br> <code>du -sh</code> # 查看指定目录的大小<br> <code>grep MemTotal /proc/meminfo</code> # 查看内存总量<br> <code>grep MemFree /proc/meminfo</code> # 查看空闲内存量<br> <code>uptime</code> # 查看系统运行时间、用户数、负载<br> <code>cat /proc/loadavg</code> # 查看系统负载</p>
-<h4 id="磁盘和分区"><a href="#磁盘和分区" class="headerlink" title="磁盘和分区"></a>磁盘和分区</h4><p> <code>mount | column -t</code> # 查看挂接的分区状态<br> <code>fdisk -l</code> # 查看所有分区<br> <code>swapon -s</code> # 查看所有交换分区<br> <code>hdparm -i /dev/hda</code> # 查看磁盘参数(仅适用于IDE设备)<br> <code>dmesg | grep IDE</code> # 查看启动时IDE设备检测状况</p>
-<h4 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h4><p> <code>ifconfig</code> # 查看所有网络接口的属性<br> <code>iptables -L</code> # 查看防火墙设置<br> <code>route -n</code> # 查看路由表<br> <code>netstat -lntp</code> # 查看所有监听端口<br> <code>netstat -antp</code> # 查看所有已经建立的连接<br> <code>netstat -s</code> # 查看网络统计信息</p>
-<h4 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h4><p> <code>ps -ef</code> # 查看所有进程<br> <code>top</code> # 实时显示进程状态</p>
-<h4 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h4><p> <code>w</code> # 查看活动用户<br> <code>id</code> # 查看指定用户信息<br> <code>last</code> # 查看用户登录日志<br> <code>cut -d: -f1 /etc/passwd</code> # 查看系统所有用户<br> <code>cut -d: -f1 /etc/group</code> # 查看系统所有组<br> <code>crontab -l</code> # 查看当前用户的计划任务</p>
-<h4 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h4><p> <code>chkconfig –list</code> # 列出所有系统服务<br> <code>chkconfig –list | grep on</code> # 列出所有启动的系统服务</p>
-<h4 id="程序"><a href="#程序" class="headerlink" title="程序"></a>程序</h4><p> <code>rpm -qa</code> # 查看所有安装的软件包</p>
+        <h5 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h5><p> <code>uname -a</code> # 查看内核/操作系统/CPU信息<br>  <code>head -n 1 /etc/issue</code> # 查看操作系统版本<br>  <code>cat /proc/cpuinfo</code> # 查看CPU信息<br>  <code>hostname</code> # 查看计算机名<br>  <code>lspci -tv</code> # 列出所有PCI设备<br>  <code>lsusb -tv</code> # 列出所有USB设备<br>  <code>lsmod</code> # 列出加载的内核模块<br>  <code>env</code> # 查看环境变量</p>
+<h5 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h5><p>  <code>free -m</code> # 查看内存使用量和交换区使用量<br>  <code>df -h</code> # 查看各分区使用情况<br>  <code>du -sh</code> # 查看指定目录的大小<br>  <code>grep MemTotal /proc/meminfo</code> # 查看内存总量<br>  <code>grep MemFree /proc/meminfo</code> # 查看空闲内存量<br>  <code>uptime</code> # 查看系统运行时间、用户数、负载<br>  <code>cat /proc/loadavg</code> # 查看系统负载</p>
+  <a id="more"></a>
+<h5 id="磁盘和分区"><a href="#磁盘和分区" class="headerlink" title="磁盘和分区"></a>磁盘和分区</h5><p>  <code>mount | column -t</code> # 查看挂接的分区状态<br>  <code>fdisk -l</code> # 查看所有分区<br>  <code>swapon -s</code> # 查看所有交换分区<br>  <code>hdparm -i /dev/hda</code> # 查看磁盘参数(仅适用于IDE设备)<br>  <code>dmesg | grep IDE</code> # 查看启动时IDE设备检测状况</p>
+<h5 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h5><p>  <code>ifconfig</code> # 查看所有网络接口的属性<br>  <code>iptables -L</code> # 查看防火墙设置<br>  <code>route -n</code> # 查看路由表<br>  <code>netstat -lntp</code> # 查看所有监听端口<br>  <code>netstat -antp</code> # 查看所有已经建立的连接<br>  <code>netstat -s</code> # 查看网络统计信息</p>
+<h5 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h5><p>  <code>ps -ef</code> # 查看所有进程<br>  <code>top</code> # 实时显示进程状态</p>
+<h5 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h5><p>  <code>w</code> # 查看活动用户<br>  <code>id</code> # 查看指定用户信息<br>  <code>last</code> # 查看用户登录日志<br>  <code>cut -d: -f1 /etc/passwd</code> # 查看系统所有用户<br>  <code>cut -d: -f1 /etc/group</code> # 查看系统所有组<br>  <code>crontab -l</code> # 查看当前用户的计划任务</p>
+<h5 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h5><p>  <code>chkconfig –list</code> # 列出所有系统服务<br>  <code>chkconfig –list | grep on</code> # 列出所有启动的系统服务</p>
+<h5 id="程序"><a href="#程序" class="headerlink" title="程序"></a>程序</h5><p>  <code>rpm -qa</code> # 查看所有安装的软件包</p>
 
       
     </div>
@@ -483,7 +484,7 @@
                 alt="贺祥" />
             
               <p class="site-author-name" itemprop="name">贺祥</p>
-              <p class="site-description motion-element" itemprop="description">小目标还是要有的，万一实现了呢！</p>
+              <p class="site-description motion-element" itemprop="description">坚持是件了不起的事情</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -493,7 +494,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -504,7 +505,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -515,7 +516,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -550,7 +551,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#系统"><span class="nav-number">1.</span> <span class="nav-text">系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#资源"><span class="nav-number">2.</span> <span class="nav-text">资源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#磁盘和分区"><span class="nav-number">3.</span> <span class="nav-text">磁盘和分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络"><span class="nav-number">4.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程"><span class="nav-number">5.</span> <span class="nav-text">进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户"><span class="nav-number">6.</span> <span class="nav-text">用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务"><span class="nav-number">7.</span> <span class="nav-text">服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#程序"><span class="nav-number">8.</span> <span class="nav-text">程序</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#系统"><span class="nav-number">1.</span> <span class="nav-text">系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#资源"><span class="nav-number">2.</span> <span class="nav-text">资源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#磁盘和分区"><span class="nav-number">3.</span> <span class="nav-text">磁盘和分区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#网络"><span class="nav-number">4.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进程"><span class="nav-number">5.</span> <span class="nav-text">进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用户"><span class="nav-number">6.</span> <span class="nav-text">用户</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务"><span class="nav-number">7.</span> <span class="nav-text">服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#程序"><span class="nav-number">8.</span> <span class="nav-text">程序</span></a></li></ol></div>
             
 
           </div>
