@@ -272,7 +272,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/如何避免使用Handler造成的内存泄漏/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/openssl转换证书及查看证书信息/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -291,7 +291,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/16/如何避免使用Handler造成的内存泄漏/" itemprop="url">如何避免使用Handler造成的内存泄漏</a></h1>
+                <a class="post-title-link" href="/2018/01/04/openssl转换证书及查看证书信息/" itemprop="url">openssl转换证书及查看证书信息</a></h1>
         
 
         <div class="post-meta">
@@ -303,8 +303,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-16T10:29:00+08:00">
-                2017-12-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T16:29:00+08:00">
+                2018-01-04
               </time>
             
 
@@ -365,16 +365,166 @@
       
         
           
-            <h4 id="一、什么是内存泄漏？"><a href="#一、什么是内存泄漏？" class="headerlink" title="一、什么是内存泄漏？"></a>一、什么是内存泄漏？</h4><p>对象已经没有被应用程序使用，由于引用或者其它垃圾回收器不能或者无法回收它们。</p>
-<h4 id="二、Activity中使用Handler为什么会造成泄漏"><a href="#二、Activity中使用Handler为什么会造成泄漏" class="headerlink" title="二、Activity中使用Handler为什么会造成泄漏"></a>二、Activity中使用Handler为什么会造成泄漏</h4><p>1.非静态的内部类和匿名内部类都会隐式地持有其外部类的引用</p>
-<p>2.new Handler(){}是匿名内部内构造对象的格式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">new 父类构造器（参数列表）|实现接口（）  </span><br><span class="line">    &#123;  </span><br><span class="line">     //匿名内部类的类体部分  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>匿部类的形式构造Handler</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * 匿名内部类构造Handeler对象，默认持有外部类引用</span><br><span class="line">   */</span><br><span class="line">  private Handler mHandler=new Handler()</span><br><span class="line">  &#123;</span><br><span class="line">      @Override</span><br><span class="line">      public void handleMessage(Message msg) &#123;</span><br><span class="line">          super.handleMessage(msg);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
-<h4 id="三、如何避免使用Handler造成内存泄漏"><a href="#三、如何避免使用Handler造成内存泄漏" class="headerlink" title="三、如何避免使用Handler造成内存泄漏"></a>三、如何避免使用Handler造成内存泄漏</h4><p>1.声明静态内部内和弱引用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">private MyHandler myHandler=new MyHandler(this);</span><br><span class="line">   /**</span><br><span class="line">    *1. 声明静态内部类（静态的内部类不会持有外部类的引用）</span><br><span class="line">    * 2.声明弱引用（GC在回收时会忽略掉弱引用，直接回收）</span><br><span class="line">    */</span><br><span class="line">   static class MyHandler extends Handler &#123;</span><br><span class="line">       WeakReference&lt;Activity&gt; mActivityReference;</span><br><span class="line">       MyHandler(Activity activity) &#123;</span><br><span class="line">           //弱引用</span><br><span class="line">           mActivityReference= new WeakReference&lt;Activity&gt;(activity);</span><br><span class="line">       &#125;</span><br><span class="line">       @Override</span><br><span class="line">       public void handleMessage(Message msg) &#123;</span><br><span class="line">           switch (msg.what)</span><br><span class="line">           &#123;</span><br><span class="line">               case 1:</span><br><span class="line">                   final Activity activity = mActivityReference.get();</span><br><span class="line">                   /**</span><br><span class="line">                    * 执行些界面操作,更新等</span><br><span class="line">                    *</span><br><span class="line">                    */</span><br><span class="line">                   Log.w(&quot;leakHandler&quot;,&quot;MyHandler没有释放,还在执行任务哦~o~:&quot;);</span><br><span class="line">                   break;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>2.onDestroy()的时候调用Handler的removeCallbacksAndMessages(null)，清除所有回调和消息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">  protected void onDestroy() &#123;</span><br><span class="line">      super.onDestroy();</span><br><span class="line">      /**</span><br><span class="line">       * 移除回调和消息</span><br><span class="line">       */</span><br><span class="line">      if (myHandler != null)</span><br><span class="line">          myHandler.removeCallbacksAndMessages(null);</span><br><span class="line">      /**</span><br><span class="line">       * leakCanary去观察myHandler是否泄露了</span><br><span class="line">       */</span><br><span class="line">      //MyApp.getRefWatcher(this).watch(myHandler);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+            <h4 id="生成客户端文件"><a href="#生成客户端文件" class="headerlink" title="生成客户端文件"></a>生成客户端文件</h4><h5 id="1-生成客户端key"><a href="#1-生成客户端key" class="headerlink" title="1.生成客户端key"></a>1.生成客户端key</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -out 214344674390250.key 1024</span><br></pre></td></tr></table></figure>
+<h5 id="2-利用private-key生成客户端请求文件"><a href="#2-利用private-key生成客户端请求文件" class="headerlink" title="2.利用private key生成客户端请求文件"></a>2.利用private key生成客户端请求文件</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -new -out client-req.csr -key 214344674390250.key  -config openssl.cnf</span><br></pre></td></tr></table></figure>
+<h5 id="3-生成客户端证书（root证书，rootkey，客户端key，客户端请求文件这4个生成客户端证书）"><a href="#3-生成客户端证书（root证书，rootkey，客户端key，客户端请求文件这4个生成客户端证书）" class="headerlink" title="3.生成客户端证书（root证书，rootkey，客户端key，客户端请求文件这4个生成客户端证书）"></a>3.生成客户端证书（root证书，rootkey，客户端key，客户端请求文件这4个生成客户端证书）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -req -in client-req.csr -out client-cert.cer -signkey 214344674390250.key</span><br></pre></td></tr></table></figure>
+<h4 id="打印出证书的全部内容"><a href="#打印出证书的全部内容" class="headerlink" title="打印出证书的全部内容"></a>打印出证书的全部内容</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -in 214344674390250.pem -noout -text</span><br></pre></td></tr></table></figure>
+<h4 id="将PEM转换为CRT-CRT文件"><a href="#将PEM转换为CRT-CRT文件" class="headerlink" title="将PEM转换为CRT(.CRT文件)"></a>将PEM转换为CRT(.CRT文件)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -outform der -in 214344674390250.pem -out certificate.crt</span><br></pre></td></tr></table></figure>
+<h4 id="crt转换cer"><a href="#crt转换cer" class="headerlink" title="crt转换cer"></a>crt转换cer</h4><blockquote>
+<p>windows 下双击- detail -复制到文件 -选择cer 保存</p>
+</blockquote>
+<p>  暂时想到两种方法<br>  第一种方法：h5提供页面，原生判断权限跳不同页面。<br>  第二种方法：原生提供角色查询接口,h5调用接口自行判断权限进行跳转</p>
+<h4 id="查看证书cer的信息"><a href="#查看证书cer的信息" class="headerlink" title="查看证书cer的信息"></a>查看证书cer的信息</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -in CA.cer -noout -text</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/nginx url中带中文不能访问/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person2.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/04/nginx url中带中文不能访问/" itemprop="url">nginx url中带中文不能访问</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T12:29:00+08:00">
+                2018-01-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="解决nginx-部署，url中带中文不能访问"><a href="#解决nginx-部署，url中带中文不能访问" class="headerlink" title="解决nginx 部署，url中带中文不能访问"></a>解决nginx 部署，url中带中文不能访问</h4><p>利用<code>rz</code>命令上传windows网站部署文件<br>输入<code>rz</code>回车会弹出文件夹选择 上传文件</p>
+<blockquote>
+<p>之前用zip压缩文件打包，发现文件变乱码，用7z压缩 就正常了</p>
+</blockquote>
+<h4 id="一、文件上传"><a href="#一、文件上传" class="headerlink" title="一、文件上传"></a>一、文件上传</h4><p>搜索7z安装包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-cache search &quot;7z&quot;</span><br></pre></td></tr></table></figure></p>
+<p>安装7z<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install p7zip-full</span><br></pre></td></tr></table></figure></p>
+<p>用之前解压windows的zip有乱码换成7z的就好了<br>把压缩包解压到<code>blog</code> <code>-r</code>递归的意思<code>-o</code>指定解压目录，<code>-o</code>和目录不能有空格<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">7za x public.7z -r-oblog</span><br></pre></td></tr></table></figure></p>
+<p>递归给blog文件夹添加执行许可，否则会报403 fobidden<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod -R +x blog</span><br></pre></td></tr></table></figure></p>
+<p>nginx 配置<br>编辑nginx.conf 中server  节点设置字符及目录，然后重启nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">charset utf-8;</span><br><span class="line">root   /phpstudy/www/blog/;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -667,6 +817,157 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mHandler.sendEmptyMessage(RESULT_OK);</span><br></pre></td></tr></table></figure>
 <p>覆写回调方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Handler mHandler=new Handler()&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void handleMessage(Message msg) &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		super.handleMessage(msg);</span><br><span class="line">		/**</span><br><span class="line">		 * Looper回调此方法，复写这个方法</span><br><span class="line">		 */</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/如何避免使用Handler造成的内存泄漏/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person2.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/16/如何避免使用Handler造成的内存泄漏/" itemprop="url">如何避免使用Handler造成的内存泄漏</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-16T10:29:00+08:00">
+                2017-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="一、什么是内存泄漏？"><a href="#一、什么是内存泄漏？" class="headerlink" title="一、什么是内存泄漏？"></a>一、什么是内存泄漏？</h4><p>对象已经没有被应用程序使用，由于引用或者其它垃圾回收器不能或者无法回收它们。</p>
+<h4 id="二、Activity中使用Handler为什么会造成泄漏"><a href="#二、Activity中使用Handler为什么会造成泄漏" class="headerlink" title="二、Activity中使用Handler为什么会造成泄漏"></a>二、Activity中使用Handler为什么会造成泄漏</h4><p>1.非静态的内部类和匿名内部类都会隐式地持有其外部类的引用</p>
+<p>2.new Handler(){}是匿名内部内构造对象的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">new 父类构造器（参数列表）|实现接口（）  </span><br><span class="line">    &#123;  </span><br><span class="line">     //匿名内部类的类体部分  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>匿部类的形式构造Handler</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * 匿名内部类构造Handeler对象，默认持有外部类引用</span><br><span class="line">   */</span><br><span class="line">  private Handler mHandler=new Handler()</span><br><span class="line">  &#123;</span><br><span class="line">      @Override</span><br><span class="line">      public void handleMessage(Message msg) &#123;</span><br><span class="line">          super.handleMessage(msg);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="三、如何避免使用Handler造成内存泄漏"><a href="#三、如何避免使用Handler造成内存泄漏" class="headerlink" title="三、如何避免使用Handler造成内存泄漏"></a>三、如何避免使用Handler造成内存泄漏</h4><p>1.声明静态内部内和弱引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">private MyHandler myHandler=new MyHandler(this);</span><br><span class="line">   /**</span><br><span class="line">    *1. 声明静态内部类（静态的内部类不会持有外部类的引用）</span><br><span class="line">    * 2.声明弱引用（GC在回收时会忽略掉弱引用，直接回收）</span><br><span class="line">    */</span><br><span class="line">   static class MyHandler extends Handler &#123;</span><br><span class="line">       WeakReference&lt;Activity&gt; mActivityReference;</span><br><span class="line">       MyHandler(Activity activity) &#123;</span><br><span class="line">           //弱引用</span><br><span class="line">           mActivityReference= new WeakReference&lt;Activity&gt;(activity);</span><br><span class="line">       &#125;</span><br><span class="line">       @Override</span><br><span class="line">       public void handleMessage(Message msg) &#123;</span><br><span class="line">           switch (msg.what)</span><br><span class="line">           &#123;</span><br><span class="line">               case 1:</span><br><span class="line">                   final Activity activity = mActivityReference.get();</span><br><span class="line">                   /**</span><br><span class="line">                    * 执行些界面操作,更新等</span><br><span class="line">                    *</span><br><span class="line">                    */</span><br><span class="line">                   Log.w(&quot;leakHandler&quot;,&quot;MyHandler没有释放,还在执行任务哦~o~:&quot;);</span><br><span class="line">                   break;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>2.onDestroy()的时候调用Handler的removeCallbacksAndMessages(null)，清除所有回调和消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">  protected void onDestroy() &#123;</span><br><span class="line">      super.onDestroy();</span><br><span class="line">      /**</span><br><span class="line">       * 移除回调和消息</span><br><span class="line">       */</span><br><span class="line">      if (myHandler != null)</span><br><span class="line">          myHandler.removeCallbacksAndMessages(null);</span><br><span class="line">      /**</span><br><span class="line">       * leakCanary去观察myHandler是否泄露了</span><br><span class="line">       */</span><br><span class="line">      //MyApp.getRefWatcher(this).watch(myHandler);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1033,7 +1334,7 @@ System.out.println(&quot;3.TestCallable call return:&quot;+result+&quot;,&quot;+
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Handler异步更新UI线程界面/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Android系统架构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -1052,7 +1353,7 @@ System.out.println(&quot;3.TestCallable call return:&quot;+result+&quot;,&quot;+
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/15/Handler异步更新UI线程界面/" itemprop="url">Handler异步更新UI线程界面</a></h1>
+                <a class="post-title-link" href="/2017/12/15/Android系统架构/" itemprop="url">Android系统结构四层5大部门</a></h1>
         
 
         <div class="post-meta">
@@ -1126,457 +1427,19 @@ System.out.println(&quot;3.TestCallable call return:&quot;+result+&quot;,&quot;+
       
         
           
-            <h5 id="1-主线程创建子线程"><a href="#1-主线程创建子线程" class="headerlink" title="1.主线程创建子线程"></a>1.主线程创建子线程</h5><h5 id="2-子线程执行耗时操作，执行完后通过Handler发送消息到给Message-Queue，覆写handlerMessage-，处理Looper的回调。"><a href="#2-子线程执行耗时操作，执行完后通过Handler发送消息到给Message-Queue，覆写handlerMessage-，处理Looper的回调。" class="headerlink" title="2.子线程执行耗时操作，执行完后通过Handler发送消息到给Message Queue，覆写handlerMessage()，处理Looper的回调。"></a>2.子线程执行耗时操作，执行完后通过Handler发送消息到给Message Queue，覆写handlerMessage()，处理Looper的回调。</h5><h5 id="3-实例"><a href="#3-实例" class="headerlink" title="3.实例"></a>3.实例</h5><p>创建Handler实例覆写handlerMessage()</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Handler mHandler=new Handler()&#123;</span><br><span class="line">   	@Override</span><br><span class="line">   	public void handleMessage(Message msg) &#123;</span><br><span class="line">   		// TODO Auto-generated method stub</span><br><span class="line">   		super.handleMessage(msg);</span><br><span class="line">   		/**</span><br><span class="line">   		 * Looper回调此方法，覆写这个方法</span><br><span class="line">   		 */</span><br><span class="line">   		switch (msg.what) &#123;</span><br><span class="line">		case RESULT_OK:</span><br><span class="line">			/**</span><br><span class="line">			 * 更新ui</span><br><span class="line">			 */</span><br><span class="line">			break;</span><br><span class="line"></span><br><span class="line">		default:</span><br><span class="line">			break;</span><br><span class="line">		&#125;</span><br><span class="line">   	&#125;</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
-<p>子线程执行异步耗时操作</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class MyThread extends Thread&#123;</span><br><span class="line">   	@Override</span><br><span class="line">   	public void run() &#123;</span><br><span class="line">   		// TODO Auto-generated method stub</span><br><span class="line">   		try &#123;</span><br><span class="line">   			/**</span><br><span class="line">   			 * 执行耗时操作，这里只是暂时睡眠6秒然后更新界面</span><br><span class="line">   			 */</span><br><span class="line">			Thread.sleep(6*10000);</span><br><span class="line">		&#125; catch (InterruptedException e) &#123;</span><br><span class="line">			// TODO Auto-generated catch block</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">   		/**</span><br><span class="line">   		 * 发送消息给Message Queue</span><br><span class="line">   		 */</span><br><span class="line">   		mHandler.sendEmptyMessage(RESULT_OK);</span><br><span class="line">   		super.run();</span><br><span class="line">   	&#125;</span><br><span class="line">   	</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p> 创建线程实例并启动线程</p>
-<pre><code>/**
- * 启动线程执行耗时操作
- */
-new MyThread().start();
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/AsyncTask使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person2.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/15/AsyncTask使用/" itemprop="url">AsyncTask使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T11:29:00+08:00">
-                2017-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="一、AsyncTask概念"><a href="#一、AsyncTask概念" class="headerlink" title="一、AsyncTask概念"></a>一、AsyncTask概念</h4><p>AsyncTask是一个异步任务类，用来异步执行耗时操作，更新UI线程。<br>实际是封装了Thead+Handler</p>
-<h4 id="二、优点："><a href="#二、优点：" class="headerlink" title="二、优点："></a>二、优点：</h4><p>简单，方便</p>
-<h4 id="三、缺点："><a href="#三、缺点：" class="headerlink" title="三、缺点："></a>三、缺点：</h4><p>Task实例必须在主线程中创建<br>execute方法必须在主线程中调用，并且只能执行一次</p>
-<h4 id="四、使用方法："><a href="#四、使用方法：" class="headerlink" title="四、使用方法："></a>四、使用方法：</h4><p>创建一个类继承AsyncTask<br>覆写doInBackground(Params…) 后台执行耗时操作<br>覆写onPostExecute(Result) 执行耗时操作后更新UI界面，在主线程中执行<br>覆写onProgressUpdate(Progress…)更新进度条，在主线程中进行，结果来自于publishProgress(Integer)</p>
-<p>下面是实例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">class MyAsyncTask extends AsyncTask&lt;Integer, Integer,Integer&gt;&#123;</span><br><span class="line"></span><br><span class="line">    	/**</span><br><span class="line">		 *  这个方法当创建线程后执行，准备工作</span><br><span class="line">		 */</span><br><span class="line">    	@Override</span><br><span class="line">		protected void onPreExecute() &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			super.onPreExecute();</span><br><span class="line">		</span><br><span class="line">		&#125;</span><br><span class="line">    	/**</span><br><span class="line">		 * 这个方法执行耗时操作 这里是休眠</span><br><span class="line">		 */</span><br><span class="line">		@Override</span><br><span class="line">		protected Integer doInBackground(Integer... params) &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			try &#123;</span><br><span class="line">				/**</span><br><span class="line">				 * 简单每睡眠1秒更新下进度</span><br><span class="line">				 */</span><br><span class="line">//				for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">//					Thread.sleep(1*1000);</span><br><span class="line">//					publishProgress(i);</span><br><span class="line">//				&#125;</span><br><span class="line">				</span><br><span class="line">				</span><br><span class="line">			&#125; catch (Exception e) &#123;</span><br><span class="line">				// TODO: handle exception</span><br><span class="line">			&#125;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;</span><br><span class="line">		/**</span><br><span class="line">		 *  这个方法主线程中执行，耗时操作完之后执行</span><br><span class="line">		 * 更新UI界面</span><br><span class="line">		 */</span><br><span class="line">		@Override</span><br><span class="line">		protected void onPostExecute(Integer result) &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			super.onPostExecute(result);</span><br><span class="line">			/**</span><br><span class="line">			 * 最后执行完耗时操作更新ui界面</span><br><span class="line">			 */</span><br><span class="line">			//drawCavas(surfaceHolder,10);</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		/**</span><br><span class="line">		 * 这个方法在主线程调用</span><br><span class="line">		 */</span><br><span class="line">		@Override</span><br><span class="line">		protected void onProgressUpdate(Integer... values) &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			super.onProgressUpdate(values);</span><br><span class="line">		</span><br><span class="line">			/**</span><br><span class="line">			 * 把进度更新到SurfaceView中</span><br><span class="line">			 */</span><br><span class="line">			//drawCavas(surfaceHolder,values[0]);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">    	</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Android实现自定义View/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person2.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/15/Android实现自定义View/" itemprop="url">Android实现自定义View</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T11:29:00+08:00">
-                2017-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-创建View类继承View或者View的子类，并继承构造方法。"><a href="#1-创建View类继承View或者View的子类，并继承构造方法。" class="headerlink" title="1.创建View类继承View或者View的子类，并继承构造方法。"></a>1.创建View类继承View或者View的子类，并继承构造方法。</h4><h4 id="2-自定义属性"><a href="#2-自定义属性" class="headerlink" title="2.自定义属性"></a>2.自定义属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;resources&gt;</span><br><span class="line">&lt;!--  名字随便起--&gt; </span><br><span class="line">&lt;declare-styleable name=&quot;MyViewStyleName&quot; &gt;</span><br><span class="line">&lt;attr name=&quot;des&quot; format=&quot;string&quot; /&gt;</span><br><span class="line">&lt;attr name=&quot;textColor&quot; format=&quot;color&quot;/&gt;</span><br><span class="line">&lt;attr name=&quot;bgColor&quot; format=&quot;color&quot;/&gt;</span><br><span class="line">&lt;/declare-styleable&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="3-构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等"><a href="#3-构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等" class="headerlink" title="3.构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等"></a>3.构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public MyView(Context context, AttributeSet attrs) &#123;</span><br><span class="line">	super(context, attrs);</span><br><span class="line">	TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.MyViewStyleName);</span><br><span class="line">		if(typedArray != null)&#123;</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性des</span><br><span class="line">			 */</span><br><span class="line">			mDes = typedArray.getString(R.styleable.MyViewStyleName_des);</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性bgColor</span><br><span class="line">			 */</span><br><span class="line">			mBackground = typedArray.getColor(R.styleable.MyViewStyleName_bgColor, Color.RED);</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性textColor</span><br><span class="line">			 */</span><br><span class="line">			mTextColor = typedArray.getColor(R.styleable.MyViewStyleName_textColor, Color.WHITE);</span><br><span class="line">	</span><br><span class="line">		&#125;</span><br><span class="line">		//initView();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="4-布局中使用自定义的View，并使用自己定义的属性"><a href="#4-布局中使用自定义的View，并使用自己定义的属性" class="headerlink" title="4.布局中使用自定义的View，并使用自己定义的属性"></a>4.布局中使用自定义的View，并使用自己定义的属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.example.testdemo.MyView </span><br><span class="line">    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;</span><br><span class="line">    android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">    app:des=&quot;这是自定义View内容&quot;</span><br><span class="line">	app:textColor=&quot;#ffffff&quot;</span><br><span class="line">	app:bgColor=&quot;#4cd964&quot;</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    /&gt;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Java泛型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person2.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/15/Java泛型/" itemprop="url">Java泛型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T11:29:00+08:00">
-                2017-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Java泛型是什么？"><a href="#Java泛型是什么？" class="headerlink" title="Java泛型是什么？"></a>Java泛型是什么？</h4><p>泛型是参数化类型，操作的数据类型被指定为一个参数。传入什么类型就是什么类型。<br>泛型方法是什么？</p>
-<p>一个在调用时可以接收不同类型的参数的方法</p>
-<h4 id="泛型方法声明规则"><a href="#泛型方法声明规则" class="headerlink" title="泛型方法声明规则"></a>泛型方法声明规则</h4><blockquote>
-<p>必定有一个类型参数用尖括号分隔，声明在方法返回类型之前<br>多个类型参数之间用逗号分割<br>类型参数能用来声明返回值类型<br>泛型方法体的声明和其他方法一样。注意类型参数只能代表引用型类型，不能是原始类型（像int,double,char的等）</p>
+            <h4 id="Android系统结构分为四层5大部门"><a href="#Android系统结构分为四层5大部门" class="headerlink" title="Android系统结构分为四层5大部门"></a>Android系统结构分为四层5大部门</h4><blockquote>
+<p>本层分为Linux内核，及设备相关的驱动程序。</p>
 </blockquote>
-<h5 id="1-普通用法：参数可以是整形数据组、字符串数组、Double数组等"><a href="#1-普通用法：参数可以是整形数据组、字符串数组、Double数组等" class="headerlink" title="1.普通用法：参数可以是整形数据组、字符串数组、Double数组等"></a>1.普通用法：参数可以是整形数据组、字符串数组、Double数组等</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 泛型方法 printArray</span><br><span class="line">    public static &lt; E &gt; void printArray( E[] inputArray )</span><br><span class="line">    &#123;</span><br><span class="line">        // 输出数组元素</span><br><span class="line">        for ( E element : inputArray )&#123;</span><br><span class="line">            System.out.printf( &quot;%s &quot;, element );</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h5 id="2-有界的类型参数用法："><a href="#2-有界的类型参数用法：" class="headerlink" title="2.有界的类型参数用法："></a>2.有界的类型参数用法：</h5><p>参数的名称，后跟extends关键字，最后紧跟它的上界<br>参数的名称，后跟super关键字，最后紧跟它的下界</p>
-<p>下面这个例子的上界是T类型必须是实现了Comparable接口的类 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 比较三个值并返回最大值</span><br><span class="line">     * @param x</span><br><span class="line">     * @param y</span><br><span class="line">     * @param z</span><br><span class="line">     * @param &lt;T&gt;</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static &lt;T extends Comparable&lt;T&gt;&gt; T max(T x, T y, T z)</span><br><span class="line">    &#123;</span><br><span class="line">        T max = x; // 假设x是初始最大值</span><br><span class="line">        if ( y.compareTo( max ) &gt; 0 )&#123;</span><br><span class="line">            max = y; //y 更大</span><br><span class="line">        &#125;</span><br><span class="line">        if ( z.compareTo( max ) &gt; 0 )&#123;</span><br><span class="line">            max = z; // 现在 z 更大</span><br><span class="line">        &#125;</span><br><span class="line">        return max; // 返回最大对象</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h5 id="3-类型通配符？使用"><a href="#3-类型通配符？使用" class="headerlink" title="3.类型通配符？使用"></a>3.类型通配符？使用</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 任何类型</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public static void hello(List&lt;?&gt; msg) &#123;</span><br><span class="line">        System.out.println(&quot;hai :&quot; + msg.get(0));</span><br><span class="line">    &#125;</span><br><span class="line">	//类型通配符？加界限参数</span><br><span class="line">    /**</span><br><span class="line">     * 只能接受是继承了number的类</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public static  void helloExtends(List&lt;? extends Number&gt; msg) &#123;</span><br><span class="line">        System.out.println(&quot;hai :&quot; + msg.get(0));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 只能接受Number及其三层父类类型</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public static void helloSuper(List&lt;? super Number&gt; msg) &#123;</span><br><span class="line">        System.out.println(&quot;hai :&quot; + msg.get(0));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-操作系统层-最底层（OS-Linux-Kernel）"><a href="#1-操作系统层-最底层（OS-Linux-Kernel）" class="headerlink" title="1.操作系统层-最底层（OS|Linux Kernel）"></a>1.操作系统层-最底层（OS|Linux Kernel）</h4><p>驱动包括显示驱动（Display Driver），照相机驱动（Camera Driver）、键盘驱动（KeyBoard Driver）、wifi驱动（WIFI Driver）、蓝牙驱动（Bluetooth Driver）、Flash内存驱动（Flash Memory Driver）、Bind IPC驱动（进程通信功能）、能源管理（Power Management）</p>
+<h4 id="2-各种库（Libraries）和RunTime中间层"><a href="#2-各种库（Libraries）和RunTime中间层" class="headerlink" title="2.各种库（Libraries）和RunTime中间层"></a>2.各种库（Libraries）和RunTime中间层</h4><blockquote>
+<p>本层分为各种库（Libraries）和Android运行环境（Dalvik虚拟机）</p>
+</blockquote>
+<p>库的内容都是c语言实现的包括：C库、多媒体框架（MediaFramework）、SQLiter （数据库）、OpenGL ES（提供3D支持）、WebKit（浏览器核心 ）、SGL（2D图像引擎）、SSL（为数据提供安全支持，位于TCP/IP和应用层协议之间）、FreeType（为徒和矢量字体功能）<br>Dalvik虚拟机不是Java虚拟机（Java VM），Dalvik虚拟机执行.dex格式文件。Dalvik虚拟机是基于寄存器（Register-based）的虚拟机，Java VM是基于栈（Stack-based）</p>
+<h4 id="3-应用程序框架层（Application-Framework）"><a href="#3-应用程序框架层（Application-Framework）" class="headerlink" title="3.应用程序框架层（Application Framework）"></a>3.应用程序框架层（Application Framework）</h4><blockquote>
+<p>本层是提供给开发者的API（都是Java开发的），一般Android开发常接触调用</p>
+</blockquote>
+<p>包括UI需要的各种控件（View System）、Activity Manager 、Window Manager 、Packge Manager四大组件、等各种API</p>
+<h4 id="4-应用层（Application）"><a href="#4-应用层（Application）" class="headerlink" title="4.应用层（Application）"></a>4.应用层（Application）</h4><p>用户界面，Java语言编写的一些APK应用<br>下面是架构图<br><img src="http://img.blog.csdn.net/20170822205239681?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZHpfaGV4aWFuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="enter image description here"></p>
 
           
         
@@ -1724,6 +1587,156 @@ new MyThread().start();
 <h4 id="四、SurfaceView-使用方式："><a href="#四、SurfaceView-使用方式：" class="headerlink" title="四、SurfaceView 使用方式："></a>四、SurfaceView 使用方式：</h4><p>1.布局中放入SurfaceView<br>2.实现SurfaceHolder.Callback<br>3.绘制画布更新画布到SurfaceView（本例是在主线程中更新，可以另起一个线程更新）<br>通过lockCanvas()将返回绘制的canvas<br>绘制的过程中，对canvas的绘制不会立刻反应在界面上，直到执行unlockCanvasAndPost()提交刚才修改的界面</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">SurfaceView surfaceView=(SurfaceView)findViewById(R.id.surfaceview);</span><br><span class="line">        SurfaceHolder surfaceHolder=(SurfaceHolder) surfaceView.getHolder();</span><br><span class="line">        surfaceHolder.addCallback(new SurfaceHolder.Callback() &#123;</span><br><span class="line">			</span><br><span class="line">			@Override</span><br><span class="line">			public void surfaceDestroyed(SurfaceHolder holder) &#123;</span><br><span class="line">				// TODO Auto-generated method stub</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			@Override</span><br><span class="line">			public void surfaceCreated(SurfaceHolder holder) &#123;</span><br><span class="line">				// TODO Auto-generated method stub</span><br><span class="line">				/**</span><br><span class="line">				 * 获得canvas的大小并锁定canvas</span><br><span class="line">				 */</span><br><span class="line">				Canvas canvas=holder.lockCanvas();</span><br><span class="line">				Bitmap bitmap=BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);</span><br><span class="line">				canvas.drawBitmap(bitmap, 50, 50,new Paint());</span><br><span class="line">				/**</span><br><span class="line">				 * 提交更新canvas</span><br><span class="line">				 */</span><br><span class="line">				holder.unlockCanvasAndPost(canvas);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			@Override</span><br><span class="line">			public void surfaceChanged(SurfaceHolder holder, int format, int width,</span><br><span class="line">					int height) &#123;</span><br><span class="line">				// TODO Auto-generated method stub</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br></pre></td></tr></table></figure>
 
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Handler异步更新UI线程界面/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person2.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/15/Handler异步更新UI线程界面/" itemprop="url">Handler异步更新UI线程界面</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T11:29:00+08:00">
+                2017-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="1-主线程创建子线程"><a href="#1-主线程创建子线程" class="headerlink" title="1.主线程创建子线程"></a>1.主线程创建子线程</h5><h5 id="2-子线程执行耗时操作，执行完后通过Handler发送消息到给Message-Queue，覆写handlerMessage-，处理Looper的回调。"><a href="#2-子线程执行耗时操作，执行完后通过Handler发送消息到给Message-Queue，覆写handlerMessage-，处理Looper的回调。" class="headerlink" title="2.子线程执行耗时操作，执行完后通过Handler发送消息到给Message Queue，覆写handlerMessage()，处理Looper的回调。"></a>2.子线程执行耗时操作，执行完后通过Handler发送消息到给Message Queue，覆写handlerMessage()，处理Looper的回调。</h5><h5 id="3-实例"><a href="#3-实例" class="headerlink" title="3.实例"></a>3.实例</h5><p>创建Handler实例覆写handlerMessage()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Handler mHandler=new Handler()&#123;</span><br><span class="line">   	@Override</span><br><span class="line">   	public void handleMessage(Message msg) &#123;</span><br><span class="line">   		// TODO Auto-generated method stub</span><br><span class="line">   		super.handleMessage(msg);</span><br><span class="line">   		/**</span><br><span class="line">   		 * Looper回调此方法，覆写这个方法</span><br><span class="line">   		 */</span><br><span class="line">   		switch (msg.what) &#123;</span><br><span class="line">		case RESULT_OK:</span><br><span class="line">			/**</span><br><span class="line">			 * 更新ui</span><br><span class="line">			 */</span><br><span class="line">			break;</span><br><span class="line"></span><br><span class="line">		default:</span><br><span class="line">			break;</span><br><span class="line">		&#125;</span><br><span class="line">   	&#125;</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
+<p>子线程执行异步耗时操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class MyThread extends Thread&#123;</span><br><span class="line">   	@Override</span><br><span class="line">   	public void run() &#123;</span><br><span class="line">   		// TODO Auto-generated method stub</span><br><span class="line">   		try &#123;</span><br><span class="line">   			/**</span><br><span class="line">   			 * 执行耗时操作，这里只是暂时睡眠6秒然后更新界面</span><br><span class="line">   			 */</span><br><span class="line">			Thread.sleep(6*10000);</span><br><span class="line">		&#125; catch (InterruptedException e) &#123;</span><br><span class="line">			// TODO Auto-generated catch block</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">   		/**</span><br><span class="line">   		 * 发送消息给Message Queue</span><br><span class="line">   		 */</span><br><span class="line">   		mHandler.sendEmptyMessage(RESULT_OK);</span><br><span class="line">   		super.run();</span><br><span class="line">   	&#125;</span><br><span class="line">   	</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p> 创建线程实例并启动线程</p>
+<pre><code>/**
+ * 启动线程执行耗时操作
+ */
+new MyThread().start();
+</code></pre>
           
         
       
