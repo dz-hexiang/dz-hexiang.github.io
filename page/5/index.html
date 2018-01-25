@@ -968,7 +968,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/21/docker安装/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/21/git获取远程仓库分支/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -987,7 +987,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/08/21/docker安装/" itemprop="url">docker安装</a></h1>
+                <a class="post-title-link" href="/2015/08/21/git获取远程仓库分支/" itemprop="url">git获取远程仓库分支.md</a></h1>
         
 
         <div class="post-meta">
@@ -1022,8 +1022,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
                   </a>
                 </span>
 
@@ -1060,18 +1060,14 @@
 
       
         
-          <h5 id="docker-安装"><a href="#docker-安装" class="headerlink" title="docker 安装"></a>docker 安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install -y docker.io</span><br></pre></td></tr></table></figure>
-<h5 id="引导时启用-docker"><a href="#引导时启用-docker" class="headerlink" title="引导时启用 docker"></a>引导时启用 docker</h5><p>systemctl enable docker</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/lib/systemd/systemd-sysv-install enable docker</span><br></pre></td></tr></table></figure>
-<h5 id="启动-Docker"><a href="#启动-Docker" class="headerlink" title="启动 Docker"></a>启动 Docker</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
-<h5 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h5><h5 id="查看所有已下载的images"><a href="#查看所有已下载的images" class="headerlink" title="查看所有已下载的images"></a>查看所有已下载的images</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/08/21/docker安装/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <p> <code>git branch -a</code> 列出本地分支和远程分支<br> <code>git branch -r</code> 列出远程分支<br> <code>git branch</code> 不带参数：，并且在当前分支的前面加“*”号标记</p>
+<blockquote>
+<p>如果用命令行，运行 git fetch，可以将远程分支信息获取到本地</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b app_frame origin/feature/dz-hexiang/app_frame</span><br></pre></td></tr></table></figure>
+
+          
         
       
     </div>
@@ -1268,7 +1264,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/21/git获取远程仓库分支/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/21/docker安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -1287,7 +1283,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/08/21/git获取远程仓库分支/" itemprop="url">git获取远程仓库分支.md</a></h1>
+                <a class="post-title-link" href="/2015/08/21/docker安装/" itemprop="url">docker安装</a></h1>
         
 
         <div class="post-meta">
@@ -1322,8 +1318,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index">
-                    <span itemprop="name">Git</span>
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
                   </a>
                 </span>
 
@@ -1360,14 +1356,18 @@
 
       
         
-          
-            <p> <code>git branch -a</code> 列出本地分支和远程分支<br> <code>git branch -r</code> 列出远程分支<br> <code>git branch</code> 不带参数：，并且在当前分支的前面加“*”号标记</p>
-<blockquote>
-<p>如果用命令行，运行 git fetch，可以将远程分支信息获取到本地</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b app_frame origin/feature/dz-hexiang/app_frame</span><br></pre></td></tr></table></figure>
-
-          
+          <h5 id="docker-安装"><a href="#docker-安装" class="headerlink" title="docker 安装"></a>docker 安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install -y docker.io</span><br></pre></td></tr></table></figure>
+<h5 id="引导时启用-docker"><a href="#引导时启用-docker" class="headerlink" title="引导时启用 docker"></a>引导时启用 docker</h5><p>systemctl enable docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/lib/systemd/systemd-sysv-install enable docker</span><br></pre></td></tr></table></figure>
+<h5 id="启动-Docker"><a href="#启动-Docker" class="headerlink" title="启动 Docker"></a>启动 Docker</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
+<h5 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h5><h5 id="查看所有已下载的images"><a href="#查看所有已下载的images" class="headerlink" title="查看所有已下载的images"></a>查看所有已下载的images</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/08/21/docker安装/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
