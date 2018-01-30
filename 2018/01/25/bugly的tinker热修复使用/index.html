@@ -90,9 +90,11 @@
 <meta property="og:image" content="http://yoursite.com/images/blog/tinker/15168720861.jpg">
 <meta property="og:image" content="http://yoursite.com/images/blog/tinker/1516868734.jpg">
 <meta property="og:image" content="http://yoursite.com/images/blog/tinker/1516869595.jpg">
+<meta property="og:image" content="http://yoursite.com/images/blog/tinker/1517020455.jpg">
+<meta property="og:image" content="http://yoursite.com/images/blog/tinker/1516870377.jpg">
 <meta property="og:image" content="http://yoursite.com/images/blog/tinker/device-2018-01-25-153419.png">
 <meta property="og:image" content="http://yoursite.com/images/blog/tinker/device-2018-01-25-111812.png">
-<meta property="og:updated_time" content="2018-01-25T10:10:13.424Z">
+<meta property="og:updated_time" content="2018-01-30T07:06:24.350Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="bugly的tinker热修复使用">
 <meta name="twitter:description" content="前言bugly 热修复使用的是微信的tinker，然后封装好了，不需要在进行后台开发，简化了步骤，简单几部就可以集成了。热修复：在用户不知情的情况升级补丁，修复bug~~~ 告别重新下载安装App微信提供的tinker，没得说上亿的用户摆在那   Android Studio IDE环境设置tinker不支持instant run模式，你需要找到File-&amp;gt;Settings-&amp;gt;Buil">
@@ -138,6 +140,16 @@
 
 
 
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0f926975a1c57a01e8de99ca2a500b5d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 
 
 
@@ -284,7 +296,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person2.jpg">
+      <meta itemprop="image" content="/images/person3.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -302,6 +314,9 @@
         <div class="post-meta">
           <span class="post-time">
             
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
@@ -396,8 +411,12 @@
 <p>#####3. 打补丁包<br>1.找到之前打<code>release</code>包时候，保存下来的文件夹，放在<code>app/build/bakApk</code>下面</p>
 <p>2.修改配置<br>修改<code>tinker-support.gradle</code>中<code>baseApkDir</code>等于基准包目录(刚刚放在<code>bakApk</code>下的某个文件夹)</p>
 <p>修改<code>tinkerId = &quot;base-${version_name}&quot;</code> ， <code>base</code>改成<code>patch</code> ，<code>${version_name}</code>改成对应基准包的版本号<br><img src="/images/blog/tinker/1516869595.jpg" alt="Alt text"></p>
-<p>3.登陆bugly后台上传<code>app/build/outputs/patch</code>目录下的<code>patch_signed_7zip.apk</code>补丁包并上传，</p>
-<p>4.客户端每次启动会检测，并且合并补丁<br><img src="/images/blog/tinker/device-2018-01-25-153419.png" alt="Alt text"></p>
+<p>3.点击右上角<code>gradle</code>点开<code>Tasks</code>，找到<code>tinker-suport</code>就是打补丁的，比如点击<code>buildTInkerPatchXqcDevRelease</code>就是打开发环境release的补丁包，<br><img src="/images/blog/tinker/1517020455.jpg" alt="Alt text"></p>
+<p>4.登陆bugly后台-应用升级-发布补丁，上传<code>app/build/outputs/patch</code>目录下的<code>patch_signed_7zip.apk</code>补丁包并上传，</p>
+<blockquote>
+<p>发布补丁之前,必须需要有人运行过了之前的基准包apk，否则会上传不了补丁包<br><img src="/images/blog/tinker/1516870377.jpg" alt="Alt text"></p>
+</blockquote>
+<p>5.客户端每次启动会检测，并且合并补丁<br><img src="/images/blog/tinker/device-2018-01-25-153419.png" alt="Alt text"></p>
 <blockquote>
 <p>注意：用户更新补丁包需要重启两次，一次获取补丁包，一次合并补丁重启生效</p>
 <p>经测试补丁包可以合并类，资源，so库<br>补丁包是 加了新图片，并替换，修改资源文件，修改了类，加了个新的so动态库，并调用动态库native方法，重启之后如下<br><img src="/images/blog/tinker/device-2018-01-25-111812.png" alt="Alt text"></p>
@@ -411,6 +430,35 @@
 
     
 
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="贺祥 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="贺祥 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
     
 
     
@@ -511,7 +559,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/images/person2.jpg"
+                src="/images/person3.jpg"
                 alt="贺祥" />
             
               <p class="site-author-name" itemprop="name">贺祥</p>
