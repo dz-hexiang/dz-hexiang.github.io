@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="rtmp,直播," />
+  <meta name="keywords" content="直播,rtmp," />
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="前言利用开源的nginx-rtmp-module和Nginx搭建流媒体服务器。Nginx是一个非常出色的http服务器，nginx-rtmp-module是一个开源的Nginx扩展模块，拥有很多功能特性，像接收rtmp推流拉流，hls直播等： 1.RTMP/HLS/MPEG-DASH live streaming2.R">
-<meta name="keywords" content="rtmp,直播">
+<meta name="keywords" content="直播,rtmp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用nginx-rtmp-module搭建rtmp流媒体服务器">
 <meta property="og:url" content="http://yoursite.com/2018/01/30/用nginx-rtmp-module搭建rtmp流媒体服务器/index.html">
 <meta property="og:site_name" content="Mr.HeXiang Blog">
 <meta property="og:description" content="前言利用开源的nginx-rtmp-module和Nginx搭建流媒体服务器。Nginx是一个非常出色的http服务器，nginx-rtmp-module是一个开源的Nginx扩展模块，拥有很多功能特性，像接收rtmp推流拉流，hls直播等： 1.RTMP/HLS/MPEG-DASH live streaming2.RTMP Video on demand FLV/MP4, playing fro">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-31T07:15:43.313Z">
+<meta property="og:updated_time" content="2018-01-31T09:53:14.916Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用nginx-rtmp-module搭建rtmp流媒体服务器">
 <meta name="twitter:description" content="前言利用开源的nginx-rtmp-module和Nginx搭建流媒体服务器。Nginx是一个非常出色的http服务器，nginx-rtmp-module是一个开源的Nginx扩展模块，拥有很多功能特性，像接收rtmp推流拉流，hls直播等： 1.RTMP/HLS/MPEG-DASH live streaming2.RTMP Video on demand FLV/MP4, playing fro">
@@ -338,8 +338,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/直播/" itemprop="url" rel="index">
-                    <span itemprop="name">直播</span>
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
                   </a>
                 </span>
 
@@ -375,21 +375,20 @@
       
 
       
-        <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>利用开源的nginx-rtmp-module和Nginx搭建流媒体服务器。Nginx是一个非常出色的http服务器，nginx-rtmp-module是一个开源的Nginx扩展模块，拥有很多功能特性，像接收rtmp推流拉流，hls直播等：</p>
+        <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>利用开源的<code>nginx-rtmp-module</code>和<code>Nginx</code>搭建流媒体服务器。<code>Nginx</code>是一个非常出色的<code>http</code>服务器，<code>nginx-rtmp-module</code>是一个开源的<code>Nginx</code>扩展模块，拥有很多功能特性，像接收<code>rtmp</code>推流拉流，<code>hls</code>直播等：</p>
 <p>1.RTMP/HLS/MPEG-DASH live streaming<br>2.RTMP Video on demand FLV/MP4, playing from local filesystem or HTTP<br>3.Stream relay support for distributed streaming: push &amp; pull models<br>4.Recording streams in multiple FLVs<br>5.H264/AAC support<br>6.Online transcoding with FFmpeg<br>7.HTTP callbacks (publish/play/record/update etc)<br>8.Running external programs on certain events (exec)<br>9.HTTP control module for recording audio/video and dropping clients<br>10.Advanced buffering techniques to keep memory allocations at a minimum level for faster streaming and low memory footprint<br>11.Proved to work with Wirecast, FMS, Wowza, JWPlayer, FlowPlayer, StrobeMediaPlayback, ffmpeg, avconv, rtmpdump, flvstreamer and many more<br>12.Statistics in XML/XSL in machine- &amp; human- readable form<br>13.Linux/FreeBSD/MacOS/Windows</p>
-<p><strong>下面是配置安装使用详细过程</strong><br><a id="more"></a></p>
-<h5 id="1-下载nginx"><a href="#1-下载nginx" class="headerlink" title="1.下载nginx"></a>1.下载nginx</h5><p>nginx官方下载地址：<a href="https://nginx.org/en/download.html" target="_blank" rel="noopener">https://nginx.org/en/download.html</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://nginx.org/download/nginx-1.13.8.tar.gz</span><br></pre></td></tr></table></figure></p>
+<h5 id="下面是配置安装使用详细过程"><a href="#下面是配置安装使用详细过程" class="headerlink" title="下面是配置安装使用详细过程"></a>下面是配置安装使用详细过程</h5><a id="more"></a>
+<h5 id="1-下载nginx"><a href="#1-下载nginx" class="headerlink" title="1.下载nginx"></a>1.下载nginx</h5><p><code>nginx</code>官方下载地址：<a href="https://nginx.org/en/download.html" target="_blank" rel="noopener">https://nginx.org/en/download.html</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://nginx.org/download/nginx-1.13.8.tar.gz</span><br></pre></td></tr></table></figure></p>
 <h5 id="2-解压"><a href="#2-解压" class="headerlink" title="2.解压"></a>2.解压</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf nginx-1.13.8.tar.gz</span><br></pre></td></tr></table></figure>
-<h5 id="3-下载nginx的扩展模块-nginx-rtmp-module"><a href="#3-下载nginx的扩展模块-nginx-rtmp-module" class="headerlink" title="3.下载nginx的扩展模块 nginx-rtmp-module"></a>3.下载nginx的扩展模块 nginx-rtmp-module</h5><p>用于接收rtmp 推流，搭建流媒体服务器<br>源码地址：<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="noopener">https://github.com/arut/nginx-rtmp-module</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/arut/nginx-rtmp-module</span><br></pre></td></tr></table></figure></p>
+<h5 id="3-下载nginx的扩展模块-nginx-rtmp-module"><a href="#3-下载nginx的扩展模块-nginx-rtmp-module" class="headerlink" title="3.下载nginx的扩展模块 nginx-rtmp-module"></a>3.下载nginx的扩展模块 nginx-rtmp-module</h5><p>用于接收<code>rtmp</code> 推流，搭建流媒体服务器<br>源码地址：<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="noopener">https://github.com/arut/nginx-rtmp-module</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/arut/nginx-rtmp-module</span><br></pre></td></tr></table></figure></p>
 <h5 id="4-安装些必要的插件库"><a href="#4-安装些必要的插件库" class="headerlink" title="4.安装些必要的插件库"></a>4.安装些必要的插件库</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install libpcre3 libpcre3-dev -y</span><br><span class="line">apt-get install libssl-dev -y</span><br></pre></td></tr></table></figure>
 <h5 id="5-配置安装-nginx-rtmp-module"><a href="#5-配置安装-nginx-rtmp-module" class="headerlink" title="5.配置安装 nginx-rtmp-module"></a>5.配置安装 nginx-rtmp-module</h5><blockquote>
 <p>进入nginx源码，配置扩展nginx-rtmp-module模块，编译安装，下面的/home/hx/Downloads/nginx-rtmp-module 是 nginx-rtmp-module的下载目录。</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd nginx-1.13.8</span><br><span class="line">./configure --add-module=/home/hx/Downloads/nginx-rtmp-module --with-debug</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
 <h5 id="6-配置RTMP及启动nginx"><a href="#6-配置RTMP及启动nginx" class="headerlink" title="6.配置RTMP及启动nginx"></a>6.配置RTMP及启动nginx</h5><blockquote>
-<p>安装完后会显示安装目录，一般安装在/usr/local/nginx</p>
+<p>安装完后会显示安装目录，一般安装在/usr/local/nginx<br>更多配置请参考<a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives" target="_blank" rel="noopener">https://github.com/arut/nginx-rtmp-module/wiki/Directives</a><br>设置nginx.conf文件加入rtmp配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure></p>
 </blockquote>
-<p>设置nginx.conf文件加入rtmp配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure></p>
 <p>加入以下内容，更详细的配置见模块的官网<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">rtmp_auto_push on;</span><br><span class="line">rtmp &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 1935;</span><br><span class="line"></span><br><span class="line">        application mytv &#123;</span><br><span class="line">            live on;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>启动</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd usr/local/nginx/sbin</span><br><span class="line">./nginx</span><br></pre></td></tr></table></figure>
@@ -443,9 +442,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/rtmp/" rel="tag"># rtmp</a>
-          
             <a href="/tags/直播/" rel="tag"># 直播</a>
+          
+            <a href="/tags/rtmp/" rel="tag"># rtmp</a>
           
         </div>
       
@@ -467,6 +466,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/02/SurfaceView预览Camera/" rel="prev" title="SurfaceView预览camera">
+                SurfaceView预览camera <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -547,7 +550,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">63</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -558,7 +561,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -604,7 +607,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-下载nginx"><span class="nav-number">2.</span> <span class="nav-text">1.下载nginx</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-解压"><span class="nav-number">3.</span> <span class="nav-text">2.解压</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-下载nginx的扩展模块-nginx-rtmp-module"><span class="nav-number">4.</span> <span class="nav-text">3.下载nginx的扩展模块 nginx-rtmp-module</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-安装些必要的插件库"><span class="nav-number">5.</span> <span class="nav-text">4.安装些必要的插件库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-配置安装-nginx-rtmp-module"><span class="nav-number">6.</span> <span class="nav-text">5.配置安装 nginx-rtmp-module</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-配置RTMP及启动nginx"><span class="nav-number">7.</span> <span class="nav-text">6.配置RTMP及启动nginx</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#下面是配置安装使用详细过程"><span class="nav-number">2.</span> <span class="nav-text">下面是配置安装使用详细过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-下载nginx"><span class="nav-number">3.</span> <span class="nav-text">1.下载nginx</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-解压"><span class="nav-number">4.</span> <span class="nav-text">2.解压</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-下载nginx的扩展模块-nginx-rtmp-module"><span class="nav-number">5.</span> <span class="nav-text">3.下载nginx的扩展模块 nginx-rtmp-module</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-安装些必要的插件库"><span class="nav-number">6.</span> <span class="nav-text">4.安装些必要的插件库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-配置安装-nginx-rtmp-module"><span class="nav-number">7.</span> <span class="nav-text">5.配置安装 nginx-rtmp-module</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-配置RTMP及启动nginx"><span class="nav-number">8.</span> <span class="nav-text">6.配置RTMP及启动nginx</span></a></li></ol></div>
             
 
           </div>
