@@ -282,6 +282,171 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/03/调用jni的两种方法javah和RegisterNatives/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/03/调用jni的两种方法javah和RegisterNatives/" itemprop="url">调用jni的两种方法javah和RegisterNatives</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-03T22:21:28+08:00">
+                2018-02-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JNI/" itemprop="url" rel="index">
+                    <span itemprop="name">JNI</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>调用jni的有两种方法：<br>一种是通过javah 自动生成jni文件<br>一种是加载类库的时候，调用JNIEnv 指针的RegisterNatives方法注册native方法</p>
+<blockquote>
+<p>RegisterNatives方式有3种好处<br>1、jni种函数命名自由，不必像javah自动生成的函数声明那样，必须特定的命名方式；<br>2、效率高。传统方式下，Java类call本地函数时，通常是依靠VM去动态寻找.so中的本地函数(因此它们才需要特定规则的命名格式)，而使用RegisterNatives将本地函数向VM进行登记，可以让其更有效率的找到函数；</p>
+<p>3、运行时动态调整本地函数与Java函数值之间的映射关系，只需要多次call RegisterNatives()方法，并传入不同的映射表参数即可。</p>
+</blockquote>
+<h4 id="一、javah生成jni"><a href="#一、javah生成jni" class="headerlink" title="一、javah生成jni"></a>一、javah生成jni</h4><ol>
+<li><p>java类中声明 native 方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public native String stringFromJNI();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过javah方法生成jni文件。（cmd命令进入包根目录，javah 包名.类名）</p>
+</li>
+</ol>
+<blockquote>
+<p>生成方法会带JNIEXPORT void JNICALL  方法名很长，包名和native方法结合在一起。如：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//返回类型</span><br><span class="line">JNIEXPORT jstring</span><br><span class="line">JNICALL</span><br><span class="line">//生成的方法名字</span><br><span class="line">Java_libyuv_aimissu_com_libyuvtestdemo_MainActivity_stringFromJNI(</span><br><span class="line">        JNIEnv *env,</span><br><span class="line">        jobject /* this */) &#123;</span><br><span class="line">    std::string hello = &quot;Hello from C++&quot;;</span><br><span class="line">    return env-&gt;NewStringUTF(hello.c_str());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="二、RegisterNatives-注册native方法"><a href="#二、RegisterNatives-注册native方法" class="headerlink" title="二、RegisterNatives 注册native方法"></a>二、RegisterNatives 注册native方法</h4>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/03/调用jni的两种方法javah和RegisterNatives/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/03/直播推流方案及过程分解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -492,8 +657,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -653,8 +818,8 @@ if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != Pack
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
+                  <a href="/categories/直播/" itemprop="url" rel="index">
+                    <span itemprop="name">直播</span>
                   </a>
                 </span>
 
@@ -1363,304 +1528,6 @@ if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != Pack
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/Android消息机制及Handler与Looper和Message的关系/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/16/Android消息机制及Handler与Looper和Message的关系/" itemprop="url">Android消息机制及Handler与Looper和Message的关系</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-16T10:29:00+08:00">
-                2017-12-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="一、Android-消息机制："><a href="#一、Android-消息机制：" class="headerlink" title="一、Android 消息机制："></a>一、Android 消息机制：</h4><p>主线程在创建完后，会创建个Looper 类不停的循环。<br>直到读取到Message Queue消息队列的消息，处理响应消息然后移除消息。继续循环。<br>（只要有一个消息遇到了耗时操作，会导致其他消息无法响应，这就是ANR的产生的原因）</p>
-<h4 id="二、Handler-与Looper-及Message的关系"><a href="#二、Handler-与Looper-及Message的关系" class="headerlink" title="二、Handler 与Looper 及Message的关系"></a>二、Handler 与Looper 及Message的关系</h4><p>Handler 可以发送消息Message 给Message Queue消息队列，Looper读到Message消息，<br>并响应消息回调Handler 的handleMessage方法(这个方法是运行在主线程中的)。</p>
-<h4 id="三、下面是一个使用简单列子"><a href="#三、下面是一个使用简单列子" class="headerlink" title="三、下面是一个使用简单列子"></a>三、下面是一个使用简单列子</h4><p>发送消息给消息队列</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mHandler.sendEmptyMessage(RESULT_OK);</span><br></pre></td></tr></table></figure>
-<p>覆写回调方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Handler mHandler=new Handler()&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void handleMessage(Message msg) &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		super.handleMessage(msg);</span><br><span class="line">		/**</span><br><span class="line">		 * Looper回调此方法，复写这个方法</span><br><span class="line">		 */</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/产生ANR的原因及如何避免/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/16/产生ANR的原因及如何避免/" itemprop="url">产生ANR的原因及如何避免</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-16T10:29:00+08:00">
-                2017-12-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="一、主线程和是UI线程的关系"><a href="#一、主线程和是UI线程的关系" class="headerlink" title="一、主线程和是UI线程的关系"></a>一、主线程和是UI线程的关系</h4><p>在Android中主线程就我们常说的UI线程，只有在主线程中才能修改界面。其他线程修改会报错。</p>
-<h4 id="二、什么是ANR？"><a href="#二、什么是ANR？" class="headerlink" title="二、什么是ANR？"></a>二、什么是ANR？</h4><p>全称为application is not responding ,应用失去响应。<br>如果主线程某个事件超过5秒没响应，Android就会弹出一个应用程序没有响应的对话框，你的Activity将会被杀掉。</p>
-<h4 id="三、产生ANR的常见原因："><a href="#三、产生ANR的常见原因：" class="headerlink" title="三、产生ANR的常见原因："></a>三、产生ANR的常见原因：</h4><p>1.网络请求图片大文件上传等<br>2.IO读写处理<br>3.复杂的算法，死循环，大量数据计算</p>
-<h4 id="四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。"><a href="#四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。" class="headerlink" title="四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。"></a>四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。</h4><p>另起线程异步执行耗时操作。<br>即便小于5秒的操作，也会导致一时间的用户无法做其他操作，阻碍其他事件。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/如何避免使用Handler造成的内存泄漏/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1802,6 +1669,156 @@ if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != Pack
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/Android消息机制及Handler与Looper和Message的关系/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/16/Android消息机制及Handler与Looper和Message的关系/" itemprop="url">Android消息机制及Handler与Looper和Message的关系</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-16T10:29:00+08:00">
+                2017-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="一、Android-消息机制："><a href="#一、Android-消息机制：" class="headerlink" title="一、Android 消息机制："></a>一、Android 消息机制：</h4><p>主线程在创建完后，会创建个Looper 类不停的循环。<br>直到读取到Message Queue消息队列的消息，处理响应消息然后移除消息。继续循环。<br>（只要有一个消息遇到了耗时操作，会导致其他消息无法响应，这就是ANR的产生的原因）</p>
+<h4 id="二、Handler-与Looper-及Message的关系"><a href="#二、Handler-与Looper-及Message的关系" class="headerlink" title="二、Handler 与Looper 及Message的关系"></a>二、Handler 与Looper 及Message的关系</h4><p>Handler 可以发送消息Message 给Message Queue消息队列，Looper读到Message消息，<br>并响应消息回调Handler 的handleMessage方法(这个方法是运行在主线程中的)。</p>
+<h4 id="三、下面是一个使用简单列子"><a href="#三、下面是一个使用简单列子" class="headerlink" title="三、下面是一个使用简单列子"></a>三、下面是一个使用简单列子</h4><p>发送消息给消息队列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mHandler.sendEmptyMessage(RESULT_OK);</span><br></pre></td></tr></table></figure>
+<p>覆写回调方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Handler mHandler=new Handler()&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void handleMessage(Message msg) &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		super.handleMessage(msg);</span><br><span class="line">		/**</span><br><span class="line">		 * Looper回调此方法，复写这个方法</span><br><span class="line">		 */</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1856,7 +1873,7 @@ if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != Pack
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1867,7 +1884,7 @@ if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != Pack
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1878,7 +1895,7 @@ if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != Pack
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
