@@ -282,6 +282,154 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/产生ANR的原因及如何避免/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/16/产生ANR的原因及如何避免/" itemprop="url">产生ANR的原因及如何避免</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-16T10:29:00+08:00">
+                2017-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="一、主线程和是UI线程的关系"><a href="#一、主线程和是UI线程的关系" class="headerlink" title="一、主线程和是UI线程的关系"></a>一、主线程和是UI线程的关系</h4><p>在Android中主线程就我们常说的UI线程，只有在主线程中才能修改界面。其他线程修改会报错。</p>
+<h4 id="二、什么是ANR？"><a href="#二、什么是ANR？" class="headerlink" title="二、什么是ANR？"></a>二、什么是ANR？</h4><p>全称为application is not responding ,应用失去响应。<br>如果主线程某个事件超过5秒没响应，Android就会弹出一个应用程序没有响应的对话框，你的Activity将会被杀掉。</p>
+<h4 id="三、产生ANR的常见原因："><a href="#三、产生ANR的常见原因：" class="headerlink" title="三、产生ANR的常见原因："></a>三、产生ANR的常见原因：</h4><p>1.网络请求图片大文件上传等<br>2.IO读写处理<br>3.复杂的算法，死循环，大量数据计算</p>
+<h4 id="四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。"><a href="#四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。" class="headerlink" title="四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。"></a>四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。</h4><p>另起线程异步执行耗时操作。<br>即便小于5秒的操作，也会导致一时间的用户无法做其他操作，阻碍其他事件。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/Android消息机制及Handler与Looper和Message的关系/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -432,7 +580,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/产生ANR的原因及如何避免/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/如何避免使用Handler造成的内存泄漏/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -451,7 +599,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/16/产生ANR的原因及如何避免/" itemprop="url">产生ANR的原因及如何避免</a></h1>
+                <a class="post-title-link" href="/2017/12/16/如何避免使用Handler造成的内存泄漏/" itemprop="url">如何避免使用Handler造成的内存泄漏</a></h1>
         
 
         <div class="post-meta">
@@ -528,10 +676,16 @@
       
         
           
-            <h4 id="一、主线程和是UI线程的关系"><a href="#一、主线程和是UI线程的关系" class="headerlink" title="一、主线程和是UI线程的关系"></a>一、主线程和是UI线程的关系</h4><p>在Android中主线程就我们常说的UI线程，只有在主线程中才能修改界面。其他线程修改会报错。</p>
-<h4 id="二、什么是ANR？"><a href="#二、什么是ANR？" class="headerlink" title="二、什么是ANR？"></a>二、什么是ANR？</h4><p>全称为application is not responding ,应用失去响应。<br>如果主线程某个事件超过5秒没响应，Android就会弹出一个应用程序没有响应的对话框，你的Activity将会被杀掉。</p>
-<h4 id="三、产生ANR的常见原因："><a href="#三、产生ANR的常见原因：" class="headerlink" title="三、产生ANR的常见原因："></a>三、产生ANR的常见原因：</h4><p>1.网络请求图片大文件上传等<br>2.IO读写处理<br>3.复杂的算法，死循环，大量数据计算</p>
-<h4 id="四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。"><a href="#四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。" class="headerlink" title="四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。"></a>四、避免ANR，UI线程中的操作时间要尽量短小，保证用户体验。</h4><p>另起线程异步执行耗时操作。<br>即便小于5秒的操作，也会导致一时间的用户无法做其他操作，阻碍其他事件。</p>
+            <h4 id="一、什么是内存泄漏？"><a href="#一、什么是内存泄漏？" class="headerlink" title="一、什么是内存泄漏？"></a>一、什么是内存泄漏？</h4><p>对象已经没有被应用程序使用，由于引用或者其它垃圾回收器不能或者无法回收它们。</p>
+<h4 id="二、Activity中使用Handler为什么会造成泄漏"><a href="#二、Activity中使用Handler为什么会造成泄漏" class="headerlink" title="二、Activity中使用Handler为什么会造成泄漏"></a>二、Activity中使用Handler为什么会造成泄漏</h4><p>1.非静态的内部类和匿名内部类都会隐式地持有其外部类的引用</p>
+<p>2.new Handler(){}是匿名内部内构造对象的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">new 父类构造器（参数列表）|实现接口（）  </span><br><span class="line">    &#123;  </span><br><span class="line">     //匿名内部类的类体部分  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>匿部类的形式构造Handler</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * 匿名内部类构造Handeler对象，默认持有外部类引用</span><br><span class="line">   */</span><br><span class="line">  private Handler mHandler=new Handler()</span><br><span class="line">  &#123;</span><br><span class="line">      @Override</span><br><span class="line">      public void handleMessage(Message msg) &#123;</span><br><span class="line">          super.handleMessage(msg);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="三、如何避免使用Handler造成内存泄漏"><a href="#三、如何避免使用Handler造成内存泄漏" class="headerlink" title="三、如何避免使用Handler造成内存泄漏"></a>三、如何避免使用Handler造成内存泄漏</h4><p>1.声明静态内部内和弱引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">private MyHandler myHandler=new MyHandler(this);</span><br><span class="line">   /**</span><br><span class="line">    *1. 声明静态内部类（静态的内部类不会持有外部类的引用）</span><br><span class="line">    * 2.声明弱引用（GC在回收时会忽略掉弱引用，直接回收）</span><br><span class="line">    */</span><br><span class="line">   static class MyHandler extends Handler &#123;</span><br><span class="line">       WeakReference&lt;Activity&gt; mActivityReference;</span><br><span class="line">       MyHandler(Activity activity) &#123;</span><br><span class="line">           //弱引用</span><br><span class="line">           mActivityReference= new WeakReference&lt;Activity&gt;(activity);</span><br><span class="line">       &#125;</span><br><span class="line">       @Override</span><br><span class="line">       public void handleMessage(Message msg) &#123;</span><br><span class="line">           switch (msg.what)</span><br><span class="line">           &#123;</span><br><span class="line">               case 1:</span><br><span class="line">                   final Activity activity = mActivityReference.get();</span><br><span class="line">                   /**</span><br><span class="line">                    * 执行些界面操作,更新等</span><br><span class="line">                    *</span><br><span class="line">                    */</span><br><span class="line">                   Log.w(&quot;leakHandler&quot;,&quot;MyHandler没有释放,还在执行任务哦~o~:&quot;);</span><br><span class="line">                   break;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>2.onDestroy()的时候调用Handler的removeCallbacksAndMessages(null)，清除所有回调和消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">  protected void onDestroy() &#123;</span><br><span class="line">      super.onDestroy();</span><br><span class="line">      /**</span><br><span class="line">       * 移除回调和消息</span><br><span class="line">       */</span><br><span class="line">      if (myHandler != null)</span><br><span class="line">          myHandler.removeCallbacksAndMessages(null);</span><br><span class="line">      /**</span><br><span class="line">       * leakCanary去观察myHandler是否泄露了</span><br><span class="line">       */</span><br><span class="line">      //MyApp.getRefWatcher(this).watch(myHandler);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -856,307 +1010,6 @@ System.out.println(&quot;3.TestCallable call return:&quot;+result+&quot;,&quot;+
 <h4 id="3-定义或者通过GsonFormat插件把Json字符串生成实体类-本例中的实体类Repo"><a href="#3-定义或者通过GsonFormat插件把Json字符串生成实体类-本例中的实体类Repo" class="headerlink" title="3.定义或者通过GsonFormat插件把Json字符串生成实体类(本例中的实体类Repo)"></a>3.定义或者通过GsonFormat插件把Json字符串生成实体类(本例中的实体类Repo)</h4><h4 id="4-定义接口"><a href="#4-定义接口" class="headerlink" title="4.定义接口"></a>4.定义接口</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * 定义接口</span><br><span class="line">   */</span><br><span class="line">  public interface GitHubService &#123;</span><br><span class="line">      @GET(&quot;users/&#123;user&#125;/repos&quot;)</span><br><span class="line">      Observable&lt;List&lt;Repo&gt;&gt; listRepos(@Path(&quot;user&quot;) String user);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <p>5.创建接口实例，调用接口并通过观察者模式获取数据</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">GitHubService service = retrofit.create(GitHubService.class);</span><br><span class="line">        service.listRepos(&quot;dz-hexiang&quot;)               //在IO线程进行网络请求</span><br><span class="line">               .subscribeOn(Schedulers.newThread())//请求在新的线程中执行</span><br><span class="line">               .observeOn(AndroidSchedulers.mainThread())         //请求完成后在主线程线程中执行，如更新ui</span><br><span class="line">               .doOnNext(new Action1&lt;List&lt;Repo&gt;&gt;() &#123;</span><br><span class="line">                   @Override</span><br><span class="line">                   public void call(List&lt;Repo&gt; repos) &#123;</span><br><span class="line">                       Log.w(&quot;retrofit&quot;,&quot;获取到的数据&quot;);</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;)</span><br><span class="line">               .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">               .subscribe(new Subscriber&lt;List&lt;Repo&gt;&gt;() &#123;</span><br><span class="line">                   @Override</span><br><span class="line">                   public void onCompleted() &#123;</span><br><span class="line">                       Log.w(&quot;retrofit&quot;,&quot;onCompleted&quot;);</span><br><span class="line">                   &#125;</span><br><span class="line"></span><br><span class="line">                   @Override</span><br><span class="line">                   public void onError(Throwable e) &#123;</span><br><span class="line">                       Log.w(&quot;retrofit&quot;,&quot;onError&quot;);</span><br><span class="line">                   &#125;</span><br><span class="line"></span><br><span class="line">                   @Override</span><br><span class="line">                   public void onNext(List&lt;Repo&gt; repos) &#123;</span><br><span class="line">                       /**</span><br><span class="line">                        * 主线程中把得到的数据更新UI界面</span><br><span class="line">                        */</span><br><span class="line">                       // mTextMessage.setText(new Gson().toJson(repos));</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;);</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Java泛型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/15/Java泛型/" itemprop="url">Java泛型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T11:29:00+08:00">
-                2017-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Java泛型是什么？"><a href="#Java泛型是什么？" class="headerlink" title="Java泛型是什么？"></a>Java泛型是什么？</h4><p>泛型是参数化类型，操作的数据类型被指定为一个参数。传入什么类型就是什么类型。<br>泛型方法是什么？</p>
-<p>一个在调用时可以接收不同类型的参数的方法</p>
-<h4 id="泛型方法声明规则"><a href="#泛型方法声明规则" class="headerlink" title="泛型方法声明规则"></a>泛型方法声明规则</h4><blockquote>
-<p>必定有一个类型参数用尖括号分隔，声明在方法返回类型之前<br>多个类型参数之间用逗号分割<br>类型参数能用来声明返回值类型<br>泛型方法体的声明和其他方法一样。注意类型参数只能代表引用型类型，不能是原始类型（像int,double,char的等）</p>
-</blockquote>
-<h5 id="1-普通用法：参数可以是整形数据组、字符串数组、Double数组等"><a href="#1-普通用法：参数可以是整形数据组、字符串数组、Double数组等" class="headerlink" title="1.普通用法：参数可以是整形数据组、字符串数组、Double数组等"></a>1.普通用法：参数可以是整形数据组、字符串数组、Double数组等</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 泛型方法 printArray</span><br><span class="line">    public static &lt; E &gt; void printArray( E[] inputArray )</span><br><span class="line">    &#123;</span><br><span class="line">        // 输出数组元素</span><br><span class="line">        for ( E element : inputArray )&#123;</span><br><span class="line">            System.out.printf( &quot;%s &quot;, element );</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h5 id="2-有界的类型参数用法："><a href="#2-有界的类型参数用法：" class="headerlink" title="2.有界的类型参数用法："></a>2.有界的类型参数用法：</h5><p>参数的名称，后跟extends关键字，最后紧跟它的上界<br>参数的名称，后跟super关键字，最后紧跟它的下界</p>
-<p>下面这个例子的上界是T类型必须是实现了Comparable接口的类 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 比较三个值并返回最大值</span><br><span class="line">     * @param x</span><br><span class="line">     * @param y</span><br><span class="line">     * @param z</span><br><span class="line">     * @param &lt;T&gt;</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static &lt;T extends Comparable&lt;T&gt;&gt; T max(T x, T y, T z)</span><br><span class="line">    &#123;</span><br><span class="line">        T max = x; // 假设x是初始最大值</span><br><span class="line">        if ( y.compareTo( max ) &gt; 0 )&#123;</span><br><span class="line">            max = y; //y 更大</span><br><span class="line">        &#125;</span><br><span class="line">        if ( z.compareTo( max ) &gt; 0 )&#123;</span><br><span class="line">            max = z; // 现在 z 更大</span><br><span class="line">        &#125;</span><br><span class="line">        return max; // 返回最大对象</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h5 id="3-类型通配符？使用"><a href="#3-类型通配符？使用" class="headerlink" title="3.类型通配符？使用"></a>3.类型通配符？使用</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 任何类型</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public static void hello(List&lt;?&gt; msg) &#123;</span><br><span class="line">        System.out.println(&quot;hai :&quot; + msg.get(0));</span><br><span class="line">    &#125;</span><br><span class="line">	//类型通配符？加界限参数</span><br><span class="line">    /**</span><br><span class="line">     * 只能接受是继承了number的类</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public static  void helloExtends(List&lt;? extends Number&gt; msg) &#123;</span><br><span class="line">        System.out.println(&quot;hai :&quot; + msg.get(0));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 只能接受Number及其三层父类类型</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public static void helloSuper(List&lt;? super Number&gt; msg) &#123;</span><br><span class="line">        System.out.println(&quot;hai :&quot; + msg.get(0));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Android实现自定义View/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/15/Android实现自定义View/" itemprop="url">Android实现自定义View</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T11:29:00+08:00">
-                2017-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-创建View类继承View或者View的子类，并继承构造方法。"><a href="#1-创建View类继承View或者View的子类，并继承构造方法。" class="headerlink" title="1.创建View类继承View或者View的子类，并继承构造方法。"></a>1.创建View类继承View或者View的子类，并继承构造方法。</h4><h4 id="2-自定义属性"><a href="#2-自定义属性" class="headerlink" title="2.自定义属性"></a>2.自定义属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;resources&gt;</span><br><span class="line">&lt;!--  名字随便起--&gt; </span><br><span class="line">&lt;declare-styleable name=&quot;MyViewStyleName&quot; &gt;</span><br><span class="line">&lt;attr name=&quot;des&quot; format=&quot;string&quot; /&gt;</span><br><span class="line">&lt;attr name=&quot;textColor&quot; format=&quot;color&quot;/&gt;</span><br><span class="line">&lt;attr name=&quot;bgColor&quot; format=&quot;color&quot;/&gt;</span><br><span class="line">&lt;/declare-styleable&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="3-构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等"><a href="#3-构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等" class="headerlink" title="3.构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等"></a>3.构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public MyView(Context context, AttributeSet attrs) &#123;</span><br><span class="line">	super(context, attrs);</span><br><span class="line">	TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.MyViewStyleName);</span><br><span class="line">		if(typedArray != null)&#123;</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性des</span><br><span class="line">			 */</span><br><span class="line">			mDes = typedArray.getString(R.styleable.MyViewStyleName_des);</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性bgColor</span><br><span class="line">			 */</span><br><span class="line">			mBackground = typedArray.getColor(R.styleable.MyViewStyleName_bgColor, Color.RED);</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性textColor</span><br><span class="line">			 */</span><br><span class="line">			mTextColor = typedArray.getColor(R.styleable.MyViewStyleName_textColor, Color.WHITE);</span><br><span class="line">	</span><br><span class="line">		&#125;</span><br><span class="line">		//initView();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="4-布局中使用自定义的View，并使用自己定义的属性"><a href="#4-布局中使用自定义的View，并使用自己定义的属性" class="headerlink" title="4.布局中使用自定义的View，并使用自己定义的属性"></a>4.布局中使用自定义的View，并使用自己定义的属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.example.testdemo.MyView </span><br><span class="line">    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;</span><br><span class="line">    android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">    app:des=&quot;这是自定义View内容&quot;</span><br><span class="line">	app:textColor=&quot;#ffffff&quot;</span><br><span class="line">	app:bgColor=&quot;#4cd964&quot;</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    /&gt;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1661,7 +1514,7 @@ System.out.println(&quot;3.TestCallable call return:&quot;+result+&quot;,&quot;+
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Handler异步更新UI线程界面/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Java泛型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -1680,7 +1533,7 @@ System.out.println(&quot;3.TestCallable call return:&quot;+result+&quot;,&quot;+
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/15/Handler异步更新UI线程界面/" itemprop="url">Handler异步更新UI线程界面</a></h1>
+                <a class="post-title-link" href="/2017/12/15/Java泛型/" itemprop="url">Java泛型</a></h1>
         
 
         <div class="post-meta">
@@ -1757,16 +1610,164 @@ System.out.println(&quot;3.TestCallable call return:&quot;+result+&quot;,&quot;+
       
         
           
-            <h5 id="1-主线程创建子线程"><a href="#1-主线程创建子线程" class="headerlink" title="1.主线程创建子线程"></a>1.主线程创建子线程</h5><h5 id="2-子线程执行耗时操作，执行完后通过Handler发送消息到给Message-Queue，覆写handlerMessage-，处理Looper的回调。"><a href="#2-子线程执行耗时操作，执行完后通过Handler发送消息到给Message-Queue，覆写handlerMessage-，处理Looper的回调。" class="headerlink" title="2.子线程执行耗时操作，执行完后通过Handler发送消息到给Message Queue，覆写handlerMessage()，处理Looper的回调。"></a>2.子线程执行耗时操作，执行完后通过Handler发送消息到给Message Queue，覆写handlerMessage()，处理Looper的回调。</h5><h5 id="3-实例"><a href="#3-实例" class="headerlink" title="3.实例"></a>3.实例</h5><p>创建Handler实例覆写handlerMessage()</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Handler mHandler=new Handler()&#123;</span><br><span class="line">   	@Override</span><br><span class="line">   	public void handleMessage(Message msg) &#123;</span><br><span class="line">   		// TODO Auto-generated method stub</span><br><span class="line">   		super.handleMessage(msg);</span><br><span class="line">   		/**</span><br><span class="line">   		 * Looper回调此方法，覆写这个方法</span><br><span class="line">   		 */</span><br><span class="line">   		switch (msg.what) &#123;</span><br><span class="line">		case RESULT_OK:</span><br><span class="line">			/**</span><br><span class="line">			 * 更新ui</span><br><span class="line">			 */</span><br><span class="line">			break;</span><br><span class="line"></span><br><span class="line">		default:</span><br><span class="line">			break;</span><br><span class="line">		&#125;</span><br><span class="line">   	&#125;</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
-<p>子线程执行异步耗时操作</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class MyThread extends Thread&#123;</span><br><span class="line">   	@Override</span><br><span class="line">   	public void run() &#123;</span><br><span class="line">   		// TODO Auto-generated method stub</span><br><span class="line">   		try &#123;</span><br><span class="line">   			/**</span><br><span class="line">   			 * 执行耗时操作，这里只是暂时睡眠6秒然后更新界面</span><br><span class="line">   			 */</span><br><span class="line">			Thread.sleep(6*10000);</span><br><span class="line">		&#125; catch (InterruptedException e) &#123;</span><br><span class="line">			// TODO Auto-generated catch block</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">   		/**</span><br><span class="line">   		 * 发送消息给Message Queue</span><br><span class="line">   		 */</span><br><span class="line">   		mHandler.sendEmptyMessage(RESULT_OK);</span><br><span class="line">   		super.run();</span><br><span class="line">   	&#125;</span><br><span class="line">   	</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p> 创建线程实例并启动线程</p>
-<pre><code>/**
- * 启动线程执行耗时操作
- */
-new MyThread().start();
-</code></pre>
+            <h4 id="Java泛型是什么？"><a href="#Java泛型是什么？" class="headerlink" title="Java泛型是什么？"></a>Java泛型是什么？</h4><p>泛型是参数化类型，操作的数据类型被指定为一个参数。传入什么类型就是什么类型。<br>泛型方法是什么？</p>
+<p>一个在调用时可以接收不同类型的参数的方法</p>
+<h4 id="泛型方法声明规则"><a href="#泛型方法声明规则" class="headerlink" title="泛型方法声明规则"></a>泛型方法声明规则</h4><blockquote>
+<p>必定有一个类型参数用尖括号分隔，声明在方法返回类型之前<br>多个类型参数之间用逗号分割<br>类型参数能用来声明返回值类型<br>泛型方法体的声明和其他方法一样。注意类型参数只能代表引用型类型，不能是原始类型（像int,double,char的等）</p>
+</blockquote>
+<h5 id="1-普通用法：参数可以是整形数据组、字符串数组、Double数组等"><a href="#1-普通用法：参数可以是整形数据组、字符串数组、Double数组等" class="headerlink" title="1.普通用法：参数可以是整形数据组、字符串数组、Double数组等"></a>1.普通用法：参数可以是整形数据组、字符串数组、Double数组等</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 泛型方法 printArray</span><br><span class="line">    public static &lt; E &gt; void printArray( E[] inputArray )</span><br><span class="line">    &#123;</span><br><span class="line">        // 输出数组元素</span><br><span class="line">        for ( E element : inputArray )&#123;</span><br><span class="line">            System.out.printf( &quot;%s &quot;, element );</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="2-有界的类型参数用法："><a href="#2-有界的类型参数用法：" class="headerlink" title="2.有界的类型参数用法："></a>2.有界的类型参数用法：</h5><p>参数的名称，后跟extends关键字，最后紧跟它的上界<br>参数的名称，后跟super关键字，最后紧跟它的下界</p>
+<p>下面这个例子的上界是T类型必须是实现了Comparable接口的类 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 比较三个值并返回最大值</span><br><span class="line">     * @param x</span><br><span class="line">     * @param y</span><br><span class="line">     * @param z</span><br><span class="line">     * @param &lt;T&gt;</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static &lt;T extends Comparable&lt;T&gt;&gt; T max(T x, T y, T z)</span><br><span class="line">    &#123;</span><br><span class="line">        T max = x; // 假设x是初始最大值</span><br><span class="line">        if ( y.compareTo( max ) &gt; 0 )&#123;</span><br><span class="line">            max = y; //y 更大</span><br><span class="line">        &#125;</span><br><span class="line">        if ( z.compareTo( max ) &gt; 0 )&#123;</span><br><span class="line">            max = z; // 现在 z 更大</span><br><span class="line">        &#125;</span><br><span class="line">        return max; // 返回最大对象</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="3-类型通配符？使用"><a href="#3-类型通配符？使用" class="headerlink" title="3.类型通配符？使用"></a>3.类型通配符？使用</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 任何类型</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public static void hello(List&lt;?&gt; msg) &#123;</span><br><span class="line">        System.out.println(&quot;hai :&quot; + msg.get(0));</span><br><span class="line">    &#125;</span><br><span class="line">	//类型通配符？加界限参数</span><br><span class="line">    /**</span><br><span class="line">     * 只能接受是继承了number的类</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public static  void helloExtends(List&lt;? extends Number&gt; msg) &#123;</span><br><span class="line">        System.out.println(&quot;hai :&quot; + msg.get(0));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 只能接受Number及其三层父类类型</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public static void helloSuper(List&lt;? super Number&gt; msg) &#123;</span><br><span class="line">        System.out.println(&quot;hai :&quot; + msg.get(0));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Android实现自定义View/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/15/Android实现自定义View/" itemprop="url">Android实现自定义View</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T11:29:00+08:00">
+                2017-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-创建View类继承View或者View的子类，并继承构造方法。"><a href="#1-创建View类继承View或者View的子类，并继承构造方法。" class="headerlink" title="1.创建View类继承View或者View的子类，并继承构造方法。"></a>1.创建View类继承View或者View的子类，并继承构造方法。</h4><h4 id="2-自定义属性"><a href="#2-自定义属性" class="headerlink" title="2.自定义属性"></a>2.自定义属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;resources&gt;</span><br><span class="line">&lt;!--  名字随便起--&gt; </span><br><span class="line">&lt;declare-styleable name=&quot;MyViewStyleName&quot; &gt;</span><br><span class="line">&lt;attr name=&quot;des&quot; format=&quot;string&quot; /&gt;</span><br><span class="line">&lt;attr name=&quot;textColor&quot; format=&quot;color&quot;/&gt;</span><br><span class="line">&lt;attr name=&quot;bgColor&quot; format=&quot;color&quot;/&gt;</span><br><span class="line">&lt;/declare-styleable&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="3-构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等"><a href="#3-构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等" class="headerlink" title="3.构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等"></a>3.构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public MyView(Context context, AttributeSet attrs) &#123;</span><br><span class="line">	super(context, attrs);</span><br><span class="line">	TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.MyViewStyleName);</span><br><span class="line">		if(typedArray != null)&#123;</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性des</span><br><span class="line">			 */</span><br><span class="line">			mDes = typedArray.getString(R.styleable.MyViewStyleName_des);</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性bgColor</span><br><span class="line">			 */</span><br><span class="line">			mBackground = typedArray.getColor(R.styleable.MyViewStyleName_bgColor, Color.RED);</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性textColor</span><br><span class="line">			 */</span><br><span class="line">			mTextColor = typedArray.getColor(R.styleable.MyViewStyleName_textColor, Color.WHITE);</span><br><span class="line">	</span><br><span class="line">		&#125;</span><br><span class="line">		//initView();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-布局中使用自定义的View，并使用自己定义的属性"><a href="#4-布局中使用自定义的View，并使用自己定义的属性" class="headerlink" title="4.布局中使用自定义的View，并使用自己定义的属性"></a>4.布局中使用自定义的View，并使用自己定义的属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.example.testdemo.MyView </span><br><span class="line">    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;</span><br><span class="line">    android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">    app:des=&quot;这是自定义View内容&quot;</span><br><span class="line">	app:textColor=&quot;#ffffff&quot;</span><br><span class="line">	app:bgColor=&quot;#4cd964&quot;</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    /&gt;</span><br></pre></td></tr></table></figure>
+
           
         
       
@@ -1855,7 +1856,7 @@ new MyThread().start();
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
