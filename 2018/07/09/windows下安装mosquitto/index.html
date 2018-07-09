@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://yoursite.com/images/blog/mosquitto/1531101911170.png">
 <meta property="og:image" content="http://yoursite.com/images/blog/mosquitto/1531102003905.png">
 <meta property="og:image" content="http://yoursite.com/images/blog/mosquitto/1531102381275.png">
-<meta property="og:updated_time" content="2018-07-09T02:28:24.382Z">
+<meta property="og:updated_time" content="2018-07-09T02:36:06.232Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="windows下安装mosquitto">
 <meta name="twitter:description" content="前言一款实现了消息推送协议 MQTT v3.1 的开源消息代理软件，提供轻量级的，支持可发布/可订阅的的消息推送模式，使设备对设备之间的短消息通信变得简单，比如现在应用广泛的低功耗传感器，手机、嵌入式计算机、微型控制器等移动设备。下面介绍如何在windwos下快速搭建代理服务器">
@@ -387,7 +387,7 @@
 <h5 id="一、下载软件"><a href="#一、下载软件" class="headerlink" title="一、下载软件"></a>一、下载软件</h5><p>点击图中mosquitto-1.4.15-install-cygwin.exe连接打开页面，并下载软件<br>官方下载地址<a href="https://mosquitto.org/download/" target="_blank" rel="noopener">https://mosquitto.org/download/</a><br><img src="/images/blog/mosquitto/1531099026026.png" alt="Alt text"></p>
 <h5 id="二、安装软件"><a href="#二、安装软件" class="headerlink" title="二、安装软件"></a>二、安装软件</h5><p>安装时候记住软件安装位置<br><img src="/images/blog/mosquitto/1531099233529.png" alt="Alt text"></p>
 <p>点击install安装，会出现类似下面几个错误，不用管，依次点击确定，直到finish完成<br><img src="/images/blog/mosquitto/1531099515204.png" alt="Alt text"></p>
-<h4 id="三、安装需要的dll库"><a href="#三、安装需要的dll库" class="headerlink" title="三、安装需要的dll库"></a>三、安装需要的dll库</h4><ol>
+<h5 id="三、安装需要的dll库"><a href="#三、安装需要的dll库" class="headerlink" title="三、安装需要的dll库"></a>三、安装需要的dll库</h5><ol>
 <li>下载Cygwin <a href="https://www.cygwin.com/setup-x86.exe" target="_blank" rel="noopener">https://www.cygwin.com/setup-x86.exe</a> 并安装</li>
 </ol>
 <p>在cygwin的安装目录bin目录下，找到一下dll，并拷贝以下dll到mosquitto安装目录根目录下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cygcrypto-1.0.0.dll</span><br><span class="line">cygwin1.dll</span><br><span class="line">cygssl-1.0.0.dll</span><br><span class="line">cygz.dll</span><br><span class="line">cyggcc_s-1.dll</span><br></pre></td></tr></table></figure></p>
@@ -608,7 +608,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一、下载软件"><span class="nav-number">2.</span> <span class="nav-text">一、下载软件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二、安装软件"><span class="nav-number">3.</span> <span class="nav-text">二、安装软件</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、安装需要的dll库"><span class="nav-number"></span> <span class="nav-text">三、安装需要的dll库</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#四、重新安装"><span class="nav-number">1.</span> <span class="nav-text">四、重新安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#五、启动服务"><span class="nav-number">2.</span> <span class="nav-text">五、启动服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#六、进行测试"><span class="nav-number">3.</span> <span class="nav-text">六、进行测试</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一、下载软件"><span class="nav-number">2.</span> <span class="nav-text">一、下载软件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二、安装软件"><span class="nav-number">3.</span> <span class="nav-text">二、安装软件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三、安装需要的dll库"><span class="nav-number">4.</span> <span class="nav-text">三、安装需要的dll库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#四、重新安装"><span class="nav-number">5.</span> <span class="nav-text">四、重新安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#五、启动服务"><span class="nav-number">6.</span> <span class="nav-text">五、启动服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#六、进行测试"><span class="nav-number">7.</span> <span class="nav-text">六、进行测试</span></a></li></ol></div>
             
 
           </div>
