@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="坚持是件了不起的事情">
+<meta name="description" content="其实习惯了黑色">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Mr.HeXiang Blog">
 <meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="Mr.HeXiang Blog">
-<meta property="og:description" content="坚持是件了不起的事情">
+<meta property="og:description" content="其实习惯了黑色">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mr.HeXiang Blog">
-<meta name="twitter:description" content="坚持是件了不起的事情">
+<meta name="twitter:description" content="其实习惯了黑色">
 
 
 
@@ -170,7 +170,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">能够阻挡自己脚步的只有自己！</p>
+        <p class="site-subtitle">黑夜给了我一双眼睛，我却用它寻找光明。</p>
       
   </div>
 
@@ -898,7 +898,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/Android消息机制及Handler与Looper和Message的关系/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/如何避免使用Handler造成的内存泄漏/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -917,7 +917,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/16/Android消息机制及Handler与Looper和Message的关系/" itemprop="url">Android消息机制及Handler与Looper和Message的关系</a></h1>
+                <a class="post-title-link" href="/2017/12/16/如何避免使用Handler造成的内存泄漏/" itemprop="url">如何避免使用Handler造成的内存泄漏</a></h1>
         
 
         <div class="post-meta">
@@ -994,12 +994,16 @@
       
         
           
-            <h4 id="一、Android-消息机制："><a href="#一、Android-消息机制：" class="headerlink" title="一、Android 消息机制："></a>一、Android 消息机制：</h4><p>主线程在创建完后，会创建个Looper 类不停的循环。<br>直到读取到Message Queue消息队列的消息，处理响应消息然后移除消息。继续循环。<br>（只要有一个消息遇到了耗时操作，会导致其他消息无法响应，这就是ANR的产生的原因）</p>
-<h4 id="二、Handler-与Looper-及Message的关系"><a href="#二、Handler-与Looper-及Message的关系" class="headerlink" title="二、Handler 与Looper 及Message的关系"></a>二、Handler 与Looper 及Message的关系</h4><p>Handler 可以发送消息Message 给Message Queue消息队列，Looper读到Message消息，<br>并响应消息回调Handler 的handleMessage方法(这个方法是运行在主线程中的)。</p>
-<h4 id="三、下面是一个使用简单列子"><a href="#三、下面是一个使用简单列子" class="headerlink" title="三、下面是一个使用简单列子"></a>三、下面是一个使用简单列子</h4><p>发送消息给消息队列</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mHandler.sendEmptyMessage(RESULT_OK);</span><br></pre></td></tr></table></figure>
-<p>覆写回调方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Handler mHandler=new Handler()&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void handleMessage(Message msg) &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		super.handleMessage(msg);</span><br><span class="line">		/**</span><br><span class="line">		 * Looper回调此方法，复写这个方法</span><br><span class="line">		 */</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+            <h4 id="一、什么是内存泄漏？"><a href="#一、什么是内存泄漏？" class="headerlink" title="一、什么是内存泄漏？"></a>一、什么是内存泄漏？</h4><p>对象已经没有被应用程序使用，由于引用或者其它垃圾回收器不能或者无法回收它们。</p>
+<h4 id="二、Activity中使用Handler为什么会造成泄漏"><a href="#二、Activity中使用Handler为什么会造成泄漏" class="headerlink" title="二、Activity中使用Handler为什么会造成泄漏"></a>二、Activity中使用Handler为什么会造成泄漏</h4><p>1.非静态的内部类和匿名内部类都会隐式地持有其外部类的引用</p>
+<p>2.new Handler(){}是匿名内部内构造对象的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">new 父类构造器（参数列表）|实现接口（）  </span><br><span class="line">    &#123;  </span><br><span class="line">     //匿名内部类的类体部分  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>匿部类的形式构造Handler</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * 匿名内部类构造Handeler对象，默认持有外部类引用</span><br><span class="line">   */</span><br><span class="line">  private Handler mHandler=new Handler()</span><br><span class="line">  &#123;</span><br><span class="line">      @Override</span><br><span class="line">      public void handleMessage(Message msg) &#123;</span><br><span class="line">          super.handleMessage(msg);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="三、如何避免使用Handler造成内存泄漏"><a href="#三、如何避免使用Handler造成内存泄漏" class="headerlink" title="三、如何避免使用Handler造成内存泄漏"></a>三、如何避免使用Handler造成内存泄漏</h4><p>1.声明静态内部内和弱引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">private MyHandler myHandler=new MyHandler(this);</span><br><span class="line">   /**</span><br><span class="line">    *1. 声明静态内部类（静态的内部类不会持有外部类的引用）</span><br><span class="line">    * 2.声明弱引用（GC在回收时会忽略掉弱引用，直接回收）</span><br><span class="line">    */</span><br><span class="line">   static class MyHandler extends Handler &#123;</span><br><span class="line">       WeakReference&lt;Activity&gt; mActivityReference;</span><br><span class="line">       MyHandler(Activity activity) &#123;</span><br><span class="line">           //弱引用</span><br><span class="line">           mActivityReference= new WeakReference&lt;Activity&gt;(activity);</span><br><span class="line">       &#125;</span><br><span class="line">       @Override</span><br><span class="line">       public void handleMessage(Message msg) &#123;</span><br><span class="line">           switch (msg.what)</span><br><span class="line">           &#123;</span><br><span class="line">               case 1:</span><br><span class="line">                   final Activity activity = mActivityReference.get();</span><br><span class="line">                   /**</span><br><span class="line">                    * 执行些界面操作,更新等</span><br><span class="line">                    *</span><br><span class="line">                    */</span><br><span class="line">                   Log.w(&quot;leakHandler&quot;,&quot;MyHandler没有释放,还在执行任务哦~o~:&quot;);</span><br><span class="line">                   break;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>2.onDestroy()的时候调用Handler的removeCallbacksAndMessages(null)，清除所有回调和消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">  protected void onDestroy() &#123;</span><br><span class="line">      super.onDestroy();</span><br><span class="line">      /**</span><br><span class="line">       * 移除回调和消息</span><br><span class="line">       */</span><br><span class="line">      if (myHandler != null)</span><br><span class="line">          myHandler.removeCallbacksAndMessages(null);</span><br><span class="line">      /**</span><br><span class="line">       * leakCanary去观察myHandler是否泄露了</span><br><span class="line">       */</span><br><span class="line">      //MyApp.getRefWatcher(this).watch(myHandler);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1196,7 +1200,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/如何避免使用Handler造成的内存泄漏/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/Android消息机制及Handler与Looper和Message的关系/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -1215,7 +1219,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/16/如何避免使用Handler造成的内存泄漏/" itemprop="url">如何避免使用Handler造成的内存泄漏</a></h1>
+                <a class="post-title-link" href="/2017/12/16/Android消息机制及Handler与Looper和Message的关系/" itemprop="url">Android消息机制及Handler与Looper和Message的关系</a></h1>
         
 
         <div class="post-meta">
@@ -1292,16 +1296,12 @@
       
         
           
-            <h4 id="一、什么是内存泄漏？"><a href="#一、什么是内存泄漏？" class="headerlink" title="一、什么是内存泄漏？"></a>一、什么是内存泄漏？</h4><p>对象已经没有被应用程序使用，由于引用或者其它垃圾回收器不能或者无法回收它们。</p>
-<h4 id="二、Activity中使用Handler为什么会造成泄漏"><a href="#二、Activity中使用Handler为什么会造成泄漏" class="headerlink" title="二、Activity中使用Handler为什么会造成泄漏"></a>二、Activity中使用Handler为什么会造成泄漏</h4><p>1.非静态的内部类和匿名内部类都会隐式地持有其外部类的引用</p>
-<p>2.new Handler(){}是匿名内部内构造对象的格式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">new 父类构造器（参数列表）|实现接口（）  </span><br><span class="line">    &#123;  </span><br><span class="line">     //匿名内部类的类体部分  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>匿部类的形式构造Handler</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * 匿名内部类构造Handeler对象，默认持有外部类引用</span><br><span class="line">   */</span><br><span class="line">  private Handler mHandler=new Handler()</span><br><span class="line">  &#123;</span><br><span class="line">      @Override</span><br><span class="line">      public void handleMessage(Message msg) &#123;</span><br><span class="line">          super.handleMessage(msg);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
-<h4 id="三、如何避免使用Handler造成内存泄漏"><a href="#三、如何避免使用Handler造成内存泄漏" class="headerlink" title="三、如何避免使用Handler造成内存泄漏"></a>三、如何避免使用Handler造成内存泄漏</h4><p>1.声明静态内部内和弱引用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">private MyHandler myHandler=new MyHandler(this);</span><br><span class="line">   /**</span><br><span class="line">    *1. 声明静态内部类（静态的内部类不会持有外部类的引用）</span><br><span class="line">    * 2.声明弱引用（GC在回收时会忽略掉弱引用，直接回收）</span><br><span class="line">    */</span><br><span class="line">   static class MyHandler extends Handler &#123;</span><br><span class="line">       WeakReference&lt;Activity&gt; mActivityReference;</span><br><span class="line">       MyHandler(Activity activity) &#123;</span><br><span class="line">           //弱引用</span><br><span class="line">           mActivityReference= new WeakReference&lt;Activity&gt;(activity);</span><br><span class="line">       &#125;</span><br><span class="line">       @Override</span><br><span class="line">       public void handleMessage(Message msg) &#123;</span><br><span class="line">           switch (msg.what)</span><br><span class="line">           &#123;</span><br><span class="line">               case 1:</span><br><span class="line">                   final Activity activity = mActivityReference.get();</span><br><span class="line">                   /**</span><br><span class="line">                    * 执行些界面操作,更新等</span><br><span class="line">                    *</span><br><span class="line">                    */</span><br><span class="line">                   Log.w(&quot;leakHandler&quot;,&quot;MyHandler没有释放,还在执行任务哦~o~:&quot;);</span><br><span class="line">                   break;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>2.onDestroy()的时候调用Handler的removeCallbacksAndMessages(null)，清除所有回调和消息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">  protected void onDestroy() &#123;</span><br><span class="line">      super.onDestroy();</span><br><span class="line">      /**</span><br><span class="line">       * 移除回调和消息</span><br><span class="line">       */</span><br><span class="line">      if (myHandler != null)</span><br><span class="line">          myHandler.removeCallbacksAndMessages(null);</span><br><span class="line">      /**</span><br><span class="line">       * leakCanary去观察myHandler是否泄露了</span><br><span class="line">       */</span><br><span class="line">      //MyApp.getRefWatcher(this).watch(myHandler);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+            <h4 id="一、Android-消息机制："><a href="#一、Android-消息机制：" class="headerlink" title="一、Android 消息机制："></a>一、Android 消息机制：</h4><p>主线程在创建完后，会创建个Looper 类不停的循环。<br>直到读取到Message Queue消息队列的消息，处理响应消息然后移除消息。继续循环。<br>（只要有一个消息遇到了耗时操作，会导致其他消息无法响应，这就是ANR的产生的原因）</p>
+<h4 id="二、Handler-与Looper-及Message的关系"><a href="#二、Handler-与Looper-及Message的关系" class="headerlink" title="二、Handler 与Looper 及Message的关系"></a>二、Handler 与Looper 及Message的关系</h4><p>Handler 可以发送消息Message 给Message Queue消息队列，Looper读到Message消息，<br>并响应消息回调Handler 的handleMessage方法(这个方法是运行在主线程中的)。</p>
+<h4 id="三、下面是一个使用简单列子"><a href="#三、下面是一个使用简单列子" class="headerlink" title="三、下面是一个使用简单列子"></a>三、下面是一个使用简单列子</h4><p>发送消息给消息队列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mHandler.sendEmptyMessage(RESULT_OK);</span><br></pre></td></tr></table></figure>
+<p>覆写回调方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Handler mHandler=new Handler()&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void handleMessage(Message msg) &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		super.handleMessage(msg);</span><br><span class="line">		/**</span><br><span class="line">		 * Looper回调此方法，复写这个方法</span><br><span class="line">		 */</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1674,7 +1674,7 @@ System.out.println(&quot;3.TestCallable call return:&quot;+result+&quot;,&quot;+
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/AsyncTask使用/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Android系统架构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -1693,7 +1693,7 @@ System.out.println(&quot;3.TestCallable call return:&quot;+result+&quot;,&quot;+
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/15/AsyncTask使用/" itemprop="url">AsyncTask使用</a></h1>
+                <a class="post-title-link" href="/2017/12/15/Android系统架构/" itemprop="url">Android系统结构四层5大部门</a></h1>
         
 
         <div class="post-meta">
@@ -1770,12 +1770,19 @@ System.out.println(&quot;3.TestCallable call return:&quot;+result+&quot;,&quot;+
       
         
           
-            <h4 id="一、AsyncTask概念"><a href="#一、AsyncTask概念" class="headerlink" title="一、AsyncTask概念"></a>一、AsyncTask概念</h4><p>AsyncTask是一个异步任务类，用来异步执行耗时操作，更新UI线程。<br>实际是封装了Thead+Handler</p>
-<h4 id="二、优点："><a href="#二、优点：" class="headerlink" title="二、优点："></a>二、优点：</h4><p>简单，方便</p>
-<h4 id="三、缺点："><a href="#三、缺点：" class="headerlink" title="三、缺点："></a>三、缺点：</h4><p>Task实例必须在主线程中创建<br>execute方法必须在主线程中调用，并且只能执行一次</p>
-<h4 id="四、使用方法："><a href="#四、使用方法：" class="headerlink" title="四、使用方法："></a>四、使用方法：</h4><p>创建一个类继承AsyncTask<br>覆写doInBackground(Params…) 后台执行耗时操作<br>覆写onPostExecute(Result) 执行耗时操作后更新UI界面，在主线程中执行<br>覆写onProgressUpdate(Progress…)更新进度条，在主线程中进行，结果来自于publishProgress(Integer)</p>
-<p>下面是实例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">class MyAsyncTask extends AsyncTask&lt;Integer, Integer,Integer&gt;&#123;</span><br><span class="line"></span><br><span class="line">    	/**</span><br><span class="line">		 *  这个方法当创建线程后执行，准备工作</span><br><span class="line">		 */</span><br><span class="line">    	@Override</span><br><span class="line">		protected void onPreExecute() &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			super.onPreExecute();</span><br><span class="line">		</span><br><span class="line">		&#125;</span><br><span class="line">    	/**</span><br><span class="line">		 * 这个方法执行耗时操作 这里是休眠</span><br><span class="line">		 */</span><br><span class="line">		@Override</span><br><span class="line">		protected Integer doInBackground(Integer... params) &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			try &#123;</span><br><span class="line">				/**</span><br><span class="line">				 * 简单每睡眠1秒更新下进度</span><br><span class="line">				 */</span><br><span class="line">//				for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">//					Thread.sleep(1*1000);</span><br><span class="line">//					publishProgress(i);</span><br><span class="line">//				&#125;</span><br><span class="line">				</span><br><span class="line">				</span><br><span class="line">			&#125; catch (Exception e) &#123;</span><br><span class="line">				// TODO: handle exception</span><br><span class="line">			&#125;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;</span><br><span class="line">		/**</span><br><span class="line">		 *  这个方法主线程中执行，耗时操作完之后执行</span><br><span class="line">		 * 更新UI界面</span><br><span class="line">		 */</span><br><span class="line">		@Override</span><br><span class="line">		protected void onPostExecute(Integer result) &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			super.onPostExecute(result);</span><br><span class="line">			/**</span><br><span class="line">			 * 最后执行完耗时操作更新ui界面</span><br><span class="line">			 */</span><br><span class="line">			//drawCavas(surfaceHolder,10);</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		/**</span><br><span class="line">		 * 这个方法在主线程调用</span><br><span class="line">		 */</span><br><span class="line">		@Override</span><br><span class="line">		protected void onProgressUpdate(Integer... values) &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			super.onProgressUpdate(values);</span><br><span class="line">		</span><br><span class="line">			/**</span><br><span class="line">			 * 把进度更新到SurfaceView中</span><br><span class="line">			 */</span><br><span class="line">			//drawCavas(surfaceHolder,values[0]);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">    	</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+            <h4 id="Android系统结构分为四层5大部门"><a href="#Android系统结构分为四层5大部门" class="headerlink" title="Android系统结构分为四层5大部门"></a>Android系统结构分为四层5大部门</h4><blockquote>
+<p>本层分为Linux内核，及设备相关的驱动程序。</p>
+</blockquote>
+<h4 id="1-操作系统层-最底层（OS-Linux-Kernel）"><a href="#1-操作系统层-最底层（OS-Linux-Kernel）" class="headerlink" title="1.操作系统层-最底层（OS|Linux Kernel）"></a>1.操作系统层-最底层（OS|Linux Kernel）</h4><p>驱动包括显示驱动（Display Driver），照相机驱动（Camera Driver）、键盘驱动（KeyBoard Driver）、wifi驱动（WIFI Driver）、蓝牙驱动（Bluetooth Driver）、Flash内存驱动（Flash Memory Driver）、Bind IPC驱动（进程通信功能）、能源管理（Power Management）</p>
+<h4 id="2-各种库（Libraries）和RunTime中间层"><a href="#2-各种库（Libraries）和RunTime中间层" class="headerlink" title="2.各种库（Libraries）和RunTime中间层"></a>2.各种库（Libraries）和RunTime中间层</h4><blockquote>
+<p>本层分为各种库（Libraries）和Android运行环境（Dalvik虚拟机）</p>
+</blockquote>
+<p>库的内容都是c语言实现的包括：C库、多媒体框架（MediaFramework）、SQLiter （数据库）、OpenGL ES（提供3D支持）、WebKit（浏览器核心 ）、SGL（2D图像引擎）、SSL（为数据提供安全支持，位于TCP/IP和应用层协议之间）、FreeType（为徒和矢量字体功能）<br>Dalvik虚拟机不是Java虚拟机（Java VM），Dalvik虚拟机执行.dex格式文件。Dalvik虚拟机是基于寄存器（Register-based）的虚拟机，Java VM是基于栈（Stack-based）</p>
+<h4 id="3-应用程序框架层（Application-Framework）"><a href="#3-应用程序框架层（Application-Framework）" class="headerlink" title="3.应用程序框架层（Application Framework）"></a>3.应用程序框架层（Application Framework）</h4><blockquote>
+<p>本层是提供给开发者的API（都是Java开发的），一般Android开发常接触调用</p>
+</blockquote>
+<p>包括UI需要的各种控件（View System）、Activity Manager 、Window Manager 、Packge Manager四大组件、等各种API</p>
+<h4 id="4-应用层（Application）"><a href="#4-应用层（Application）" class="headerlink" title="4.应用层（Application）"></a>4.应用层（Application）</h4><p>用户界面，Java语言编写的一些APK应用<br>下面是架构图<br><img src="http://img.blog.csdn.net/20170822205239681?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZHpfaGV4aWFuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="enter image description here"></p>
 
           
         
@@ -1855,7 +1862,7 @@ System.out.println(&quot;3.TestCallable call return:&quot;+result+&quot;,&quot;+
                 alt="贺祥" />
             
               <p class="site-author-name" itemprop="name">贺祥</p>
-              <p class="site-description motion-element" itemprop="description">坚持是件了不起的事情</p>
+              <p class="site-description motion-element" itemprop="description">其实习惯了黑色</p>
           </div>
 
           <nav class="site-state motion-element">

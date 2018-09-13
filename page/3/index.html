@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="坚持是件了不起的事情">
+<meta name="description" content="其实习惯了黑色">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Mr.HeXiang Blog">
 <meta property="og:url" content="http://yoursite.com/page/3/index.html">
 <meta property="og:site_name" content="Mr.HeXiang Blog">
-<meta property="og:description" content="坚持是件了不起的事情">
+<meta property="og:description" content="其实习惯了黑色">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mr.HeXiang Blog">
-<meta name="twitter:description" content="坚持是件了不起的事情">
+<meta name="twitter:description" content="其实习惯了黑色">
 
 
 
@@ -170,7 +170,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">能够阻挡自己脚步的只有自己！</p>
+        <p class="site-subtitle">黑夜给了我一双眼睛，我却用它寻找光明。</p>
       
   </div>
 
@@ -268,310 +268,6 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Android实现自定义View/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/15/Android实现自定义View/" itemprop="url">Android实现自定义View</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T11:29:00+08:00">
-                2017-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-创建View类继承View或者View的子类，并继承构造方法。"><a href="#1-创建View类继承View或者View的子类，并继承构造方法。" class="headerlink" title="1.创建View类继承View或者View的子类，并继承构造方法。"></a>1.创建View类继承View或者View的子类，并继承构造方法。</h4><h4 id="2-自定义属性"><a href="#2-自定义属性" class="headerlink" title="2.自定义属性"></a>2.自定义属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;resources&gt;</span><br><span class="line">&lt;!--  名字随便起--&gt; </span><br><span class="line">&lt;declare-styleable name=&quot;MyViewStyleName&quot; &gt;</span><br><span class="line">&lt;attr name=&quot;des&quot; format=&quot;string&quot; /&gt;</span><br><span class="line">&lt;attr name=&quot;textColor&quot; format=&quot;color&quot;/&gt;</span><br><span class="line">&lt;attr name=&quot;bgColor&quot; format=&quot;color&quot;/&gt;</span><br><span class="line">&lt;/declare-styleable&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="3-构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等"><a href="#3-构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等" class="headerlink" title="3.构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等"></a>3.构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public MyView(Context context, AttributeSet attrs) &#123;</span><br><span class="line">	super(context, attrs);</span><br><span class="line">	TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.MyViewStyleName);</span><br><span class="line">		if(typedArray != null)&#123;</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性des</span><br><span class="line">			 */</span><br><span class="line">			mDes = typedArray.getString(R.styleable.MyViewStyleName_des);</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性bgColor</span><br><span class="line">			 */</span><br><span class="line">			mBackground = typedArray.getColor(R.styleable.MyViewStyleName_bgColor, Color.RED);</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性textColor</span><br><span class="line">			 */</span><br><span class="line">			mTextColor = typedArray.getColor(R.styleable.MyViewStyleName_textColor, Color.WHITE);</span><br><span class="line">	</span><br><span class="line">		&#125;</span><br><span class="line">		//initView();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="4-布局中使用自定义的View，并使用自己定义的属性"><a href="#4-布局中使用自定义的View，并使用自己定义的属性" class="headerlink" title="4.布局中使用自定义的View，并使用自己定义的属性"></a>4.布局中使用自定义的View，并使用自己定义的属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.example.testdemo.MyView </span><br><span class="line">    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;</span><br><span class="line">    android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">    app:des=&quot;这是自定义View内容&quot;</span><br><span class="line">	app:textColor=&quot;#ffffff&quot;</span><br><span class="line">	app:bgColor=&quot;#4cd964&quot;</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    /&gt;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Android系统架构/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/15/Android系统架构/" itemprop="url">Android系统结构四层5大部门</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T11:29:00+08:00">
-                2017-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Android系统结构分为四层5大部门"><a href="#Android系统结构分为四层5大部门" class="headerlink" title="Android系统结构分为四层5大部门"></a>Android系统结构分为四层5大部门</h4><blockquote>
-<p>本层分为Linux内核，及设备相关的驱动程序。</p>
-</blockquote>
-<h4 id="1-操作系统层-最底层（OS-Linux-Kernel）"><a href="#1-操作系统层-最底层（OS-Linux-Kernel）" class="headerlink" title="1.操作系统层-最底层（OS|Linux Kernel）"></a>1.操作系统层-最底层（OS|Linux Kernel）</h4><p>驱动包括显示驱动（Display Driver），照相机驱动（Camera Driver）、键盘驱动（KeyBoard Driver）、wifi驱动（WIFI Driver）、蓝牙驱动（Bluetooth Driver）、Flash内存驱动（Flash Memory Driver）、Bind IPC驱动（进程通信功能）、能源管理（Power Management）</p>
-<h4 id="2-各种库（Libraries）和RunTime中间层"><a href="#2-各种库（Libraries）和RunTime中间层" class="headerlink" title="2.各种库（Libraries）和RunTime中间层"></a>2.各种库（Libraries）和RunTime中间层</h4><blockquote>
-<p>本层分为各种库（Libraries）和Android运行环境（Dalvik虚拟机）</p>
-</blockquote>
-<p>库的内容都是c语言实现的包括：C库、多媒体框架（MediaFramework）、SQLiter （数据库）、OpenGL ES（提供3D支持）、WebKit（浏览器核心 ）、SGL（2D图像引擎）、SSL（为数据提供安全支持，位于TCP/IP和应用层协议之间）、FreeType（为徒和矢量字体功能）<br>Dalvik虚拟机不是Java虚拟机（Java VM），Dalvik虚拟机执行.dex格式文件。Dalvik虚拟机是基于寄存器（Register-based）的虚拟机，Java VM是基于栈（Stack-based）</p>
-<h4 id="3-应用程序框架层（Application-Framework）"><a href="#3-应用程序框架层（Application-Framework）" class="headerlink" title="3.应用程序框架层（Application Framework）"></a>3.应用程序框架层（Application Framework）</h4><blockquote>
-<p>本层是提供给开发者的API（都是Java开发的），一般Android开发常接触调用</p>
-</blockquote>
-<p>包括UI需要的各种控件（View System）、Activity Manager 、Window Manager 、Packge Manager四大组件、等各种API</p>
-<h4 id="4-应用层（Application）"><a href="#4-应用层（Application）" class="headerlink" title="4.应用层（Application）"></a>4.应用层（Application）</h4><p>用户界面，Java语言编写的一些APK应用<br>下面是架构图<br><img src="http://img.blog.csdn.net/20170822205239681?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZHpfaGV4aWFuZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="enter image description here"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
     
       
 
@@ -889,6 +585,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/AsyncTask使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/15/AsyncTask使用/" itemprop="url">AsyncTask使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T11:29:00+08:00">
+                2017-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="一、AsyncTask概念"><a href="#一、AsyncTask概念" class="headerlink" title="一、AsyncTask概念"></a>一、AsyncTask概念</h4><p>AsyncTask是一个异步任务类，用来异步执行耗时操作，更新UI线程。<br>实际是封装了Thead+Handler</p>
+<h4 id="二、优点："><a href="#二、优点：" class="headerlink" title="二、优点："></a>二、优点：</h4><p>简单，方便</p>
+<h4 id="三、缺点："><a href="#三、缺点：" class="headerlink" title="三、缺点："></a>三、缺点：</h4><p>Task实例必须在主线程中创建<br>execute方法必须在主线程中调用，并且只能执行一次</p>
+<h4 id="四、使用方法："><a href="#四、使用方法：" class="headerlink" title="四、使用方法："></a>四、使用方法：</h4><p>创建一个类继承AsyncTask<br>覆写doInBackground(Params…) 后台执行耗时操作<br>覆写onPostExecute(Result) 执行耗时操作后更新UI界面，在主线程中执行<br>覆写onProgressUpdate(Progress…)更新进度条，在主线程中进行，结果来自于publishProgress(Integer)</p>
+<p>下面是实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">class MyAsyncTask extends AsyncTask&lt;Integer, Integer,Integer&gt;&#123;</span><br><span class="line"></span><br><span class="line">    	/**</span><br><span class="line">		 *  这个方法当创建线程后执行，准备工作</span><br><span class="line">		 */</span><br><span class="line">    	@Override</span><br><span class="line">		protected void onPreExecute() &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			super.onPreExecute();</span><br><span class="line">		</span><br><span class="line">		&#125;</span><br><span class="line">    	/**</span><br><span class="line">		 * 这个方法执行耗时操作 这里是休眠</span><br><span class="line">		 */</span><br><span class="line">		@Override</span><br><span class="line">		protected Integer doInBackground(Integer... params) &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			try &#123;</span><br><span class="line">				/**</span><br><span class="line">				 * 简单每睡眠1秒更新下进度</span><br><span class="line">				 */</span><br><span class="line">//				for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">//					Thread.sleep(1*1000);</span><br><span class="line">//					publishProgress(i);</span><br><span class="line">//				&#125;</span><br><span class="line">				</span><br><span class="line">				</span><br><span class="line">			&#125; catch (Exception e) &#123;</span><br><span class="line">				// TODO: handle exception</span><br><span class="line">			&#125;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;</span><br><span class="line">		/**</span><br><span class="line">		 *  这个方法主线程中执行，耗时操作完之后执行</span><br><span class="line">		 * 更新UI界面</span><br><span class="line">		 */</span><br><span class="line">		@Override</span><br><span class="line">		protected void onPostExecute(Integer result) &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			super.onPostExecute(result);</span><br><span class="line">			/**</span><br><span class="line">			 * 最后执行完耗时操作更新ui界面</span><br><span class="line">			 */</span><br><span class="line">			//drawCavas(surfaceHolder,10);</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		/**</span><br><span class="line">		 * 这个方法在主线程调用</span><br><span class="line">		 */</span><br><span class="line">		@Override</span><br><span class="line">		protected void onProgressUpdate(Integer... values) &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			super.onProgressUpdate(values);</span><br><span class="line">		</span><br><span class="line">			/**</span><br><span class="line">			 * 把进度更新到SurfaceView中</span><br><span class="line">			 */</span><br><span class="line">			//drawCavas(surfaceHolder,values[0]);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">    	</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Handler异步更新UI线程界面/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -995,6 +841,153 @@
  */
 new MyThread().start();
 </code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/15/Android实现自定义View/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/15/Android实现自定义View/" itemprop="url">Android实现自定义View</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T11:29:00+08:00">
+                2017-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-创建View类继承View或者View的子类，并继承构造方法。"><a href="#1-创建View类继承View或者View的子类，并继承构造方法。" class="headerlink" title="1.创建View类继承View或者View的子类，并继承构造方法。"></a>1.创建View类继承View或者View的子类，并继承构造方法。</h4><h4 id="2-自定义属性"><a href="#2-自定义属性" class="headerlink" title="2.自定义属性"></a>2.自定义属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;resources&gt;</span><br><span class="line">&lt;!--  名字随便起--&gt; </span><br><span class="line">&lt;declare-styleable name=&quot;MyViewStyleName&quot; &gt;</span><br><span class="line">&lt;attr name=&quot;des&quot; format=&quot;string&quot; /&gt;</span><br><span class="line">&lt;attr name=&quot;textColor&quot; format=&quot;color&quot;/&gt;</span><br><span class="line">&lt;attr name=&quot;bgColor&quot; format=&quot;color&quot;/&gt;</span><br><span class="line">&lt;/declare-styleable&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="3-构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等"><a href="#3-构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等" class="headerlink" title="3.构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等"></a>3.构造函数中获取属性，然后就可以使用属性在onDraw中绘画自己的View了，如设置画布背景颜色，字体颜色等</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public MyView(Context context, AttributeSet attrs) &#123;</span><br><span class="line">	super(context, attrs);</span><br><span class="line">	TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.MyViewStyleName);</span><br><span class="line">		if(typedArray != null)&#123;</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性des</span><br><span class="line">			 */</span><br><span class="line">			mDes = typedArray.getString(R.styleable.MyViewStyleName_des);</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性bgColor</span><br><span class="line">			 */</span><br><span class="line">			mBackground = typedArray.getColor(R.styleable.MyViewStyleName_bgColor, Color.RED);</span><br><span class="line">			/**</span><br><span class="line">			 * 获取xml中自定义属性textColor</span><br><span class="line">			 */</span><br><span class="line">			mTextColor = typedArray.getColor(R.styleable.MyViewStyleName_textColor, Color.WHITE);</span><br><span class="line">	</span><br><span class="line">		&#125;</span><br><span class="line">		//initView();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-布局中使用自定义的View，并使用自己定义的属性"><a href="#4-布局中使用自定义的View，并使用自己定义的属性" class="headerlink" title="4.布局中使用自定义的View，并使用自己定义的属性"></a>4.布局中使用自定义的View，并使用自己定义的属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.example.testdemo.MyView </span><br><span class="line">    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;</span><br><span class="line">    android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">    app:des=&quot;这是自定义View内容&quot;</span><br><span class="line">	app:textColor=&quot;#ffffff&quot;</span><br><span class="line">	app:bgColor=&quot;#4cd964&quot;</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    /&gt;</span><br></pre></td></tr></table></figure>
+
           
         
       
@@ -1813,7 +1806,7 @@ new MyThread().start();
                 alt="贺祥" />
             
               <p class="site-author-name" itemprop="name">贺祥</p>
-              <p class="site-description motion-element" itemprop="description">坚持是件了不起的事情</p>
+              <p class="site-description motion-element" itemprop="description">其实习惯了黑色</p>
           </div>
 
           <nav class="site-state motion-element">
