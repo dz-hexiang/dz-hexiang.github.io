@@ -384,15 +384,14 @@
 </blockquote>
 <h5 id="一、通过image-src方式加载图片"><a href="#一、通过image-src方式加载图片" class="headerlink" title="一、通过image src方式加载图片"></a>一、通过image src方式加载图片</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">       android:src=&quot;@mipmap/test_memory&quot;</span><br><span class="line">       android:layout_width=&quot;300px&quot;</span><br><span class="line">       android:layout_height=&quot;300px&quot;</span><br></pre></td></tr></table></figure>
 <p><strong>1. 放入mipmap-xxxhdpi</strong><br>无论设置ImageView高宽多少内存分配都是481*481*4 =925476b<br>这个481 是怎么来的呢<br>440/640 * 700  = 481.25 向上取整就是缩放转化后的高宽<br><img src="/images/blog/memory/1583565807558.png" alt="Alt text"></p>
-<p><strong>1. 放入mipmap-xxhdpi</strong><br>无论设置ImageView高宽多少内存分配都是642*642*4 =1648656b<br>手机精确密度440/ xxhdpi 对应的480dpi*原图高宽700 px = 641.6666 向上取整<br><img src="/images/blog/memory/1583558049761.png" alt="Alt text"></p>
-<p><strong>2. 放入mipmap-xhdpi</strong><br>无论设置ImageView高宽多少内存分配都是700*700*4 =1960032b</p>
-<p><img src="/images/blog/memory/1583564204515.png" alt="Alt text"></p>
-<p><strong>3. 放入mipmap-hdpi</strong></p>
-<p><img src="/images/blog/memory/1583564980075.png" alt="Alt text"></p>
+<p><strong>2. 放入mipmap-xxhdpi</strong><br>无论设置ImageView高宽多少内存分配都是642*642*4 =1648656b<br>手机精确密度440/ xxhdpi 对应的480dpi*原图高宽700 px = 641.6666 向上取整<br><img src="/images/blog/memory/1583558049761.png" alt="Alt text"></p>
 <h4 id="二、当通过Glide裁剪图片大小的时候"><a href="#二、当通过Glide裁剪图片大小的时候" class="headerlink" title="二、当通过Glide裁剪图片大小的时候"></a>二、当通过Glide裁剪图片大小的时候</h4><p>无论图片放在哪个目录mdpi，hdpi，xhdpi，xxhdpi， xxxhdpi 还是网络加载<br>他的内存都是一样<br>300*300* 4 =  360032<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this)</span><br><span class="line">         .load(R.mipmap.test_memory)</span><br><span class="line">         .override(300, 300)</span><br><span class="line">         .into(image)</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this)</span><br><span class="line">       .load(&quot;https://mgamevoice2.bs2dl.yy.com/344892b5daac49a9870826beee6b1da5.jpg&quot;)</span><br><span class="line">       .override(300, 300)</span><br><span class="line">       .into(image)</span><br></pre></td></tr></table></figure>
 <p><img src="/images/blog/memory/1583567617916.png" alt="Alt text"></p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><strong>1. 当同imageView src 加载图片的情况</strong><br>无论设置ImageView高宽多少,对内存分配无效。<br>bitmap分配的内存 =:  <code>原图缩放的高*原图缩放的宽*每个像素大小</code><br>高宽缩放比例 ：<code>手机密度/图片所在目录对应dpi</code><br>手机密度小于图片所在目录对应dpi，按原图大小 算，<code>bitmap 内存最大不会超过原图</code>‘</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><strong>1. 当同imageView src 加载图片的情况</strong><br>无论设置ImageView高宽多少,对内存分配无效。<br>bitmap分配的内存 =:  <code>原图缩放的高*原图缩放的宽*每个像素大小</code><br>高宽缩放比例 ：<code>手机密度/图片所在目录对应dpi</code></p>
+<p>ImageView 加载res图片过程<br>ResourcesImpl.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Nullable</span><br><span class="line">   private Drawable decodeImageDrawable(@NonNull AssetInputStream ais,</span><br><span class="line">...</span><br><span class="line">       try &#123;</span><br><span class="line">           return ImageDecoder.decodeDrawable(src, (decoder, info, s) -&gt; &#123;</span><br><span class="line">               decoder.setAllocator(ImageDecoder.ALLOCATOR_SOFTWARE);</span><br><span class="line">           &#125;);</span><br><span class="line">       &#125; catch (IOException ioe) &#123;</span><br><span class="line">           // This is okay. This may be something that ImageDecoder does not</span><br><span class="line">           // support, like SVG.</span><br><span class="line">           return null;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>设置高宽大小密度用于创建bitmap<br>ImageDecoder.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// This method may modify the decoder so it must be called prior to performing the decode</span><br><span class="line">  private int computeDensity(@NonNull Source src) &#123;</span><br><span class="line">...</span><br><span class="line">      float scale = (float) dstDensity / srcDensity;</span><br><span class="line">      int scaledWidth = Math.max((int) (mWidth * scale + 0.5f), 1);</span><br><span class="line">      int scaledHeight = Math.max((int) (mHeight * scale + 0.5f), 1);</span><br><span class="line">      this.setTargetSize(scaledWidth, scaledHeight);</span><br><span class="line">      return dstDensity;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>2. 当通过Glide裁剪本地图片大小的情况</strong><br>无论图片放在哪个目录mdpi，hdpi，xhdpi，xxhdpi， xxxhdpi 还是网络加载<br>他的内存都是一样 ： <code>裁剪高* 裁剪宽 * 每个像素大小</code></p>
 <p>以上的所说内存分配，bitmap.getAllocationByteCount()可以获得 ，跟getByteCount 不一样</p>
 <h5 id="测试的图片"><a href="#测试的图片" class="headerlink" title="测试的图片"></a>测试的图片</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">测试图片地址</span><br><span class="line">https://mgamevoice2.bs2dl.yy.com/344892b5daac49a9870826beee6b1da5.jpg</span><br></pre></td></tr></table></figure>
@@ -1363,6 +1362,151 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/DexClassLoader和PathClassLoader的区别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/DexClassLoader和PathClassLoader的区别/" itemprop="url">DexClassLoader和PathClassLoader的区别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="DexClassLoader和PathClassLoader的区别"><a href="#DexClassLoader和PathClassLoader的区别" class="headerlink" title="DexClassLoader和PathClassLoader的区别"></a>DexClassLoader和PathClassLoader的区别</h5><p>1、DexClassLoader可以加载jar/apk/dex，可以从SD卡中加载未安装的apk<br>2、PathClassLoader只能加载系统中已经安装过的apk</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/DataBinding/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1464,151 +1608,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;layout ...&gt;</span><br><span class="line">  &lt;data&gt;</span><br><span class="line">    &lt;variable type=&quot;com.example.myapp.User&quot; name=&quot;user&quot;/&gt;</span><br><span class="line">  &lt;/data&gt;</span><br><span class="line">  &lt;RelativeLayout ...&gt;</span><br><span class="line">    &lt;EditText android:text=&quot;@=&#123;user.name&#125;&quot; .../&gt;</span><br><span class="line">  &lt;/RelativeLayout&gt;</span><br><span class="line">&lt;/layout&gt;</span><br></pre></td></tr></table></figure>
 <p>跟单项绑定的差别，就是”<strong>@{}</strong>“改成了”<strong>@={}</strong>“，多了<strong>等号</strong></p>
 <p>@=符号，重要的是包括“=”符号，接收对属性的数据更改并同时侦听用户更新</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/DexClassLoader和PathClassLoader的区别/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/DexClassLoader和PathClassLoader的区别/" itemprop="url">DexClassLoader和PathClassLoader的区别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="DexClassLoader和PathClassLoader的区别"><a href="#DexClassLoader和PathClassLoader的区别" class="headerlink" title="DexClassLoader和PathClassLoader的区别"></a>DexClassLoader和PathClassLoader的区别</h5><p>1、DexClassLoader可以加载jar/apk/dex，可以从SD卡中加载未安装的apk<br>2、PathClassLoader只能加载系统中已经安装过的apk</p>
 
           
         
