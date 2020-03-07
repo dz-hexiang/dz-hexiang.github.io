@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="JVM内存模型Heap内存分配JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指 定，默认是物理内存的1/4。 1、程序计数器 程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以看 做是当前线程所执行的字节码的行号指示器。在虚拟机">
+<meta name="description" content="JVM内存结构Heap内存分配JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指 定，默认是物理内存的1/4。 1、程序计数器 程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以看 做是当前线程所执行的字节码的行号指示器。在虚拟机">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM内存模型">
 <meta property="og:url" content="http://yoursite.com/2019/02/09/内存模型/index.html">
 <meta property="og:site_name" content="Mr.HeXiang Blog">
-<meta property="og:description" content="JVM内存模型Heap内存分配JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指 定，默认是物理内存的1/4。 1、程序计数器 程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以看 做是当前线程所执行的字节码的行号指示器。在虚拟机的概念模型里（仅是概念模型， 各种虚拟机可能会通过一些更高效的方式去实现），字节">
+<meta property="og:description" content="JVM内存结构Heap内存分配JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指 定，默认是物理内存的1/4。 1、程序计数器 程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以看 做是当前线程所执行的字节码的行号指示器。在虚拟机的概念模型里（仅是概念模型， 各种虚拟机可能会通过一些更高效的方式去实现），字节">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-20T01:27:18.595Z">
+<meta property="og:updated_time" content="2019-03-22T01:40:47.890Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM内存模型">
-<meta name="twitter:description" content="JVM内存模型Heap内存分配JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指 定，默认是物理内存的1/4。 1、程序计数器 程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以看 做是当前线程所执行的字节码的行号指示器。在虚拟机的概念模型里（仅是概念模型， 各种虚拟机可能会通过一些更高效的方式去实现），字节">
+<meta name="twitter:description" content="JVM内存结构Heap内存分配JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指 定，默认是物理内存的1/4。 1、程序计数器 程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以看 做是当前线程所执行的字节码的行号指示器。在虚拟机的概念模型里（仅是概念模型， 各种虚拟机可能会通过一些更高效的方式去实现），字节">
 
 
 
@@ -375,7 +375,7 @@
       
 
       
-        <h5 id="JVM内存模型"><a href="#JVM内存模型" class="headerlink" title="JVM内存模型"></a>JVM内存模型</h5><p><strong>Heap内存分配</strong><br>JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；<br>JVM最大分配的内存由-Xmx指 定，默认是物理内存的1/4。</p>
+        <h5 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h5><p><strong>Heap内存分配</strong><br>JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；<br>JVM最大分配的内存由-Xmx指 定，默认是物理内存的1/4。</p>
 <p>1、程序计数器</p>
 <p>程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以看</p>
 <p>做是当前线程所执行的字节码的行号指示器。在虚拟机的概念模型里（仅是概念模型，</p>
@@ -395,19 +395,24 @@
 <p>言、使用方式与数据结构并没有强制规定，因此具体的虚拟机可以自由实现它。甚至</p>
 <p>有的虚拟机（譬如Sun HotSpot 虚拟机）直接就把本地方法栈和虚拟机栈合二为一。</p>
 <p>与虚拟机栈一样，本地方法栈区域也会抛出StackOverflowError 和OutOfMemoryError</p>
-<p>异常。</p>
+<p>异常。<br>局部变量表存放了编译期可知的各种基本数据类型（boolean、byte、char、short、int、</p>
+<p>float、long、double）</p>
 <p>4、Java 堆</p>
 <p>对于大多数应用来说，Java 堆（Java Heap）是Java 虚拟机所管理的内存中最大的</p>
-<p>一块。Java 堆是被所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的</p>
+<p>一块。Java 堆是被所有<strong>线程共享</strong>的一块内存区域，在虚拟机启动时创建。此内存区域的</p>
 <p>唯一目的就是存放对象实例，几乎所有的对象实例都在这里分配内存</p>
 <p>5、方法区</p>
-<p>方法区（Method Area）与Java 堆一样，是各个线程共享的内存区域，它用于存</p>
+<p>方法区（Method Area）与Java 堆一样，是各个<strong>线程共享</strong>的内存区域，它用于存</p>
 <p>储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。</p>
 <p>6、运行时常量池</p>
 <p>运行时常量池（Runtime Constant Pool）是方法区的一部分。Class 文件中除了有</p>
 <p>类的版本、字段、方法、接口等描述等信息外，还有一项信息是常量池（Constant Pool</p>
 <p>Table），用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后存放</p>
 <p>到方法区的运行时常量池中。</p>
+<h5 id="哪些对象可以作为GC-Roots-指的是堆内存回收"><a href="#哪些对象可以作为GC-Roots-指的是堆内存回收" class="headerlink" title="哪些对象可以作为GC Roots(指的是堆内存回收)"></a>哪些对象可以作为GC Roots(指的是堆内存回收)</h5><p>虚拟机栈中的引用对象</p>
+<p>方法区中类静态属性引用的对象</p>
+<p>方法区中常量引用的对象</p>
+<p>本地方法栈中JNI引用的对象</p>
 
       
     </div>
@@ -467,8 +472,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/09/FutureTask 与Future和Runable及Callable/" rel="next" title="FutureTask 与Future和Runable及Callable">
-                <i class="fa fa-chevron-left"></i> FutureTask 与Future和Runable及Callable
+              <a href="/2019/02/09/原子性可见性有序性/" rel="next" title="原子性可见性有序性">
+                <i class="fa fa-chevron-left"></i> 原子性可见性有序性
               </a>
             
           </div>
@@ -477,8 +482,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/09/DexClassLoader和PathClassLoader的区别/" rel="prev" title="DexClassLoader和PathClassLoader的区别">
-                DexClassLoader和PathClassLoader的区别 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/09/内存优化/" rel="prev" title="内存优化">
+                内存优化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -560,7 +565,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">109</span>
+                  <span class="site-state-item-count">110</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -571,7 +576,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -617,7 +622,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#JVM内存模型"><span class="nav-number">1.</span> <span class="nav-text">JVM内存模型</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#JVM内存结构"><span class="nav-number">1.</span> <span class="nav-text">JVM内存结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#哪些对象可以作为GC-Roots-指的是堆内存回收"><span class="nav-number">2.</span> <span class="nav-text">哪些对象可以作为GC Roots(指的是堆内存回收)</span></a></li></ol></div>
             
 
           </div>
@@ -637,7 +642,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

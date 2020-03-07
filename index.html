@@ -282,6 +282,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/07/图片加载消耗的内存/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/07/图片加载消耗的内存/" itemprop="url">图片加载消耗的内存</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-07T17:10:23+08:00">
+                2020-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="图片加载消耗的内存"><a href="#图片加载消耗的内存" class="headerlink" title="图片加载消耗的内存"></a>图片加载消耗的内存</h4><p>测试实验的手机及配置</p>
+<blockquote>
+<p>一张图片700*700px 88.2k 测试手机小米k20 分辨率 1080*2340px   测试手机密度440dp</p>
+</blockquote>
+<h5 id="一、通过image-src方式加载图片"><a href="#一、通过image-src方式加载图片" class="headerlink" title="一、通过image src方式加载图片"></a>一、通过image src方式加载图片</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">       android:src=&quot;@mipmap/test_memory&quot;</span><br><span class="line">       android:layout_width=&quot;300px&quot;</span><br><span class="line">       android:layout_height=&quot;300px&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>1. 放入mipmap-xxxhdpi</strong><br>无论设置ImageView高宽多少内存分配都是481*481*4 =925476b<br>这个481 是怎么来的呢<br>440/640 * 700  = 481.25 向上取整就是缩放转化后的高宽<br><img src="/images/blog/memory/1583565807558.png" alt="Alt text"></p>
+<p><strong>1. 放入mipmap-xxhdpi</strong><br>无论设置ImageView高宽多少内存分配都是642*642*4 =1648656b<br>手机精确密度440/ xxhdpi 对应的480dpi*原图高宽700 px = 641.6666 向上取整<br><img src="/images/blog/memory/1583558049761.png" alt="Alt text"></p>
+<p><strong>2. 放入mipmap-xhdpi</strong><br>无论设置ImageView高宽多少内存分配都是700*700*4 =1960032b</p>
+<p><img src="/images/blog/memory/1583564204515.png" alt="Alt text"></p>
+<p><strong>3. 放入mipmap-hdpi</strong></p>
+<p><img src="/images/blog/memory/1583564980075.png" alt="Alt text"></p>
+<h4 id="二、当通过Glide裁剪图片大小的时候"><a href="#二、当通过Glide裁剪图片大小的时候" class="headerlink" title="二、当通过Glide裁剪图片大小的时候"></a>二、当通过Glide裁剪图片大小的时候</h4><p>无论图片放在哪个目录mdpi，hdpi，xhdpi，xxhdpi， xxxhdpi 还是网络加载<br>他的内存都是一样<br>300*300* 4 =  360032<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this)</span><br><span class="line">         .load(R.mipmap.test_memory)</span><br><span class="line">         .override(300, 300)</span><br><span class="line">         .into(image)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this)</span><br><span class="line">       .load(&quot;https://mgamevoice2.bs2dl.yy.com/344892b5daac49a9870826beee6b1da5.jpg&quot;)</span><br><span class="line">       .override(300, 300)</span><br><span class="line">       .into(image)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/blog/memory/1583567617916.png" alt="Alt text"></p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><strong>1. 当同imageview src 加载图片的情况</strong><br>无论设置ImageView高宽多少，bitmap分配的内存都是缩放后转换的 :  <code>高乘以宽 乘以每个像素大小</code><br>高宽缩放比例 ：<code>手机精确密度/图片所在目录对应dpi</code><br>手机精确密度小于图片所在目录对应dpi，按原图大小 算，<code>bitmap 内存最大不会超过原图</code>‘</p>
+<p><strong>2. 当通过Glide裁剪本地图片大小的情况</strong><br>无论图片放在哪个目录mdpi，hdpi，xhdpi，xxhdpi， xxxhdpi 还是网络加载<br>他的内存都是一样 ： <code>裁剪高* 裁剪宽 * 每个像素大小</code></p>
+<h5 id="测试的图片"><a href="#测试的图片" class="headerlink" title="测试的图片"></a>测试的图片</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">测试图片地址</span><br><span class="line">https://mgamevoice2.bs2dl.yy.com/344892b5daac49a9870826beee6b1da5.jpg</span><br></pre></td></tr></table></figure>
+<h5 id="不同目录对应的dpi"><a href="#不同目录对应的dpi" class="headerlink" title="不同目录对应的dpi"></a>不同目录对应的dpi</h5><p>ldpi（低）~120dpi density=0.75<br>mdpi（中）~160dpi density=1<br>hdpi（高）~240dpi density=1.5<br>xhdpi（超高）~320dpi density=2<br>xxhdpi（超超高）~480dpi density=3<br>xxxhdpi（超超超高）~640dpi density=4</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/09/InstantRun/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -888,7 +1050,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/06/SystemServer进程的创建及Launcher启动/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Activity启动过程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -907,167 +1069,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/03/06/SystemServer进程的创建及Launcher启动/" itemprop="url">SystemServer进程的创建及Launcher启动</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-06T11:10:23+08:00">
-                2019-03-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="SystemServer进程的创建及Launcher启动"><a href="#SystemServer进程的创建及Launcher启动" class="headerlink" title="SystemServer进程的创建及Launcher启动"></a>SystemServer进程的创建及Launcher启动</h4><h4 id="1-SystemServer进程的创建"><a href="#1-SystemServer进程的创建" class="headerlink" title="1.SystemServer进程的创建"></a>1.SystemServer进程的创建</h4><p>ZygoteInit.main方法中里fork出个SystemServer进程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">/* Hardcoded command line to start the system server */</span><br><span class="line">       String args[] = &#123;</span><br><span class="line">           &quot;--setuid=1000&quot;,</span><br><span class="line">           &quot;--setgid=1000&quot;,</span><br><span class="line">           &quot;--setgroups=1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1018,1021,1023,1024,1032,1065,3001,3002,3003,3006,3007,3009,3010&quot;,</span><br><span class="line">           &quot;--capabilities=&quot; + capabilities + &quot;,&quot; + capabilities,</span><br><span class="line">           &quot;--nice-name=system_server&quot;,</span><br><span class="line">           &quot;--runtime-args&quot;,</span><br><span class="line">           &quot;--target-sdk-version=&quot; + VMRuntime.SDK_VERSION_CUR_DEVELOPMENT,</span><br><span class="line">           &quot;com.android.server.SystemServer&quot;,</span><br><span class="line">       &#125;;</span><br><span class="line">       ZygoteConnection.Arguments parsedArgs = null;</span><br><span class="line"></span><br><span class="line">       int pid;</span><br><span class="line"></span><br><span class="line">       try &#123;</span><br><span class="line">           parsedArgs = new ZygoteConnection.Arguments(args);</span><br><span class="line">           ZygoteConnection.applyDebuggerSystemProperty(parsedArgs);</span><br><span class="line">           ZygoteConnection.applyInvokeWithSystemProperty(parsedArgs);</span><br><span class="line"></span><br><span class="line">           boolean profileSystemServer = SystemProperties.getBoolean(</span><br><span class="line">                   &quot;dalvik.vm.profilesystemserver&quot;, false);</span><br><span class="line">           if (profileSystemServer) &#123;</span><br><span class="line">               parsedArgs.runtimeFlags |= Zygote.PROFILE_SYSTEM_SERVER;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           /* Request to fork the system server process */</span><br><span class="line">           pid = Zygote.forkSystemServer(</span><br><span class="line">                   parsedArgs.uid, parsedArgs.gid,</span><br><span class="line">                   parsedArgs.gids,</span><br><span class="line">                   parsedArgs.runtimeFlags,</span><br><span class="line">                   null,</span><br><span class="line">                   parsedArgs.permittedCapabilities,</span><br><span class="line">                   parsedArgs.effectiveCapabilities);</span><br><span class="line">       &#125; catch (IllegalArgumentException ex) &#123;</span><br><span class="line">           throw new RuntimeException(ex);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
-<h4 id="2-SystemServer-main方法"><a href="#2-SystemServer-main方法" class="headerlink" title="2.SystemServer.main方法"></a>2.SystemServer.main方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">      new SystemServer().run();</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>run方法</p>
-<h5 id="2-1-创建loop对象"><a href="#2-1-创建loop对象" class="headerlink" title="2.1. 创建loop对象"></a>2.1. 创建loop对象</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Prepare the main looper thread (this thread).</span><br><span class="line">Looper.prepareMainLooper();</span><br></pre></td></tr></table></figure>
-<h5 id="2-2-创建了系统上下文"><a href="#2-2-创建了系统上下文" class="headerlink" title="2.2 创建了系统上下文"></a>2.2 创建了系统上下文</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Initialize the system context.</span><br><span class="line">createSystemContext();</span><br></pre></td></tr></table></figure>
-<p>创建AcitivityThread<br>这里创建的ActivityThread 和ActivityThread.main()中创建的不是同一个<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private void createSystemContext() &#123;</span><br><span class="line">	// systemMain()中创建activityThread 调用activityThread .attach(true, 0); 会创建Application,Instrumentation ,并调用applicition.onCreate()</span><br><span class="line">    ActivityThread activityThread = ActivityThread.systemMain();</span><br><span class="line">    //创建context,创建LoadedApk</span><br><span class="line">    mSystemContext = activityThread.getSystemContext();</span><br><span class="line">    mSystemContext.setTheme(DEFAULT_SYSTEM_THEME);</span><br><span class="line"></span><br><span class="line">    final Context systemUiContext = activityThread.getSystemUiContext();</span><br><span class="line">    systemUiContext.setTheme(DEFAULT_SYSTEM_THEME);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="2-3启动SystemServiceManager"><a href="#2-3启动SystemServiceManager" class="headerlink" title="2.3启动SystemServiceManager"></a>2.3启动SystemServiceManager</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// Create the system service manager.</span><br><span class="line">         mSystemServiceManager = new SystemServiceManager(mSystemContext);</span><br><span class="line">         mSystemServiceManager.setStartInfo(mRuntimeRestart,</span><br><span class="line">                 mRuntimeStartElapsedTime, mRuntimeStartUptime);</span><br><span class="line">         LocalServices.addService(SystemServiceManager.class, mSystemServiceManager);</span><br><span class="line">         // Prepare the thread pool for init tasks that can be parallelized</span><br><span class="line">         SystemServerInitThreadPool.get();</span><br></pre></td></tr></table></figure>
-<h5 id="2-4-启动相关服务"><a href="#2-4-启动相关服务" class="headerlink" title="2.4 启动相关服务"></a>2.4 启动相关服务</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Start services.</span><br><span class="line"> try &#123;</span><br><span class="line">     traceBeginAndSlog(&quot;StartServices&quot;);</span><br><span class="line">     startBootstrapServices();</span><br><span class="line">     startCoreServices();</span><br><span class="line">     startOtherServices();</span><br><span class="line">     SystemServerInitThreadPool.shutdown();</span><br><span class="line"> &#125; catch (Throwable ex) &#123;</span><br><span class="line">     Slog.e(&quot;System&quot;, &quot;******************************************&quot;);</span><br><span class="line">     Slog.e(&quot;System&quot;, &quot;************ Failure starting system services&quot;, ex);</span><br><span class="line">     throw ex;</span><br><span class="line"> &#125; finally &#123;</span><br><span class="line">     traceEnd();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>2.4.1<strong>startBootstrapServices()</strong>启动了ActivityManagerService ,PowerManagerService,PackageManagerService …等</p>
-<p>2.4.2<br><strong>startCoreServices()</strong>启动了BatteryService,UsageStatsService,WebViewUpdateService</p>
-<p>2.4.3 <strong>startOtherServices()</strong>启动了AlarmManagerService,BluetoothService,NotificationManagerService …等</p>
-<p>mActivityManagerService.systemReady 启动<strong>launcher</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// We now tell the activity manager it is okay to run third party</span><br><span class="line">      // code.  It will call back into us once it has gotten to the state</span><br><span class="line">      // where third party code can really run (but before it has actually</span><br><span class="line">      // started launching the initial applications), for us to complete our</span><br><span class="line">      // initialization.</span><br><span class="line">      mActivityManagerService.systemReady(...)</span><br></pre></td></tr></table></figure></p>
-<p>systemReady 方法中调用 mActivityManagerService.startHomeActivityLocked启动launcher<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">startHomeActivityLocked(currentUserId, &quot;systemReady&quot;);</span><br></pre></td></tr></table></figure></p>
-<p>下面代码1处调用ActivityStarter中的 startActivityMayWait 或者startActivity ,又开始走<strong>Activity启动流程</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">void startHomeActivity(Intent intent, ActivityInfo aInfo, String reason) &#123;</span><br><span class="line">        mSupervisor.moveHomeStackTaskToTop(reason);</span><br><span class="line">		//代码1</span><br><span class="line">        mLastHomeActivityStartResult = obtainStarter(intent, &quot;startHomeActivity: &quot; + reason)</span><br><span class="line">                .setOutActivity(tmpOutRecord)</span><br><span class="line">                .setCallingUid(0)</span><br><span class="line">                .setActivityInfo(aInfo)</span><br><span class="line">                .execute();</span><br><span class="line">        mLastHomeActivityStartRecord = tmpOutRecord[0];</span><br><span class="line">        if (mSupervisor.inResumeTopActivity) &#123;</span><br><span class="line">            // If we are in resume section already, home activity will be initialized, but not</span><br><span class="line">            // resumed (to avoid recursive resume) and will stay that way until something pokes it</span><br><span class="line">            // again. We need to schedule another resume.</span><br><span class="line">            mSupervisor.scheduleResumeTopActivities();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="2-5进入消息循环"><a href="#2-5进入消息循环" class="headerlink" title="2.5进入消息循环"></a>2.5进入消息循环</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Loop forever.</span><br><span class="line">Looper.loop();</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/SparseArray及ArrayMap原理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/SparseArray及ArrayMap原理/" itemprop="url">SparseArray及ArrayMap原理</a></h1>
+                <a class="post-title-link" href="/2019/02/09/Activity启动过程/" itemprop="url">Activity启动过程</a></h1>
         
 
         <div class="post-meta">
@@ -1144,9 +1146,25 @@
       
         
           
-            <h5 id="SparseArray及ArrayMap原理"><a href="#SparseArray及ArrayMap原理" class="headerlink" title="SparseArray及ArrayMap原理"></a>SparseArray及ArrayMap原理</h5><p>SparseArray是android里为<interger,object>这样的Hashmap而专门写的类,目的是提高效率，其核心是折半查找函数（binarySearch）。在Android中，当我们需要定义</interger,object></p>
-<p>HashMap<integer, e=""> hashMap = new HashMap<integer, e="">();<br>时，我们可以使用如下的方式来取得更好的性能.</integer,></integer,></p>
-<p>SparseArray<e> sparseArray = new SparseArray<e>();</e></e></p>
+            <h4 id="Activity启动过程"><a href="#Activity启动过程" class="headerlink" title="Activity启动过程"></a>Activity启动过程</h4><p>Activity</p>
+<h5 id="1-startActivity"><a href="#1-startActivity" class="headerlink" title="1.startActivity"></a>1.startActivity</h5><h5 id="2-startActivityForResult"><a href="#2-startActivityForResult" class="headerlink" title="2.startActivityForResult"></a>2.startActivityForResult</h5><p>Instrumentation</p>
+<h5 id="3-execStartActivity"><a href="#3-execStartActivity" class="headerlink" title="3.execStartActivity"></a>3.execStartActivity</h5><p>ActivityManagerService</p>
+<h5 id="4-startActivity"><a href="#4-startActivity" class="headerlink" title="4.startActivity"></a>4.startActivity</h5><h5 id="5-startActivityAsUser"><a href="#5-startActivityAsUser" class="headerlink" title="5.startActivityAsUser"></a>5.startActivityAsUser</h5><p>ActivityStarter</p>
+<h5 id="6-startActivityMayWait"><a href="#6-startActivityMayWait" class="headerlink" title="6.startActivityMayWait"></a>6.startActivityMayWait</h5><p>解析出Intent相匹配的Activityinfo<br>得到启动Activity的Task</p>
+<h5 id="7-startActivityLocked"><a href="#7-startActivityLocked" class="headerlink" title="7.startActivityLocked"></a>7.startActivityLocked</h5><p>禁止App切换恢复<br>校验参数</p>
+<h5 id="8-startActivityUnchecked"><a href="#8-startActivityUnchecked" class="headerlink" title="8.startActivityUnchecked"></a>8.startActivityUnchecked</h5><h5 id="ActivityStackSupervisor"><a href="#ActivityStackSupervisor" class="headerlink" title="ActivityStackSupervisor"></a>ActivityStackSupervisor</h5><h5 id="9-resumeFocusedStackTopActivityLocked"><a href="#9-resumeFocusedStackTopActivityLocked" class="headerlink" title="9.resumeFocusedStackTopActivityLocked"></a>9.resumeFocusedStackTopActivityLocked</h5><p>ActivityStack</p>
+<h5 id="10-resumeTopActivityUncheckedLocked"><a href="#10-resumeTopActivityUncheckedLocked" class="headerlink" title="10.resumeTopActivityUncheckedLocked"></a>10.resumeTopActivityUncheckedLocked</h5><h5 id="11-resumeTopActivityInnerLocked"><a href="#11-resumeTopActivityInnerLocked" class="headerlink" title="11.resumeTopActivityInnerLocked"></a>11.resumeTopActivityInnerLocked</h5><p>判断是否又resume的Activity有则暂停<br>唤醒目标ActivityActivity或重启Acitivity</p>
+<p>ActivityStackSupervisor</p>
+<h5 id="12-startSpecificActivityLocked"><a href="#12-startSpecificActivityLocked" class="headerlink" title="12.startSpecificActivityLocked"></a>12.startSpecificActivityLocked</h5><p>没有启动app的,通过zygote创建应用进程startProcessLocked<br>启动了了进入14步启动realStartActivityLocked<br>ActivityManagerService</p>
+<h5 id="13-startProcessLocked"><a href="#13-startProcessLocked" class="headerlink" title="13.startProcessLocked"></a>13.startProcessLocked</h5><p>ActivityStackSupervisor</p>
+<h5 id="14-realStartActivityLocked"><a href="#14-realStartActivityLocked" class="headerlink" title="14.realStartActivityLocked"></a>14.realStartActivityLocked</h5><p>通过发送事务执行事务 最后执行LaunchActivityItem 和ResumeActivityItem 的execute<br>最终调用activityThread.handleLaunchActivity, activityThread.handleResumeActivity<br> handleLaunchActivity 会调用performLaunchActivity<br>mInstrumentation.newActivity 创建acitivty<br>activity.attach 创建phonewindow<br> mInstrumentation.callActivityOnCreate<br>调用created 调用onCreated 中window.setContentView生成dectoView</p>
+<p>handleResumeActivity<br>WindowManagerGlobal把dectoView添加到window addView 会生ViewRootImpl<br>scheduleTraversals performTraversals performMeasure performLayout performDraw view绘画工作机制<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Create activity launch transaction.</span><br><span class="line">            final ClientTransaction clientTransaction = ClientTransaction.obtain(app.thread,</span><br><span class="line">                    r.appToken);</span><br><span class="line">            clientTransaction.addCallback(LaunchActivityItem.obtain(new Intent(r.intent),</span><br><span class="line">   ...</span><br><span class="line">            if (andResume) &#123;</span><br><span class="line">                lifecycleItem = ResumeActivityItem.obtain(mService.isNextTransitionForward());</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                lifecycleItem = PauseActivityItem.obtain();</span><br><span class="line">            &#125;</span><br><span class="line">            clientTransaction.setLifecycleStateRequest(lifecycleItem);</span><br><span class="line"></span><br><span class="line">            // Schedule transaction.</span><br><span class="line">            mService.getLifecycleManager().scheduleTransaction(clientTransaction);</span><br></pre></td></tr></table></figure></p>
+<p>ActivityThread.this.scheduleTransaction</p>
+<p>ActivityThread 的父类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public abstract class ClientTransactionHandler &#123;</span><br><span class="line">// Schedule phase related logic and handlers.</span><br><span class="line"></span><br><span class="line">/** Prepare and schedule transaction for execution. */</span><br><span class="line">void scheduleTransaction(ClientTransaction transaction) &#123;</span><br><span class="line">    transaction.preExecute(this);</span><br><span class="line">    sendMessage(ActivityThread.H.EXECUTE_TRANSACTION, transaction);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>ActivityThread H 中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">case EXECUTE_TRANSACTION:</span><br><span class="line">                   final ClientTransaction transaction = (ClientTransaction) msg.obj;</span><br><span class="line">                   mTransactionExecutor.execute(transaction);//最后执行LaunchActivityItem 和PauseActivityItem 等里面的execute方法</span><br><span class="line">                   if (isSystem()) &#123;</span><br><span class="line">                       // Client transactions inside system process are recycled on the client side</span><br><span class="line">                       // instead of ClientLifecycleManager to avoid being cleared before this</span><br><span class="line">                       // message is handled.</span><br><span class="line">                       transaction.recycle();</span><br><span class="line">                   &#125;</span><br><span class="line">                   // TODO(lifecycler): Recycle locally scheduled transactions.</span><br></pre></td></tr></table></figure></p>
+<p>LaunchActivityItem 中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">  public void execute(ClientTransactionHandler client, IBinder token,</span><br><span class="line">          PendingTransactionActions pendingActions) &#123;</span><br><span class="line">      Trace.traceBegin(TRACE_TAG_ACTIVITY_MANAGER, &quot;activityStart&quot;);</span><br><span class="line">      ActivityClientRecord r = new ActivityClientRecord(token, mIntent, mIdent, mInfo,</span><br><span class="line">              mOverrideConfig, mCompatInfo, mReferrer, mVoiceInteractor, mState, mPersistentState,</span><br><span class="line">              mPendingResults, mPendingNewIntents, mIsForward,</span><br><span class="line">              mProfilerInfo, client);</span><br><span class="line">      client.handleLaunchActivity(r, pendingActions, null /* customIntent */);</span><br><span class="line">      Trace.traceEnd(TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/blog/1552553835680.png" alt="Alt text"></p>
+<p><img src="/images/blog/20171010211659716.png" alt="Alt text"></p>
 
           
         
@@ -1195,7 +1213,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/内存优化/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Apk瘦身优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -1214,7 +1232,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/09/内存优化/" itemprop="url">内存优化</a></h1>
+                <a class="post-title-link" href="/2019/02/09/Apk瘦身优化/" itemprop="url">Apk瘦身优化</a></h1>
         
 
         <div class="post-meta">
@@ -1291,38 +1309,11 @@
       
         
           
-            <p>####内存优化</p>
-<h5 id="一-避免内存泄漏及优化方法"><a href="#一-避免内存泄漏及优化方法" class="headerlink" title="一. 避免内存泄漏及优化方法"></a>一. 避免内存泄漏及优化方法</h5><p><strong>单例导致内存泄露</strong><br>单例的静态特性使得它的生命周期同应用的生命周期一样长，如果一个对象已经没有用处了，但是单例还持有它的引用，那么在整个应用程序的生命周期它都不能正常被回收，从而导致内存泄露。</p>
-<p>内存泄漏场景<br>单例模式引用了activity,activity退出后,有于单例引用而无法释放</p>
-<p>解决方法<br>context参数改为全局的上下文</p>
-<p><strong>静态变量导致内存泄露</strong></p>
-<p>静态变量存储在方法区，它的生命周期从类加载开始，到整个进程结束。一旦静态变量初始化后，它所持有的引用只有等到进程结束才会释放。</p>
-<p>内存泄漏场景<br>activity中定静态变量,activity退出后,有于静态变量引用而不能释放</p>
-<p><strong>非静态内部类导致内存泄露</strong><br>非静态内部类（包括匿名内部类）默认就会持有外部类的引用，当非静态内部类对象的生命周期比外部类对象的生命周期长时，就会导致内存泄露。</p>
-<p>内存泄漏场景<br>1.典型的场景就是使用Handler</p>
-<p>1.使用Thread或者AsyncTask。</p>
-<p>解决方法<br>静态内部类+弱引用的方式<br>hadler 要清除回调消息</p>
-<p><strong>未取消注册或回调导致内存泄露</strong><br>比如我们在Activity中注册广播，如果在Activity销毁后不取消注册，那么这个刚播会一直存在系统中，同上面所说的非静态内部类一样持有Activity引用，导致内存泄露。因此注册广播后在Activity销毁后一定要取消注册。</p>
-<p><strong>Timer和TimerTask导致内存泄露</strong><br>Timer和TimerTask在Android中通常会被用来做一些计时或循环任务，比如实现无限轮播的ViewPager：</p>
-<p>当我们Activity销毁的时，有可能Timer还在继续等待执行TimerTask，它持有Activity的引用不能被回收，因此当我们Activity销毁的时候要立即cancel掉Timer和TimerTask，以避免发生内存泄漏。</p>
-<p><strong>集合中的对象未清理造成内存泄露</strong><br>这个比较好理解，如果一个对象放入到ArrayList、HashMap等集合中，这个集合就会持有该对象的引用。当我们不再需要这个对象时，也并没有将它从集合中移除，这样只要集合还在使用（而此对象已经无用了），这个对象就造成了内存泄露。并且如果集合被静态引用的话，集合里面那些没有用的对象更会造成内存泄露了。所以在使用集合时要及时将不用的对象从集合remove，或者clear集合，以避免内存泄漏。</p>
-<p><strong>资源未关闭或释放导致内存泄露</strong><br>在使用IO、File流或者Sqlite、Cursor等资源时要及时关闭。这些资源在进行读写操作时通常都使用了缓冲，如果及时不关闭，这些缓冲对象就会一直被占用而得不到释放，以致发生内存泄露。因此我们在不需要使用它们的时候就及时关闭，以便缓冲能及时得到释放，从而避免内存泄露。</p>
-<p><strong>属性动画造成内存泄露</strong><br>动画同样是一个耗时任务，比如在Activity中启动了属性动画（ObjectAnimator），但是在销毁的时候，没有调用cancle方法，虽然我们看不到动画了，但是这个动画依然会不断地播放下去，动画引用所在的控件，所在的控件引用Activity，这就造成Activity无法正常释放。因此同样要在Activity销毁的时候cancel掉属性动画，避免发生内存泄漏。</p>
-<p><strong>WebView造成内存泄露</strong><br>关于WebView的内存泄露，因为WebView在加载网页后会长期占用内存而不能被释放，因此我们在Activity销毁后要调用它的destory()方法来销毁它以释放内存。</p>
-<p>总结<br>内存泄露在Android内存优化是一个比较重要的一个方面，很多时候程序中发生了内存泄露我们不一定就能注意到，所有在编码的过程要养成良好的习惯。总结下来只要做到以下这几点就能避免大多数情况的内存泄漏：</p>
-<p>构造单例的时候尽量别用Activity的引用；<br>静态引用时注意应用对象的置空或者少用静态引用；<br>使用静态内部类+软引用代替非静态内部类；<br>及时取消广播或者观察者注册；<br>耗时任务、属性动画在Activity销毁时记得cancel；<br>文件流、Cursor等资源及时关闭；<br>Activity销毁时WebView的移除和销毁。</p>
-<p>自己写一遍加深印象方便记忆<br>感谢原文作者<br>原文链接：<a href="https://www.jianshu.com/p/ab4a7e353076" target="_blank" rel="noopener">https://www.jianshu.com/p/ab4a7e353076</a></p>
-<h5 id="内存分析工具"><a href="#内存分析工具" class="headerlink" title="内存分析工具"></a>内存分析工具</h5><p>Android Profiler<br>leakcanary</p>
-<h5 id="二-对象复用"><a href="#二-对象复用" class="headerlink" title="二.对象复用"></a>二.对象复用</h5><p>复用系统自带的资源<br>例如adapter中的ContentView;避免在onDraw里创建对象；对象池设计的应用。</p>
-<h5 id="三-数据结构优化"><a href="#三-数据结构优化" class="headerlink" title="三.数据结构优化"></a>三.数据结构优化</h5><p> 频繁字符串拼接使用stringbuilder，它比+拼接高效；大数据量存储使用ArrayMap，SparseArray替代HaspMap；避<br>免内存抖动，避免大量分配了一些局部变量。</p>
-<h5 id="四-缓存技术"><a href="#四-缓存技术" class="headerlink" title="四.缓存技术"></a>四.缓存技术</h5><p>1.使用缓存技术，比如LruCache、DiskLruCache、对象重复并且频繁调用可以考虑对象池<br>2.对于引用生命周期不一样的对象，可以用软引用或弱引用SoftReferner WeakReferner</p>
-<p>SoftReferner 和WeakReferner弱引用可以和一个引用队列（ReferenceQueue）联合使用，如果弱引用所引用的对象被垃圾回收，Java虚拟机就会把这个弱引用加入到与之关联的引用队列中。</p>
-<p><strong>ReferenceQueue</strong></p>
-<p>引用队列，如果保存的是Reference对象本身，如果：Reference引用指向的对象被GC回收，其实Reference已经无效了</p>
-<p>leakcanary，每当弱引用所指向的对象被内存回收的时候，我们就可以在queue中找到这个引用。如果在接下来的预期时间之后，我们发现它依然没有出现在ReferenceQueue中，那就可以判定它的内存泄露了。LeakCanary检测内存泄露的核心原理就在这里</p>
-<p>GC回收机制算法 - 可达性算法<br>可达性算法是目前Java虚拟机比较常用的GC回收机制算法。</p>
-<p>主要原理是是通过GCRoots对象作为根节点，从根节点开始往下遍历，遍历的路径称为引用链，当一个对象到GC Roots没有任何引用链相连的时候，则说明此对象是不可用的。</p>
-<h5 id="四-避免oom"><a href="#四-避免oom" class="headerlink" title="四.避免oom"></a>四.避免oom</h5><p>避免方法 上面的内存优化</p>
+            <h5 id="Apk瘦身优化"><a href="#Apk瘦身优化" class="headerlink" title="Apk瘦身优化"></a>Apk瘦身优化</h5><p>资源混淆 minifyEnabled true<br>开启资源压缩 shrinkResources true</p>
+<p>移除无用代码、功能；<br>移除无用的库、避免功能雷同的库；<br>缩减方法数；</p>
+<p>重复资源优化<br>移除无用的资源文件；<br>Drawable目录只保留一份资源；<br>对图片进行压缩；<br>PNG转换JPG；<br>使用矢量图；<br>使用WebP；<br>资源在线化；</p>
+<p>3 So瘦身</p>
+<p>保留特定架构的so库,比如armeabi几户支持所有手机,像微信一样</p>
 
           
         
@@ -1520,6 +1511,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/InputManagerService/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/InputManagerService/" itemprop="url">InputManagerService</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="InputManagerService"><a href="#InputManagerService" class="headerlink" title="InputManagerService"></a>InputManagerService</h5><p><strong>InputManagerService</strong>触摸事件的采集及分发,比如按下,滑动,锁屏拍照等等事件<br>在SystemService进程启动startOtherService中和WindowManageService一起启动了</p>
+<p><strong>InputReader</strong>读取事件(InputReader.cpp)<br>创建个线程循环 Looper线程,通过EventHub的getEvents获取Input事件,转换成EventEntry事件加入到InputDispatcher的mInboundQueue。</p>
+<p><strong>InputDispatcher</strong>事件派发事件(InputDispatcher.cpp)<br>创建一个线程派发事件,Looper线程，基于native的Looper实现了Hanlder消息处理模型，如果有Input事件到来就被唤醒处理事件，处理完毕后继续睡眠等待<br>dispatchOnceInnerLocked ANR触发</p>
+<p>派发事件通过findTouchedWindowTargetsLocked找到目标Window，进而通过dispatchEventLocked将消息发送到目标窗口(通过Socket将事件发送到目标窗口)<br>将监听事件交给ViewRootImpl中的rootView</p>
+<p>android 事件响应机制是先 分发（先由外部的View接收，然后依次传递给其内层的最小View）再 处理 （从最小View单元（事件源）开始依次向外层传递。）的形式实现的。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/DexClassLoader和PathClassLoader的区别/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1652,183 +1792,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/内存模型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/内存模型/" itemprop="url">JVM内存模型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="JVM内存模型"><a href="#JVM内存模型" class="headerlink" title="JVM内存模型"></a>JVM内存模型</h5><p><strong>Heap内存分配</strong><br>JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；<br>JVM最大分配的内存由-Xmx指 定，默认是物理内存的1/4。</p>
-<p>1、程序计数器</p>
-<p>程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以看</p>
-<p>做是当前线程所执行的字节码的行号指示器。在虚拟机的概念模型里（仅是概念模型，</p>
-<p>各种虚拟机可能会通过一些更高效的方式去实现），字节码解释器工作时就是通过改变</p>
-<p>这个计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、</p>
-<p>线程恢复等基础功能都需要依赖这个计数器来完成。</p>
-<p>2、Java 虚拟机栈</p>
-<p>与程序计数器一样，Java 虚拟机栈（Java Virtual Machine Stacks）也是线程私有的，</p>
-<p>它的生命周期与线程相同。虚拟机栈描述的是Java 方法执行的内存模型：每个方法被执</p>
-<p>行的时候都会同时创建一个栈帧（Stack Frame ①）用于存储局部变量表、操作栈、动态</p>
-<p>链接、方法出口等信息。每一个方法被调用直至执行完成的过程，就对应着一个栈帧在</p>
-<p>虚拟机栈中从入栈到出栈的过程。</p>
-<p>3、本地方法栈</p>
-<p>本地方法栈（Native Method Stacks）与虚拟机栈所发挥的作用是非常相似的，其</p>
-<p>区别不过是虚拟机栈为虚拟机执行Java 方法（也就是字节码）服务，而本地方法栈则</p>
-<p>是为虚拟机使用到的Native 方法服务。虚拟机规范中对本地方法栈中的方法使用的语</p>
-<p>言、使用方式与数据结构并没有强制规定，因此具体的虚拟机可以自由实现它。甚至</p>
-<p>有的虚拟机（譬如Sun HotSpot 虚拟机）直接就把本地方法栈和虚拟机栈合二为一。</p>
-<p>与虚拟机栈一样，本地方法栈区域也会抛出StackOverflowError 和OutOfMemoryError</p>
-<p>异常。</p>
-<p>4、Java 堆</p>
-<p>对于大多数应用来说，Java 堆（Java Heap）是Java 虚拟机所管理的内存中最大的</p>
-<p>一块。Java 堆是被所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的</p>
-<p>唯一目的就是存放对象实例，几乎所有的对象实例都在这里分配内存</p>
-<p>5、方法区</p>
-<p>方法区（Method Area）与Java 堆一样，是各个线程共享的内存区域，它用于存</p>
-<p>储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。</p>
-<p>6、运行时常量池</p>
-<p>运行时常量池（Runtime Constant Pool）是方法区的一部分。Class 文件中除了有</p>
-<p>类的版本、字段、方法、接口等描述等信息外，还有一项信息是常量池（Constant Pool</p>
-<p>Table），用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后存放</p>
-<p>到方法区的运行时常量池中。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1883,7 +1846,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">109</span>
+                  <span class="site-state-item-count">110</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1894,7 +1857,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1944,7 +1907,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

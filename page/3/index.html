@@ -282,6 +282,670 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/为什么子线程弹Toast报错及为什么Handle需要Loop对象/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/为什么子线程弹Toast报错及为什么Handle需要Loop对象/" itemprop="url">为什么子线程弹Toast报错及为什么Handle需要Loop对象</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="为什么子线程弹Toast报错及为什么Handle需要Loop对象"><a href="#为什么子线程弹Toast报错及为什么Handle需要Loop对象" class="headerlink" title="为什么子线程弹Toast报错及为什么Handle需要Loop对象"></a>为什么子线程弹Toast报错及为什么Handle需要Loop对象</h5><p>弹出错误:java.lang.RuntimeException: Can’t toast on a thread that has not called Looper.prepare()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Toast.makeText(et_input.getContext(),&quot;测试&quot;,Toast.LENGTH_LONG).show();;</span><br></pre></td></tr></table></figure>
+<p>1.Toast.makeTest调用构造函数会创建个TN对象,这个对象需要Loop,Loop为空,并且当前线程的loop也是空的就会抛错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public Toast(@NonNull Context context, @Nullable Looper looper) &#123;</span><br><span class="line">       mContext = context;</span><br><span class="line">       mTN = new TN(context.getPackageName(), looper);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">TN(String packageName, @Nullable Looper looper) &#123;</span><br><span class="line">...</span><br><span class="line">          if (looper == null) &#123;</span><br><span class="line">              // Use Looper.myLooper() if looper is not specified.</span><br><span class="line">              looper = Looper.myLooper();</span><br><span class="line">              if (looper == null) &#123;</span><br><span class="line">                  throw new RuntimeException(</span><br><span class="line">                          &quot;Can&apos;t toast on a thread that has not called Looper.prepare()&quot;);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br></pre></td></tr></table></figure>
+<p>2.提示也很明细,从源码看也可以看到是少了loop对象<br>所以只需要在生成Toast对象之前,创建loop对象<code>Looper.prepare()</code>,并且最后开启循环 <code>Looper.loop()</code></p>
+<blockquote>
+<p>注意必须开启循环Loop.loop(),否则消息无法弹出</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Looper.prepare();</span><br><span class="line">Toast.makeText(et_input.getContext(),&quot;测试&quot;,Toast.LENGTH_LONG).show();</span><br><span class="line"> Looper.loop();</span><br></pre></td></tr></table></figure>
+<p>3.为什么一定要Loop ,是因为源码中有用到Handler ,handler 必须要有个loop对象的</p>
+<blockquote>
+<p>而且handler会关联Loop当中的mQueue对象,用来发消息,比如sendMessageDelayed 最终会通过mQueue对象发送消息,loop对象收到消息,会回调mQueue对象关联的loop对象的handleMessage(Message msg)的接口,完成消息通信.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public Handler(Callback callback, boolean async) &#123;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">    mLooper = Looper.myLooper();</span><br><span class="line">    if (mLooper == null) &#123;</span><br><span class="line">        throw new RuntimeException(</span><br><span class="line">            &quot;Can&apos;t create handler inside thread &quot; + Thread.currentThread()</span><br><span class="line">                    + &quot; that has not called Looper.prepare()&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    mQueue = mLooper.mQueue;</span><br><span class="line">    mCallback = callback;</span><br><span class="line">    mAsynchronous = async;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/二分查找/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/二分查找/" itemprop="url">二分查找</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h5><p>二分查找也称<strong>折半查找</strong>（Binary Search），它是一种效率较高的查找方法。但是，折半查找要求线性表必须采用顺<strong>序存储结构</strong>，而且表中元素按关键字有序排列</p>
+<p>算法要求<br>1.必须采用顺序存储结构。<br>2.必须按关键字大小有序排列。</p>
+<p>二分查找只适用顺序存储结构。为保持表的有序性，在顺序结构里插入和删除都必须移动大量的结点。因此，二分查找特别<strong>适用于那种一很少改动、而又经常需要查找的线性表</strong>。</p>
+<h5 id="循环实现"><a href="#循环实现" class="headerlink" title="循环实现"></a>循环实现</h5><p>java实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public static int binarySearch(Integer[] srcArray, int des) &#123;</span><br><span class="line">    //定义初始最小、最大索引</span><br><span class="line">    int low = 0;</span><br><span class="line">    int high = srcArray.length - 1;</span><br><span class="line">    //确保不会出现重复查找，越界</span><br><span class="line">    while (low &lt;= high) &#123;</span><br><span class="line">        //计算出中间索引值</span><br><span class="line">        int middle = (high + low)&gt;&gt;&gt;1 ;//防止溢出</span><br><span class="line">        if (des == srcArray[middle]) &#123;</span><br><span class="line">            return middle;</span><br><span class="line">        //判断下限</span><br><span class="line">        &#125; else if (des &lt; srcArray[middle]) &#123;</span><br><span class="line">            high = middle - 1;</span><br><span class="line">        //判断上限</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            low = middle + 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //若没有，则返回-1</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/内存优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/内存优化/" itemprop="url">内存优化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>####内存优化</p>
+<h5 id="一-避免内存泄漏及优化方法"><a href="#一-避免内存泄漏及优化方法" class="headerlink" title="一. 避免内存泄漏及优化方法"></a>一. 避免内存泄漏及优化方法</h5><p><strong>单例导致内存泄露</strong><br>单例的静态特性使得它的生命周期同应用的生命周期一样长，如果一个对象已经没有用处了，但是单例还持有它的引用，那么在整个应用程序的生命周期它都不能正常被回收，从而导致内存泄露。</p>
+<p>内存泄漏场景<br>单例模式引用了activity,activity退出后,有于单例引用而无法释放</p>
+<p>解决方法<br>context参数改为全局的上下文</p>
+<p><strong>静态变量导致内存泄露</strong></p>
+<p>静态变量存储在方法区，它的生命周期从类加载开始，到整个进程结束。一旦静态变量初始化后，它所持有的引用只有等到进程结束才会释放。</p>
+<p>内存泄漏场景<br>activity中定静态变量,activity退出后,有于静态变量引用而不能释放</p>
+<p><strong>非静态内部类导致内存泄露</strong><br>非静态内部类（包括匿名内部类）默认就会持有外部类的引用，当非静态内部类对象的生命周期比外部类对象的生命周期长时，就会导致内存泄露。</p>
+<p>内存泄漏场景<br>1.典型的场景就是使用Handler</p>
+<p>1.使用Thread或者AsyncTask。</p>
+<p>解决方法<br>静态内部类+弱引用的方式<br>hadler 要清除回调消息</p>
+<p><strong>未取消注册或回调导致内存泄露</strong><br>比如我们在Activity中注册广播，如果在Activity销毁后不取消注册，那么这个刚播会一直存在系统中，同上面所说的非静态内部类一样持有Activity引用，导致内存泄露。因此注册广播后在Activity销毁后一定要取消注册。</p>
+<p><strong>Timer和TimerTask导致内存泄露</strong><br>Timer和TimerTask在Android中通常会被用来做一些计时或循环任务，比如实现无限轮播的ViewPager：</p>
+<p>当我们Activity销毁的时，有可能Timer还在继续等待执行TimerTask，它持有Activity的引用不能被回收，因此当我们Activity销毁的时候要立即cancel掉Timer和TimerTask，以避免发生内存泄漏。</p>
+<p><strong>集合中的对象未清理造成内存泄露</strong><br>这个比较好理解，如果一个对象放入到ArrayList、HashMap等集合中，这个集合就会持有该对象的引用。当我们不再需要这个对象时，也并没有将它从集合中移除，这样只要集合还在使用（而此对象已经无用了），这个对象就造成了内存泄露。并且如果集合被静态引用的话，集合里面那些没有用的对象更会造成内存泄露了。所以在使用集合时要及时将不用的对象从集合remove，或者clear集合，以避免内存泄漏。</p>
+<p><strong>资源未关闭或释放导致内存泄露</strong><br>在使用IO、File流或者Sqlite、Cursor等资源时要及时关闭。这些资源在进行读写操作时通常都使用了缓冲，如果及时不关闭，这些缓冲对象就会一直被占用而得不到释放，以致发生内存泄露。因此我们在不需要使用它们的时候就及时关闭，以便缓冲能及时得到释放，从而避免内存泄露。</p>
+<p><strong>属性动画造成内存泄露</strong><br>动画同样是一个耗时任务，比如在Activity中启动了属性动画（ObjectAnimator），但是在销毁的时候，没有调用cancle方法，虽然我们看不到动画了，但是这个动画依然会不断地播放下去，动画引用所在的控件，所在的控件引用Activity，这就造成Activity无法正常释放。因此同样要在Activity销毁的时候cancel掉属性动画，避免发生内存泄漏。</p>
+<p><strong>WebView造成内存泄露</strong><br>关于WebView的内存泄露，因为WebView在加载网页后会长期占用内存而不能被释放，因此我们在Activity销毁后要调用它的destory()方法来销毁它以释放内存。</p>
+<p>总结<br>内存泄露在Android内存优化是一个比较重要的一个方面，很多时候程序中发生了内存泄露我们不一定就能注意到，所有在编码的过程要养成良好的习惯。总结下来只要做到以下这几点就能避免大多数情况的内存泄漏：</p>
+<p>构造单例的时候尽量别用Activity的引用；<br>静态引用时注意应用对象的置空或者少用静态引用；<br>使用静态内部类+软引用代替非静态内部类；<br>及时取消广播或者观察者注册；<br>耗时任务、属性动画在Activity销毁时记得cancel；<br>文件流、Cursor等资源及时关闭；<br>Activity销毁时WebView的移除和销毁。</p>
+<p>自己写一遍加深印象方便记忆<br>感谢原文作者<br>原文链接：<a href="https://www.jianshu.com/p/ab4a7e353076" target="_blank" rel="noopener">https://www.jianshu.com/p/ab4a7e353076</a></p>
+<h5 id="内存分析工具"><a href="#内存分析工具" class="headerlink" title="内存分析工具"></a>内存分析工具</h5><p>Android Profiler<br>leakcanary</p>
+<h5 id="二-对象复用"><a href="#二-对象复用" class="headerlink" title="二.对象复用"></a>二.对象复用</h5><p>复用系统自带的资源<br>例如adapter中的ContentView;避免在onDraw里创建对象；对象池设计的应用。</p>
+<h5 id="三-数据结构优化"><a href="#三-数据结构优化" class="headerlink" title="三.数据结构优化"></a>三.数据结构优化</h5><p> 频繁字符串拼接使用stringbuilder，它比+拼接高效；大数据量存储使用ArrayMap，SparseArray替代HaspMap；避<br>免内存抖动，避免大量分配了一些局部变量。</p>
+<h5 id="四-缓存技术"><a href="#四-缓存技术" class="headerlink" title="四.缓存技术"></a>四.缓存技术</h5><p>1.使用缓存技术，比如LruCache、DiskLruCache、对象重复并且频繁调用可以考虑对象池<br>2.对于引用生命周期不一样的对象，可以用软引用或弱引用SoftReferner WeakReferner</p>
+<p>SoftReferner 和WeakReferner弱引用可以和一个引用队列（ReferenceQueue）联合使用，如果弱引用所引用的对象被垃圾回收，Java虚拟机就会把这个弱引用加入到与之关联的引用队列中。</p>
+<p><strong>ReferenceQueue</strong></p>
+<p>引用队列，如果保存的是Reference对象本身，如果：Reference引用指向的对象被GC回收，其实Reference已经无效了</p>
+<p>leakcanary，每当弱引用所指向的对象被内存回收的时候，我们就可以在queue中找到这个引用。如果在接下来的预期时间之后，我们发现它依然没有出现在ReferenceQueue中，那就可以判定它的内存泄露了。LeakCanary检测内存泄露的核心原理就在这里</p>
+<p>GC回收机制算法 - 可达性算法<br>可达性算法是目前Java虚拟机比较常用的GC回收机制算法。</p>
+<p>主要原理是是通过GCRoots对象作为根节点，从根节点开始往下遍历，遍历的路径称为引用链，当一个对象到GC Roots没有任何引用链相连的时候，则说明此对象是不可用的。</p>
+<h5 id="四-避免oom"><a href="#四-避免oom" class="headerlink" title="四.避免oom"></a>四.避免oom</h5><p>避免方法 上面的内存优化</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/内存模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/内存模型/" itemprop="url">JVM内存模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h5><p><strong>Heap内存分配</strong><br>JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；<br>JVM最大分配的内存由-Xmx指 定，默认是物理内存的1/4。</p>
+<p>1、程序计数器</p>
+<p>程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以看</p>
+<p>做是当前线程所执行的字节码的行号指示器。在虚拟机的概念模型里（仅是概念模型，</p>
+<p>各种虚拟机可能会通过一些更高效的方式去实现），字节码解释器工作时就是通过改变</p>
+<p>这个计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、</p>
+<p>线程恢复等基础功能都需要依赖这个计数器来完成。</p>
+<p>2、Java 虚拟机栈</p>
+<p>与程序计数器一样，Java 虚拟机栈（Java Virtual Machine Stacks）也是线程私有的，</p>
+<p>它的生命周期与线程相同。虚拟机栈描述的是Java 方法执行的内存模型：每个方法被执</p>
+<p>行的时候都会同时创建一个栈帧（Stack Frame ①）用于存储局部变量表、操作栈、动态</p>
+<p>链接、方法出口等信息。每一个方法被调用直至执行完成的过程，就对应着一个栈帧在</p>
+<p>虚拟机栈中从入栈到出栈的过程。</p>
+<p>3、本地方法栈</p>
+<p>本地方法栈（Native Method Stacks）与虚拟机栈所发挥的作用是非常相似的，其</p>
+<p>区别不过是虚拟机栈为虚拟机执行Java 方法（也就是字节码）服务，而本地方法栈则</p>
+<p>是为虚拟机使用到的Native 方法服务。虚拟机规范中对本地方法栈中的方法使用的语</p>
+<p>言、使用方式与数据结构并没有强制规定，因此具体的虚拟机可以自由实现它。甚至</p>
+<p>有的虚拟机（譬如Sun HotSpot 虚拟机）直接就把本地方法栈和虚拟机栈合二为一。</p>
+<p>与虚拟机栈一样，本地方法栈区域也会抛出StackOverflowError 和OutOfMemoryError</p>
+<p>异常。<br>局部变量表存放了编译期可知的各种基本数据类型（boolean、byte、char、short、int、</p>
+<p>float、long、double）</p>
+<p>4、Java 堆</p>
+<p>对于大多数应用来说，Java 堆（Java Heap）是Java 虚拟机所管理的内存中最大的</p>
+<p>一块。Java 堆是被所有<strong>线程共享</strong>的一块内存区域，在虚拟机启动时创建。此内存区域的</p>
+<p>唯一目的就是存放对象实例，几乎所有的对象实例都在这里分配内存</p>
+<p>5、方法区</p>
+<p>方法区（Method Area）与Java 堆一样，是各个<strong>线程共享</strong>的内存区域，它用于存</p>
+<p>储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。</p>
+<p>6、运行时常量池</p>
+<p>运行时常量池（Runtime Constant Pool）是方法区的一部分。Class 文件中除了有</p>
+<p>类的版本、字段、方法、接口等描述等信息外，还有一项信息是常量池（Constant Pool</p>
+<p>Table），用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后存放</p>
+<p>到方法区的运行时常量池中。</p>
+<h5 id="哪些对象可以作为GC-Roots-指的是堆内存回收"><a href="#哪些对象可以作为GC-Roots-指的是堆内存回收" class="headerlink" title="哪些对象可以作为GC Roots(指的是堆内存回收)"></a>哪些对象可以作为GC Roots(指的是堆内存回收)</h5><p>虚拟机栈中的引用对象</p>
+<p>方法区中类静态属性引用的对象</p>
+<p>方法区中常量引用的对象</p>
+<p>本地方法栈中JNI引用的对象</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/原子性可见性有序性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -429,605 +1093,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/String和StringBuffer和StringBuilder类的区别/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/String和StringBuffer和StringBuilder类的区别/" itemprop="url">tring和StringBuffer 和 StringBuilder 类的区别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>String和StringBuffer 和 StringBuilder 类的区别</p>
-<h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4><p>字符串，字符串是常量，它们的值在创建之后不能更改。</p>
-<blockquote>
-<p>第二次赋值其实改变了引用地址了，区分对象和引用</p>
-</blockquote>
-<h5 id="StringBuffer"><a href="#StringBuffer" class="headerlink" title="StringBuffer"></a>StringBuffer</h5><p>字符串缓冲区（StringBuffer）支持可变的字符串，是线程安全的可变字符序列。可将字符串缓冲区安全地用于多个线程。可以在必要时对这些方法进行同步</p>
-<h5 id="StringBuilder"><a href="#StringBuilder" class="headerlink" title="StringBuilder"></a>StringBuilder</h5><p>字符串缓冲区（StringBuilder）支持可变的字符串，适用于单个线程，与StringBuffer的最大区别是StringBuilder线程不安全。该类被设计用作 StringBuffer 的一个简易替换，如果可能，建议优先采用该类，因为在大多数实现中，它比 StringBuffer 要快。</p>
-<blockquote>
-<p>简单的字符串用String<br>频繁更改变换修改的用StringBuilder或者StringBuffer<br>考虑线程安全用StringBuffer<br>单线程StringBullder<br>高性能StringBullder</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/invalidate和postInvalidate及requestLayout方法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/invalidate和postInvalidate及requestLayout方法/" itemprop="url">invalidate和postInvalidate及requestLayout方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="invalidate和postInvalidate及requestLayout方法"><a href="#invalidate和postInvalidate及requestLayout方法" class="headerlink" title="invalidate和postInvalidate及requestLayout方法"></a>invalidate和postInvalidate及requestLayout方法</h5><p><strong>invalidate() postInvalidate()</strong><br><strong>共同点</strong>：都是调用onDraw()方法，然后去达到重绘view的目的</p>
-<p><strong>区别</strong>：invalidate()用于主线程，postInvalidate()用于子线程</p>
-<p> <strong>requestLayout()</strong></p>
-<p>也可以达到重绘view的目的，但是与前两者不同，它会先调用onMearsure() onLayout() ，再调用ondraw()方法。重新进行一次测量,布局,绘制的过程</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Apk瘦身优化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/Apk瘦身优化/" itemprop="url">Apk瘦身优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="Apk瘦身优化"><a href="#Apk瘦身优化" class="headerlink" title="Apk瘦身优化"></a>Apk瘦身优化</h5><p>资源混淆 minifyEnabled true<br>开启资源压缩 shrinkResources true</p>
-<p>移除无用代码、功能；<br>移除无用的库、避免功能雷同的库；<br>缩减方法数；</p>
-<p>重复资源优化<br>移除无用的资源文件；<br>Drawable目录只保留一份资源；<br>对图片进行压缩；<br>PNG转换JPG；<br>使用矢量图；<br>使用WebP；<br>资源在线化；</p>
-<p>3 So瘦身</p>
-<p>保留特定架构的so库,比如armeabi几户支持所有手机,像微信一样</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/ThreadPoolExecutor的使用和理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/ThreadPoolExecutor的使用和理解/" itemprop="url">ThreadPoolExecutor的使用和理解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="ThreadPoolExecutor的使用和理解"><a href="#ThreadPoolExecutor的使用和理解" class="headerlink" title="ThreadPoolExecutor的使用和理解"></a>ThreadPoolExecutor的使用和理解</h5><p>corePoolSize,//核心线程数,当线程数超过workQueue阻塞队列数,并且核心数线程已满,会创建新的线程直到达到最大线程<br>                maximumPoolSize,//最大线程数,<br>                keepAliveTime,//空闲线程等待时间,时间到结束释放<br>                unit,//等待时间单位<br>                workQueue, //线程阻塞队列<br>                threadFactory,//线程生产工厂<br>                handler);//当线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</p>
-<p>ThreadFactory是一个线程工厂,负责生产线程的</p>
-<p>例子:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.concurrent.ArrayBlockingQueue;</span><br><span class="line">import java.util.concurrent.BlockingQueue;</span><br><span class="line">import java.util.concurrent.LinkedBlockingQueue;</span><br><span class="line">import java.util.concurrent.RejectedExecutionHandler;</span><br><span class="line">import java.util.concurrent.ThreadFactory;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line">import java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line">public class ThreadPollTest &#123;</span><br><span class="line">	static ThreadPoolExecutor executor;</span><br><span class="line">    public static void main(String[] args) throws InterruptedException, IOException &#123;</span><br><span class="line">        int corePoolSize = 2;</span><br><span class="line">        int maximumPoolSize = 4;</span><br><span class="line">        long keepAliveTime = 60;</span><br><span class="line">        TimeUnit unit = TimeUnit.SECONDS;</span><br><span class="line">        BlockingQueue&lt;Runnable&gt; workQueue = new LinkedBlockingQueue&lt;&gt;(10);</span><br><span class="line">        ThreadFactory threadFactory = new NameTreadFactory();</span><br><span class="line">        RejectedExecutionHandler handler = new MyIgnorePolicy();</span><br><span class="line">        executor = new ThreadPoolExecutor(</span><br><span class="line">        		corePoolSize,//核心线程数,当线程数超过workQueue阻塞队列数,并且核心数线程已满,会创建新的线程直到达到最大线程</span><br><span class="line">        		maximumPoolSize,//最大线程数,</span><br><span class="line">        		keepAliveTime,//空闲线程等待时间,时间到结束释放</span><br><span class="line">        		unit,//等待时间单位</span><br><span class="line">                workQueue, //线程阻塞队列</span><br><span class="line">                threadFactory,//线程生产工厂</span><br><span class="line">                handler);//当线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</span><br><span class="line">        executor.prestartAllCoreThreads(); // 预启动所有核心线程</span><br><span class="line">        </span><br><span class="line">        for (int i = 1; i &lt;= 16; i++) &#123;</span><br><span class="line">            MyTask task = new MyTask(String.valueOf(i));</span><br><span class="line">            executor.execute(task);</span><br><span class="line">        &#125;</span><br><span class="line">  </span><br><span class="line">    &#125;</span><br><span class="line">    //线程工厂</span><br><span class="line">    static class NameTreadFactory implements ThreadFactory &#123;</span><br><span class="line"></span><br><span class="line">        private final AtomicInteger mThreadNum = new AtomicInteger(1);</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public Thread newThread(Runnable r) &#123;</span><br><span class="line">            Thread t = new Thread(r, &quot;my-thread-&quot; + mThreadNum.getAndIncrement());</span><br><span class="line">            System.out.println(t.getName() + &quot; has been created&quot;);</span><br><span class="line">            return t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</span><br><span class="line">    public static class MyIgnorePolicy implements RejectedExecutionHandler &#123;</span><br><span class="line"></span><br><span class="line">        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) &#123;</span><br><span class="line">            doLog(r, e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private void doLog(Runnable r, ThreadPoolExecutor e) &#123;</span><br><span class="line">            System.err.println( r.toString() + &quot; rejected&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //例子执行任务</span><br><span class="line">    static class MyTask implements Runnable &#123;</span><br><span class="line">        private String name;</span><br><span class="line"></span><br><span class="line">        public MyTask(String name) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(this.toString() + &quot; is running!activityCount:&quot;+executor.getActiveCount()</span><br><span class="line">                +&quot;,getCompletedTaskCount:&quot;+executor.getCompletedTaskCount()</span><br><span class="line">                +&quot;,getTaskCount:&quot;+executor.getTaskCount()</span><br><span class="line">                +&quot;,getQueue().size:&quot;+executor.getQueue().size()</span><br><span class="line">                );</span><br><span class="line">                Thread.sleep(3000); //让任务执行慢点</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public String getName() &#123;</span><br><span class="line">            return name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public String toString() &#123;</span><br><span class="line">            return &quot;MyTask [name=&quot; + name + &quot;]&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/反转链表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1127,151 +1192,6 @@
             <h5 id="反转链表"><a href="#反转链表" class="headerlink" title="反转链表"></a>反转链表</h5><p>递归方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">   public ListNode reverseList(ListNode head) &#123;</span><br><span class="line">     if(head == null || head.next == null) return head;</span><br><span class="line">        ListNode p = reverseList(head.next);</span><br><span class="line">        head.next.next = head;</span><br><span class="line">        head.next = null;</span><br><span class="line">        return p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>循环方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public ListNode reverseList(ListNode head) &#123;</span><br><span class="line">      ListNode cur = head, pre = null, next = null;</span><br><span class="line">      while(cur != null)&#123;</span><br><span class="line">          next = cur.next;</span><br><span class="line">          cur.next = pre;</span><br><span class="line">          pre = cur;</span><br><span class="line">          cur = next;</span><br><span class="line">      &#125;</span><br><span class="line">      return pre;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/ViewModel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/ViewModel/" itemprop="url">ViewModel</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="ViewModel"><a href="#ViewModel" class="headerlink" title="ViewModel"></a>ViewModel</h5><p>ViewModel类设计用于以生命周期意识的方式存储和管理与UI相关的数据。VIEWModel类允许数据在配置更改（如屏幕旋转）中生存。</p>
 
           
         
@@ -1619,7 +1539,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/线程的状态/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/屏幕适配/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -1638,7 +1558,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/09/线程的状态/" itemprop="url">线程的状态</a></h1>
+                <a class="post-title-link" href="/2019/02/09/屏幕适配/" itemprop="url">屏幕适配</a></h1>
         
 
         <div class="post-meta">
@@ -1715,29 +1635,203 @@
       
         
           
-            <h5 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h5><p><strong>1.新建状态</strong><br>当用new操作符创建一个线程时。此时程序还没有开始运行线程中的代码。</p>
-<p><strong>2.就绪状态</strong></p>
-<p>当线程对象调用start()方法即启动了线程，start()方法创建线程运行的系统资源，JVM调度线程运行run()方法。当start()方法返回后，线程就处于就绪状态。</p>
-<p>处于就绪状态的线程并不一定立即运行run()方法，线程还必须同其他线程竞争CPU时间，只有获得CPU时间才可以运行线程。因为在单CPU的计算机系统中，不可能同时运行多个线程，一个时刻仅有一个线程处于运行状态。因此此时可能有多个线程处于就绪状态。对多个处于就绪状态的线程是由Java运行时系统的线程调度程序来调度的。</p>
-<p><strong>3.运行状态（running）</strong></p>
-<p>当线程获得CPU时间后，它才进入运行状态，真正开始执行run()方法。</p>
-<p><strong>4.阻塞状态（blocked）</strong><br>所谓阻塞状态是正在运行的线程没有运行结束，暂时让出CPU，这时其他处于就绪状态的线程就可以获得CPU时间，进入运行状态。</p>
-<p>线程运行过程中，可能由于各种原因进入阻塞状态：</p>
-<p>①线程通过调用sleep方法进入睡眠状态；</p>
-<p>②线程调用一个在I/O上被阻塞的操作，即该操作在输入输出操作完成之前不会返回到它的调用者；</p>
-<p>③线程试图得到一个锁，而该锁正被其他线程持有；</p>
-<p>④线程在等待某个触发条件；</p>
-<p>堵塞状态是前述四种状态中最有趣的，值得我们作进一步的探讨。线程被堵塞可能是由下述五方面的原因造成的：</p>
-<p>(1) 调用sleep(毫秒数)，使线程进入”睡眠”状态。在规定的时间内，这个线程是不会运行的。</p>
-<p>(2) 用suspend()暂停了线程的执行。除非线程收到resume()消息，否则不会返回”可运行”状态。</p>
-<p>(3) 用wait()暂停了线程的执行。除非线程收到nofify()或者notifyAll()消息，否则不会变成”可运行”（是的，这看起来同原因2非常相象，但有一个明显的区别是我们马上要揭示的）。</p>
-<p>(4) 线程正在等候一些IO（输入输出）操作完成。</p>
-<p>(5) 线程试图调用另一个对象的”同步”方法，但那个对象处于锁定状态，暂时无法使用。</p>
-<p><strong>5.死亡状态（dead）</strong></p>
-<p>有两个原因会导致线程死亡：</p>
-<p>①run方法正常退出而自然死亡；</p>
-<p>②一个未捕获的异常终止了run方法而使线程猝死；</p>
-<p>为了确定线程在当前是否存活着（就是要么是可运行的，要么是被阻塞了），需要使用isAlive方法，如果是可运行或被阻塞，这个方法返回true；如果线程仍旧是new状态且不是可运行的，或者线程死亡了，则返回false。</p>
+            <h5 id="屏幕适配"><a href="#屏幕适配" class="headerlink" title="屏幕适配"></a>屏幕适配</h5><table>
+<thead>
+<tr>
+<th style="text-align:left">密度类型</th>
+<th style="text-align:right">代表的分辨率（px）</th>
+<th style="text-align:center">屏幕密度（dpi）</th>
+<th style="text-align:center">换算（px/dp）</th>
+<th style="text-align:center">比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">低密度（ldpi）</td>
+<td style="text-align:right">240x320</td>
+<td style="text-align:center">120</td>
+<td style="text-align:center">1dp=0.75px</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:left">中密度（mdpi）</td>
+<td style="text-align:right">320x480</td>
+<td style="text-align:center">160</td>
+<td style="text-align:center">1dp=1px</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:left">高密度（hdpi）</td>
+<td style="text-align:right">480x800</td>
+<td style="text-align:center">240</td>
+<td style="text-align:center">1dp=1.5px</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:left">超高密度（xhdpi）</td>
+<td style="text-align:right">720x1280</td>
+<td style="text-align:center">320</td>
+<td style="text-align:center">1dp=2px</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td style="text-align:left">超超高密度（xxhdpi）</td>
+<td style="text-align:right">1080x1920</td>
+<td style="text-align:center">480</td>
+<td style="text-align:center">1dp=3px</td>
+<td style="text-align:center">12</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/性能分析工具androidprofiler/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/性能分析工具androidprofiler/" itemprop="url">性能分析工具profiler</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="性能分析工具android-profiler"><a href="#性能分析工具android-profiler" class="headerlink" title="性能分析工具android profiler"></a>性能分析工具android profiler</h5><p>android profiler Android studio ide 集成的分析工具</p>
+<p>一.cpu profiler<br>记录暂停,自动分析,傻瓜式操作<br>1.Method Trace<br>2.TracceView<br>3.SysteTrace<br>4.代码记录文件分析<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//.trace 文件路径,用来分析,最后生成testTraceView.trace文件在sd卡目录中</span><br><span class="line">Debug.startMethodTracing(&quot;testTraceView&quot;);</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Debug.stopMethodTracing();</span><br></pre></td></tr></table></figure>
+<p>二.memory profiler<br>三.network profiler<br>四.energy profiler</p>
+<p>adb shell dumpsys batterystats</p>
 
           
         
@@ -1827,7 +1921,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">109</span>
+                  <span class="site-state-item-count">110</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1838,7 +1932,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1888,7 +1982,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
