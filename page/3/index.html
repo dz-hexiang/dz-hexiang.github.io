@@ -440,154 +440,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/二分查找/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/二分查找/" itemprop="url">二分查找</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h5><p>二分查找也称<strong>折半查找</strong>（Binary Search），它是一种效率较高的查找方法。但是，折半查找要求线性表必须采用顺<strong>序存储结构</strong>，而且表中元素按关键字有序排列</p>
-<p>算法要求<br>1.必须采用顺序存储结构。<br>2.必须按关键字大小有序排列。</p>
-<p>二分查找只适用顺序存储结构。为保持表的有序性，在顺序结构里插入和删除都必须移动大量的结点。因此，二分查找特别<strong>适用于那种一很少改动、而又经常需要查找的线性表</strong>。</p>
-<h5 id="循环实现"><a href="#循环实现" class="headerlink" title="循环实现"></a>循环实现</h5><p>java实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public static int binarySearch(Integer[] srcArray, int des) &#123;</span><br><span class="line">    //定义初始最小、最大索引</span><br><span class="line">    int low = 0;</span><br><span class="line">    int high = srcArray.length - 1;</span><br><span class="line">    //确保不会出现重复查找，越界</span><br><span class="line">    while (low &lt;= high) &#123;</span><br><span class="line">        //计算出中间索引值</span><br><span class="line">        int middle = (high + low)&gt;&gt;&gt;1 ;//防止溢出</span><br><span class="line">        if (des == srcArray[middle]) &#123;</span><br><span class="line">            return middle;</span><br><span class="line">        //判断下限</span><br><span class="line">        &#125; else if (des &lt; srcArray[middle]) &#123;</span><br><span class="line">            high = middle - 1;</span><br><span class="line">        //判断上限</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            low = middle + 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //若没有，则返回-1</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/内存优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -716,6 +568,154 @@
 <p>GC回收机制算法 - 可达性算法<br>可达性算法是目前Java虚拟机比较常用的GC回收机制算法。</p>
 <p>主要原理是是通过GCRoots对象作为根节点，从根节点开始往下遍历，遍历的路径称为引用链，当一个对象到GC Roots没有任何引用链相连的时候，则说明此对象是不可用的。</p>
 <h5 id="四-避免oom"><a href="#四-避免oom" class="headerlink" title="四.避免oom"></a>四.避免oom</h5><p>避免方法 上面的内存优化</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/二分查找/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/二分查找/" itemprop="url">二分查找</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h5><p>二分查找也称<strong>折半查找</strong>（Binary Search），它是一种效率较高的查找方法。但是，折半查找要求线性表必须采用顺<strong>序存储结构</strong>，而且表中元素按关键字有序排列</p>
+<p>算法要求<br>1.必须采用顺序存储结构。<br>2.必须按关键字大小有序排列。</p>
+<p>二分查找只适用顺序存储结构。为保持表的有序性，在顺序结构里插入和删除都必须移动大量的结点。因此，二分查找特别<strong>适用于那种一很少改动、而又经常需要查找的线性表</strong>。</p>
+<h5 id="循环实现"><a href="#循环实现" class="headerlink" title="循环实现"></a>循环实现</h5><p>java实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public static int binarySearch(Integer[] srcArray, int des) &#123;</span><br><span class="line">    //定义初始最小、最大索引</span><br><span class="line">    int low = 0;</span><br><span class="line">    int high = srcArray.length - 1;</span><br><span class="line">    //确保不会出现重复查找，越界</span><br><span class="line">    while (low &lt;= high) &#123;</span><br><span class="line">        //计算出中间索引值</span><br><span class="line">        int middle = (high + low)&gt;&gt;&gt;1 ;//防止溢出</span><br><span class="line">        if (des == srcArray[middle]) &#123;</span><br><span class="line">            return middle;</span><br><span class="line">        //判断下限</span><br><span class="line">        &#125; else if (des &lt; srcArray[middle]) &#123;</span><br><span class="line">            high = middle - 1;</span><br><span class="line">        //判断上限</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            low = middle + 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //若没有，则返回-1</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -946,153 +946,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/原子性可见性有序性/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/原子性可见性有序性/" itemprop="url">原子性可见性有序性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="原子性，可见性，有序性"><a href="#原子性，可见性，有序性" class="headerlink" title="原子性，可见性，有序性"></a>原子性，可见性，有序性</h5><h5 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h5><p>原子性是指一个操作是不可中断的，要么全部执行成功要么全部执行失败，有着“同生共死”的感觉。<code>在多个线程一起执行的时候，一个操作一旦开始，就不会被其他线程所干扰</code>.<code>volatile并不能保证原子性</code>,<code>synchronized满足原子性</code>。</p>
-<h5 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h5><p>可见性是指当一个线程修改了共享变量后，其他线程能够立即得知这个修改。通过之前对synchronzed内存语义进行了分析，当线程获取锁时会从主内存中获取共享变量的最新值，释放锁的时候会将共享变量同步到主内存中。从而，<code>synchronized具有可见性</code>。同样的在volatile分析中，会通过在指令中添加lock指令，以实现内存可见性。因此, <code>volatile具有可见性</code></p>
-<h5 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h5><p>synchronized语义表示锁在同一时刻只能由一个线程进行获取，当锁被占用后，其他线程只能等待。因此，synchronized语义就要求线程在访问读写共享变量时只能“串行”执行，因此<code>synchronized具有有序性</code>。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile包含禁止指令重排序的语义，其具有有序性</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/反转链表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1192,6 +1045,153 @@
             <h5 id="反转链表"><a href="#反转链表" class="headerlink" title="反转链表"></a>反转链表</h5><p>递归方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">   public ListNode reverseList(ListNode head) &#123;</span><br><span class="line">     if(head == null || head.next == null) return head;</span><br><span class="line">        ListNode p = reverseList(head.next);</span><br><span class="line">        head.next.next = head;</span><br><span class="line">        head.next = null;</span><br><span class="line">        return p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>循环方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public ListNode reverseList(ListNode head) &#123;</span><br><span class="line">      ListNode cur = head, pre = null, next = null;</span><br><span class="line">      while(cur != null)&#123;</span><br><span class="line">          next = cur.next;</span><br><span class="line">          cur.next = pre;</span><br><span class="line">          pre = cur;</span><br><span class="line">          cur = next;</span><br><span class="line">      &#125;</span><br><span class="line">      return pre;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/原子性可见性有序性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/原子性可见性有序性/" itemprop="url">原子性可见性有序性</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="原子性，可见性，有序性"><a href="#原子性，可见性，有序性" class="headerlink" title="原子性，可见性，有序性"></a>原子性，可见性，有序性</h5><h5 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h5><p>原子性是指一个操作是不可中断的，要么全部执行成功要么全部执行失败，有着“同生共死”的感觉。<code>在多个线程一起执行的时候，一个操作一旦开始，就不会被其他线程所干扰</code>.<code>volatile并不能保证原子性</code>,<code>synchronized满足原子性</code>。</p>
+<h5 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h5><p>可见性是指当一个线程修改了共享变量后，其他线程能够立即得知这个修改。通过之前对synchronzed内存语义进行了分析，当线程获取锁时会从主内存中获取共享变量的最新值，释放锁的时候会将共享变量同步到主内存中。从而，<code>synchronized具有可见性</code>。同样的在volatile分析中，会通过在指令中添加lock指令，以实现内存可见性。因此, <code>volatile具有可见性</code></p>
+<h5 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h5><p>synchronized语义表示锁在同一时刻只能由一个线程进行获取，当锁被占用后，其他线程只能等待。因此，synchronized语义就要求线程在访问读写共享变量时只能“串行”执行，因此<code>synchronized具有有序性</code>。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile包含禁止指令重排序的语义，其具有有序性</span><br></pre></td></tr></table></figure></p>
 
           
         

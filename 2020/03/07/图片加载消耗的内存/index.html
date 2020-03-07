@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://yoursite.com/images/blog/memory/1583564204515.png">
 <meta property="og:image" content="http://yoursite.com/images/blog/memory/1583564980075.png">
 <meta property="og:image" content="http://yoursite.com/images/blog/memory/1583567617916.png">
-<meta property="og:updated_time" content="2020-03-07T09:38:36.836Z">
+<meta property="og:updated_time" content="2020-03-07T11:05:02.567Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图片加载消耗的内存">
 <meta name="twitter:description" content="图片加载消耗的内存测试实验的手机及配置  一张图片700*700px 88.2k 测试手机小米k20 分辨率 1080*2340px   测试手机密度440dp  一、通过image src方式加载图片1234&amp;lt;ImageView       android:src=&amp;quot;@mipmap/test_memory&amp;quot;       android:layout_width=&amp;quo">
@@ -395,8 +395,9 @@
 <h4 id="二、当通过Glide裁剪图片大小的时候"><a href="#二、当通过Glide裁剪图片大小的时候" class="headerlink" title="二、当通过Glide裁剪图片大小的时候"></a>二、当通过Glide裁剪图片大小的时候</h4><p>无论图片放在哪个目录mdpi，hdpi，xhdpi，xxhdpi， xxxhdpi 还是网络加载<br>他的内存都是一样<br>300*300* 4 =  360032<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this)</span><br><span class="line">         .load(R.mipmap.test_memory)</span><br><span class="line">         .override(300, 300)</span><br><span class="line">         .into(image)</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this)</span><br><span class="line">       .load(&quot;https://mgamevoice2.bs2dl.yy.com/344892b5daac49a9870826beee6b1da5.jpg&quot;)</span><br><span class="line">       .override(300, 300)</span><br><span class="line">       .into(image)</span><br></pre></td></tr></table></figure>
 <p><img src="/images/blog/memory/1583567617916.png" alt="Alt text"></p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><strong>1. 当同imageview src 加载图片的情况</strong><br>无论设置ImageView高宽多少，bitmap分配的内存都是缩放后转换的 :  <code>高乘以宽 乘以每个像素大小</code><br>高宽缩放比例 ：<code>手机精确密度/图片所在目录对应dpi</code><br>手机精确密度小于图片所在目录对应dpi，按原图大小 算，<code>bitmap 内存最大不会超过原图</code>‘</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p><strong>1. 当同imageView src 加载图片的情况</strong><br>无论设置ImageView高宽多少,对内存分配无效。<br>bitmap分配的内存 =:  <code>原图缩放的高*原图缩放的宽*每个像素大小</code><br>高宽缩放比例 ：<code>手机密度/图片所在目录对应dpi</code><br>手机密度小于图片所在目录对应dpi，按原图大小 算，<code>bitmap 内存最大不会超过原图</code>‘</p>
 <p><strong>2. 当通过Glide裁剪本地图片大小的情况</strong><br>无论图片放在哪个目录mdpi，hdpi，xhdpi，xxhdpi， xxxhdpi 还是网络加载<br>他的内存都是一样 ： <code>裁剪高* 裁剪宽 * 每个像素大小</code></p>
+<p>以上的所说内存分配，bitmap.getAllocationByteCount()可以获得 ，跟getByteCount 不一样</p>
 <h5 id="测试的图片"><a href="#测试的图片" class="headerlink" title="测试的图片"></a>测试的图片</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">测试图片地址</span><br><span class="line">https://mgamevoice2.bs2dl.yy.com/344892b5daac49a9870826beee6b1da5.jpg</span><br></pre></td></tr></table></figure>
 <h5 id="不同目录对应的dpi"><a href="#不同目录对应的dpi" class="headerlink" title="不同目录对应的dpi"></a>不同目录对应的dpi</h5><p>ldpi（低）~120dpi density=0.75<br>mdpi（中）~160dpi density=1<br>hdpi（高）~240dpi density=1.5<br>xhdpi（超高）~320dpi density=2<br>xxhdpi（超超高）~480dpi density=3<br>xxxhdpi（超超超高）~640dpi density=4</p>
 
