@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="FFMPEG,shell,linux,音视频,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="NDK编译多个平台的FFMPEG编译配置里面的新名词  Toolchain — tools that are used for compiling and building of sources. Sysroot  — sysroot 是一个包含针对您的目标的系统标头和库的目录 Prefix — directory in which result of building will be writt">
+<meta name="keywords" content="FFMPEG,shell,linux,音视频">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NDK编译多个平台的FFMPEG">
+<meta property="og:url" content="http://yoursite.com/2018/12/22/NDK编译多个平台的FFMPEG/index.html">
+<meta property="og:site_name" content="Mr.HeXiang Blog">
+<meta property="og:description" content="NDK编译多个平台的FFMPEG编译配置里面的新名词  Toolchain — tools that are used for compiling and building of sources. Sysroot  — sysroot 是一个包含针对您的目标的系统标头和库的目录 Prefix — directory in which result of building will be writt">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-12T03:36:11.233Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NDK编译多个平台的FFMPEG">
+<meta name="twitter:description" content="NDK编译多个平台的FFMPEG编译配置里面的新名词  Toolchain — tools that are used for compiling and building of sources. Sysroot  — sysroot 是一个包含针对您的目标的系统标头和库的目录 Prefix — directory in which result of building will be writt">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/22/NDK编译多个平台的FFMPEG/">
+
+
+
+
+
+  <title>NDK编译多个平台的FFMPEG | Mr.HeXiang Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0f926975a1c57a01e8de99ca2a500b5d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mr.HeXiang Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习,学习记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/NDK编译多个平台的FFMPEG/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NDK编译多个平台的FFMPEG</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-22T17:36:17+08:00">
+                2018-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/音视频/" itemprop="url" rel="index">
+                    <span itemprop="name">音视频</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h5 id="NDK编译多个平台的FFMPEG"><a href="#NDK编译多个平台的FFMPEG" class="headerlink" title="NDK编译多个平台的FFMPEG"></a>NDK编译多个平台的FFMPEG</h5><p>编译配置里面的新名词</p>
+<ol>
+<li>Toolchain — tools that are used for compiling and building of sources.</li>
+<li>Sysroot  — sysroot 是一个包含针对您的<code>目标的系统标头和库</code>的目录</li>
+<li>Prefix — directory in which result of building will be written to.</li>
+<li>Cross-prefix — directory of compiler to be used.</li>
+<li>ABI — architecture of processor (i.e. x86, arm-v6, armv8–64 and so om).</li>
+<li>CFLAGS — flags for C-compiler.</li>
+<li>LDFLAGS — flags for linker.</li>
+</ol>
+<h5 id="android支持的7钟CPU架构"><a href="#android支持的7钟CPU架构" class="headerlink" title="android支持的7钟CPU架构"></a>android支持的7钟CPU架构</h5><p>armeabi 第5代 ARM v5TE，使用软件浮点运算，兼容所有ARM设备，通用性强，速度慢（只支持armeabi）</p>
+<p>armeabi-v7a 第7代 ARM v7，使用硬件浮点运算，具有高级扩展功能（支持 armeabi 和 armeabi-v7a，目前大部分手机都是这个架构）</p>
+<p>arm64-v8a 第8代，64位，包含AArch32、AArch64两个执行状态对应32、64bit（支持 armeabi-v7a、armeabi 和 arm64-v8a）</p>
+<p>*x86 intel 32位，一般用于平板（支持 armeabi(性能有所损耗) 和 x86）</p>
+<p>x86_64 intel 64位，一般用于平板（支持 x86 和 x86_64）</p>
+<p>mips 基本没见过（支持 mips）</p>
+<p>mips64 基本没见过（支持 mips 和 mips_64）</p>
+<h5 id="利用独立工具链接生成不同cpu架构的头文件"><a href="#利用独立工具链接生成不同cpu架构的头文件" class="headerlink" title="利用独立工具链接生成不同cpu架构的头文件"></a>利用独立工具链接生成不同cpu架构的头文件</h5><p><a href="https://developer.android.com/ndk/guides/standalone_toolchain" target="_blank" rel="noopener">https://developer.android.com/ndk/guides/standalone_toolchain</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=arm --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/arm</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=arm64 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/arm64</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=x86 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=x86_64 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86_64</span><br></pre></td></tr></table></figure></p>
+<p>另外一种利用toolchain方式生成，生成arm64，android 的api 必须对应21 （Android 5.0    API 21    Lollipop）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--toolchain=aarch64-linux-android-4.9  --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86_64</span><br></pre></td></tr></table></figure></p>
+<h5 id="–arch-有4种选项"><a href="#–arch-有4种选项" class="headerlink" title="–arch 有4种选项"></a>–arch 有4种选项</h5><p> arm arm64 x86 x86_64</p>
+<p>./configure \<br>  –cross-prefix=/home/hx/Downloads/ffmpeg-android/toolchain-android/bin/aarch64-linux-android- \<br>  –sysroot=”/home/hx/Downloads/ffmpeg-android/toolchain-android/sysroot” \<br>  –host=aarch64-linux \<br>  –enable-pic \<br>  –disable-asm \<br>  –enable-static \<br>  –disable-shared \<br>  –disable-opencl \<br>  –prefix=”/home/hx/Downloads/ffmpeg-android/build/arm64-v8a” \<br>  –disable-cli &amp;&amp;<br>   make -j8 &amp;&amp;make install</p>
+<p>./configure –target-os=linux –cross-prefix=/home/hx/Downloads/ffmpeg-android/toolchain-android/bin/aarch64-linux-android- –arch=arm64 –cpu=armv8-a –enable-runtime-cpudetect –sysroot=/home/hx/Downloads/ffmpeg-android/toolchain-android/sysroot –enable-pic –enable-libx264 –enable-libass –enable-libfreetype –enable-libfribidi –enable-libmp3lame –enable-fontconfig –enable-pthreads –disable-debug –enable-version3 –enable-hardcoded-tables –disable-ffplay –disable-ffprobe –enable-gpl –enable-yasm –disable-doc –enable-shared –enable-static –pkg-config=/home/hx/Downloads/ffmpeg-android/ffmpeg-pkg-config –prefix=/home/hx/Downloads/ffmpeg-android/build/arm64-v8a –extra-cflags=-I/home/hx/Downloads/ffmpeg-android/toolchain-android/include  –extra-ldflags=-L/home/hx/Downloads/ffmpeg-android/toolchain-android/lib –extra-libs=’-lpng -lexpat -lm’ –extra-cxxflags= &amp;&amp;make -j 8 &amp;&amp; make install</p>
+<blockquote>
+<p>错误：checking host system type… Invalid configuration `aarch64-linux-android’:<br>解决方法：更新config.sub and config.guess，或者更新整个类库</p>
+</blockquote>
+<p>armeabi 兼容是最全的，armeabi-v7速度比较块，但有些arm的cpu不兼容</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="贺祥 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="贺祥 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/FFMPEG/" rel="tag"># FFMPEG</a>
+          
+            <a href="/tags/shell/" rel="tag"># shell</a>
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/音视频/" rel="tag"># 音视频</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/22/源码分析ANR超时/" rel="next" title="源码分析ANR超时">
+                <i class="fa fa-chevron-left"></i> 源码分析ANR超时
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/09/设计模式-六大原则/" rel="prev" title="设计模式-六大原则">
+                设计模式-六大原则 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/person3.jpg" alt="贺祥">
+            
+              <p class="site-author-name" itemprop="name">贺祥</p>
+              <p class="site-description motion-element" itemprop="description">记学学记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#NDK编译多个平台的FFMPEG"><span class="nav-number">1.</span> <span class="nav-text">NDK编译多个平台的FFMPEG</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#android支持的7钟CPU架构"><span class="nav-number">2.</span> <span class="nav-text">android支持的7钟CPU架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#利用独立工具链接生成不同cpu架构的头文件"><span class="nav-number">3.</span> <span class="nav-text">利用独立工具链接生成不同cpu架构的头文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#–arch-有4种选项"><span class="nav-number">4.</span> <span class="nav-text">–arch 有4种选项</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">贺祥</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动「Hosted by Coding Pages」</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

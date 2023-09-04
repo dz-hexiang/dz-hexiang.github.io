@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,音视频,libyuv,h264,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="直播过程1.相机预览及数据采集Camera — 取数据(onPreviewFrame(Byte[] rawFrameData, Camera camera))2.原始帧处理（Rotate旋转/Scale缩放：使用Libyuv/FFmpeg等工具库）3.编码器编码得到相应的h24数据（openh264库编码）4.发送给流媒体服务器 （librtmp库推流）5.服务器接受及转发 一、数据采集及预览1.">
+<meta name="keywords" content="Android,音视频,libyuv,h264">
+<meta property="og:type" content="article">
+<meta property="og:title" content="直播推流方案及过程分解">
+<meta property="og:url" content="http://yoursite.com/2018/02/03/直播推流方案及过程分解/index.html">
+<meta property="og:site_name" content="Mr.HeXiang Blog">
+<meta property="og:description" content="直播过程1.相机预览及数据采集Camera — 取数据(onPreviewFrame(Byte[] rawFrameData, Camera camera))2.原始帧处理（Rotate旋转/Scale缩放：使用Libyuv/FFmpeg等工具库）3.编码器编码得到相应的h24数据（openh264库编码）4.发送给流媒体服务器 （librtmp库推流）5.服务器接受及转发 一、数据采集及预览1.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-09T01:41:29.117Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="直播推流方案及过程分解">
+<meta name="twitter:description" content="直播过程1.相机预览及数据采集Camera — 取数据(onPreviewFrame(Byte[] rawFrameData, Camera camera))2.原始帧处理（Rotate旋转/Scale缩放：使用Libyuv/FFmpeg等工具库）3.编码器编码得到相应的h24数据（openh264库编码）4.发送给流媒体服务器 （librtmp库推流）5.服务器接受及转发 一、数据采集及预览1.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/03/直播推流方案及过程分解/">
+
+
+
+
+
+  <title>直播推流方案及过程分解 | Mr.HeXiang Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0f926975a1c57a01e8de99ca2a500b5d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mr.HeXiang Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习,学习记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/03/直播推流方案及过程分解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">直播推流方案及过程分解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-03T19:36:17+08:00">
+                2018-02-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/音视频/" itemprop="url" rel="index">
+                    <span itemprop="name">音视频</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="直播过程"><a href="#直播过程" class="headerlink" title="直播过程"></a>直播过程</h4><p>1.相机预览及数据采集Camera — 取数据(onPreviewFrame(Byte[] rawFrameData, Camera camera))<br>2.原始帧处理（Rotate旋转/Scale缩放：使用Libyuv/FFmpeg等工具库）<br>3.编码器编码得到相应的h24数据（openh264库编码）<br>4.发送给流媒体服务器 （librtmp库推流）<br>5.服务器接受及转发</p>
+<h4 id="一、数据采集及预览"><a href="#一、数据采集及预览" class="headerlink" title="一、数据采集及预览"></a>一、数据采集及预览</h4><p>1.<a href="SurfaceView%E9%A2%84%E8%A7%88Camera.md">Surfaceview+Camera</a><br>2.GLSurfaceView +SurfaceTexture （openglees 做滤镜美颜功能）</p>
+<h4 id="二、原始帧处理"><a href="#二、原始帧处理" class="headerlink" title="二、原始帧处理"></a>二、原始帧处理</h4><p>onPreviewFrame 默认得到的是NV21格式的数据，需要转换程I420<br>2.1转换I420（YUV420P）</p>
+<blockquote>
+<p>为什么要使用转I420<br>1.Camera预览格式：NV21、YV12 ，默认是NV21 格式<br>2.H264编码必须要用 I420格式的YUV420<br><a id="more"></a></p>
+<h5 id="YUV420的几种格式"><a href="#YUV420的几种格式" class="headerlink" title="YUV420的几种格式"></a>YUV420的几种格式</h5><p>NV12,NV21,YV12,I420都属于YUV420,但是YUV420 又分为YUV420P，YUV420SP，P与SP区别就是，前者YUV420P  UV顺序存储，而YUV420SP则是UV交错存储，这是最大的区别，具体的yuv排序就是这样的：<br>I420: YYYYYYYY UU VV -&gt;YUV420P<br>YV12: YYYYYYYY VV UU -&gt;YUV420P<br>NV12: YYYYYYYY UVUV  -&gt;YUV420SP<br>NV21: YYYYYYYY VUVU  -&gt;YUV420SP</p>
+</blockquote>
+<h5 id="Libyuv库是一个专门对YUV数据进行转换缩放旋转的库"><a href="#Libyuv库是一个专门对YUV数据进行转换缩放旋转的库" class="headerlink" title="Libyuv库是一个专门对YUV数据进行转换缩放旋转的库"></a>Libyuv库是一个专门对YUV数据进行转换缩放旋转的库</h5><p>YUV是Google已经开源了专门用于YUV数据的处理的库。它拥有如下特性<br>1、libYUV是一个开源的实现各种YUV，RGB色彩之间的转换、旋转、缩放<br>2、支持windows、linux系统，支持x86、arm架构<br>3、支持SSE、AVX、NEON加速，在编译时会根据硬件平台旋转使用的实现方式<br>源码地址：<br><a href="https://chromium.googlesource.com/libyuv/libyuv/" target="_blank" rel="noopener">https://chromium.googlesource.com/libyuv/libyuv/</a></p>
+<h4 id="三、视频编码"><a href="#三、视频编码" class="headerlink" title="三、视频编码"></a>三、视频编码</h4><p>3.1.MediaCodec<br>NV21 格式并不是所有机器的 MediaCodec 都支持这种格式作为编码器的输入格式。 因此，在初始化 MediaCodec 的时候，我们需要通过 codecInfo.getCapabilitiesForType 来查询机器上的 MediaCodec 实现具体支持哪些 YUV 格式作为输入格式。一般来说，起码在 4.4+ 的系统上，这两种格式在大部分机器上都有支持：<br>MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Planar<br>MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar<br>两种格式分别是 YUV420P 和 NV21，如果机器上只支持 YUV420P 格式，则需要先将摄像头输出的 NV21 格式先转换成 YUV420P，才能送入编码器进行编码，否则最终出来的视频就会花屏，或者颜色出现错乱。</p>
+<p>3.2.FFMpeg+x264/openh264<br>H264编码必须要用 I420格式</p>
+<p>3.3软硬编对比<br>从上面的分析来看，硬编的好处主要在于速度快，而且系统自带，不需要引入外部的库，但是特性支持有限，而且硬编的压缩率一般偏低。对于软编码来说，虽然速度较慢，但是压缩率比较高，而且支持的 H264 特性也会比硬编码多很多，相对来说比较可控。就可用性而言，在 4.4+的系统上，MediaCodec 的可用性是能够基本保证的，但是不同等级机器的编码器能力会有不少差别，建议可以根据机器的配置，选择不同的编码器配置。</p>
+<h4 id="四、rtmp推流"><a href="#四、rtmp推流" class="headerlink" title="四、rtmp推流"></a>四、rtmp推流</h4><p>使用librtmp库推流</p>
+<h4 id="五、服务器搭建"><a href="#五、服务器搭建" class="headerlink" title="五、服务器搭建"></a>五、服务器搭建</h4><p><a href="/2018/01/30/%E7%94%A8nginx-rtmp-module%E6%90%AD%E5%BB%BArtmp%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8">nginx-rtmp-module搭建rtmp流媒体服务器</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="贺祥 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="贺祥 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/音视频/" rel="tag"># 音视频</a>
+          
+            <a href="/tags/libyuv/" rel="tag"># libyuv</a>
+          
+            <a href="/tags/h264/" rel="tag"># h264</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/02/SurfaceView预览Camera/" rel="next" title="SurfaceView预览camera">
+                <i class="fa fa-chevron-left"></i> SurfaceView预览camera
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/03/调用jni的两种方法javah和RegisterNatives/" rel="prev" title="调用jni的两种方法javah和RegisterNatives">
+                调用jni的两种方法javah和RegisterNatives <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/person3.jpg" alt="贺祥">
+            
+              <p class="site-author-name" itemprop="name">贺祥</p>
+              <p class="site-description motion-element" itemprop="description">记学学记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#直播过程"><span class="nav-number">1.</span> <span class="nav-text">直播过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一、数据采集及预览"><span class="nav-number">2.</span> <span class="nav-text">一、数据采集及预览</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、原始帧处理"><span class="nav-number">3.</span> <span class="nav-text">二、原始帧处理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#YUV420的几种格式"><span class="nav-number">3.1.</span> <span class="nav-text">YUV420的几种格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Libyuv库是一个专门对YUV数据进行转换缩放旋转的库"><span class="nav-number">3.2.</span> <span class="nav-text">Libyuv库是一个专门对YUV数据进行转换缩放旋转的库</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、视频编码"><span class="nav-number">4.</span> <span class="nav-text">三、视频编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、rtmp推流"><span class="nav-number">5.</span> <span class="nav-text">四、rtmp推流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、服务器搭建"><span class="nav-number">6.</span> <span class="nav-text">五、服务器搭建</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">贺祥</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动「Hosted by Coding Pages」</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

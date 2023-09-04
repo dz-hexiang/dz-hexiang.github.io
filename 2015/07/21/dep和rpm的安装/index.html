@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="shell,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、deb 是 ubuntu 、debian 的格式,是debian发行版的软件包,ubuntu是基于debian 发行的 所有可以用。dpkg 是Debian Package的简写，是为Debian 专门开发的套件管理系统，方便软件的安装、更新及移除。所有源自Debian的Linux发行版都使用dpkg，例如Ubuntu、Knoppix 等。以下是一些 Dpkg 的普通用法： 1、dpkg -i">
+<meta name="keywords" content="shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dep和rpm的安装">
+<meta property="og:url" content="http://yoursite.com/2015/07/21/dep和rpm的安装/index.html">
+<meta property="og:site_name" content="Mr.HeXiang Blog">
+<meta property="og:description" content="一、deb 是 ubuntu 、debian 的格式,是debian发行版的软件包,ubuntu是基于debian 发行的 所有可以用。dpkg 是Debian Package的简写，是为Debian 专门开发的套件管理系统，方便软件的安装、更新及移除。所有源自Debian的Linux发行版都使用dpkg，例如Ubuntu、Knoppix 等。以下是一些 Dpkg 的普通用法： 1、dpkg -i">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-13T07:49:12.517Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="dep和rpm的安装">
+<meta name="twitter:description" content="一、deb 是 ubuntu 、debian 的格式,是debian发行版的软件包,ubuntu是基于debian 发行的 所有可以用。dpkg 是Debian Package的简写，是为Debian 专门开发的套件管理系统，方便软件的安装、更新及移除。所有源自Debian的Linux发行版都使用dpkg，例如Ubuntu、Knoppix 等。以下是一些 Dpkg 的普通用法： 1、dpkg -i">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/07/21/dep和rpm的安装/">
+
+
+
+
+
+  <title>dep和rpm的安装 | Mr.HeXiang Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0f926975a1c57a01e8de99ca2a500b5d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mr.HeXiang Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习,学习记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/21/dep和rpm的安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">dep和rpm的安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-21T17:36:17+08:00">
+                2015-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h5 id="一、deb-是-ubuntu-、debian-的格式-是debian发行版的软件包-ubuntu是基于debian-发行的-所有可以用。"><a href="#一、deb-是-ubuntu-、debian-的格式-是debian发行版的软件包-ubuntu是基于debian-发行的-所有可以用。" class="headerlink" title="一、deb 是 ubuntu 、debian 的格式,是debian发行版的软件包,ubuntu是基于debian 发行的 所有可以用。"></a>一、deb 是 ubuntu 、debian 的格式,是debian发行版的软件包,ubuntu是基于debian 发行的 所有可以用。</h5><p>dpkg 是Debian Package的简写，是为Debian 专门开发的套件管理系统，方便软件的安装、更新及移除。所有源自Debian的Linux发行版都使用dpkg，例如Ubuntu、Knoppix 等。<br>以下是一些 Dpkg 的普通用法：</p>
+<h5 id="1、dpkg-i"><a href="#1、dpkg-i" class="headerlink" title="1、dpkg -i "></a>1、dpkg -i <package.deb></package.deb></h5><p>安装一个 Debian 软件包，如你手动下载的文件，（其中-i等价于–install）</p>
+<h5 id="12、dpkg-c"><a href="#12、dpkg-c" class="headerlink" title="12、dpkg -c "></a>12、dpkg -c <package.deb></package.deb></h5><p>列出<package.deb> 的内容中包含的文件结构（其中-c等价于–contents）</package.deb></p>
+<h5 id="13、dpkg-I"><a href="#13、dpkg-I" class="headerlink" title="13、dpkg - I"></a>13、dpkg - I<package.deb></package.deb></h5><p>从<package.deb> 中提取包裹信息的详细信息，包括软件名称、版本以及大小等（其中-I等价于–info）</package.deb></p>
+<h5 id="14、dpkg-r"><a href="#14、dpkg-r" class="headerlink" title="14、dpkg -r "></a>14、dpkg -r <package></package></h5><p>移除一个已安装的包裹（软件名称可通过dpkg -I命令查看，其中-r等价于–remove）</p>
+<h5 id="15、dpkg-P"><a href="#15、dpkg-P" class="headerlink" title="15、dpkg -P "></a>15、dpkg -P <package></package></h5><p>完全清除一个已安装的包裹。和 remove 不同的是，remove 只是删掉数据和可执行文件，purge 另外还删除所有的配制文件。</p>
+<h5 id="16、dpkg-L"><a href="#16、dpkg-L" class="headerlink" title="16、dpkg -L "></a>16、dpkg -L <package></package></h5><p>列出 <package> 安装的软件包安装的所有文件（软件名称可通过dpkg -I命令查看，其中-L等价于–listfiles）</package></p>
+<a id="more"></a>
+<h5 id="17、dpkg-l"><a href="#17、dpkg-l" class="headerlink" title="17、dpkg -l "></a>17、dpkg -l <package></package></h5><p>查看<package>软件包的信息（软件名称可通过dpkg -I命令查看，其中-l等价于–list）</package></p>
+<h5 id="18、dpkg-s"><a href="#18、dpkg-s" class="headerlink" title="18、dpkg -s "></a>18、dpkg -s <package></package></h5><p>显示已安装包裹的详细信息。同时请看 apt-cache 显示 Debian 存档中的包裹信息，以及 dpkg -I 来显示从一个 .deb 文件中提取的包裹信息。（软件名称可通过dpkg -I命令查看，其中-s等价于–status）</p>
+<h5 id="19、dpkg-reconfigure"><a href="#19、dpkg-reconfigure" class="headerlink" title="19、dpkg-reconfigure "></a>19、dpkg-reconfigure <package></package></h5><p>重新配制一个已经安装的包裹，如果它使用的是 debconf (debconf 为包裹安装提供了一个统一的配制界面)。</p>
+<p>注：dpkg命令无法自动解决依赖关系。如果安装的deb包存在依赖包，则应避免使用此命令，或者按照依赖关系顺序安装依赖包。</p>
+<h4 id="二、rpm"><a href="#二、rpm" class="headerlink" title="二、rpm"></a>二、rpm</h4><p>rpm 是 redhat 、fedora、suse 的格式。全称为Redhat PackageManager ，是由Redhat 公司提出的，用于管理Linux下软件包的软件。Linux 安装时，除了几个核心模块以外，其余几乎所有的模块均通过RPM 完成安装。</p>
+<h5 id="11、rpm-i"><a href="#11、rpm-i" class="headerlink" title="11、rpm -i "></a>11、rpm -i <package.rpm></package.rpm></h5><p>安装需要的包文件，-iv 在安装过程中显示正在安装的文件信息，-ivh 在安装过程中显示正在安装的文件信息及安装进度。<br>rpm -i example.rpm 安装 example.rpm 包；<br>rpm -iv example.rpm 安装 example.rpm 包并在安装过程中显示正在安装的文件信息；<br>rpm -ivh example.rpm 安装 example.rpm 包并在安装过程中显示正在安装的文件信息及安装进度；</p>
+<h5 id="12、rpm-q-…"><a href="#12、rpm-q-…" class="headerlink" title="12、rpm -q …"></a>12、rpm -q …</h5><p>附加查询命令：<br>a 查询所有已经安装的包以下两个附加命令用于查询安装包的信息；<br>i 显示安装包的信息；<br>l 显示安装包中的所有文件被安装到哪些目录下；<br>s 显示安装版中的所有文件状态及被安装到哪些目录下；以下两个附加命令用于指定需要查询的是安装包还是已安装后的文件；<br>p 查询的是安装包的信息；<br>f 查询的是已安装的某文件信息；<br>举例如下：<br>rpm -qa | grep tomcat4 查看 tomcat4 是否被安装；<br>rpm -qip example.rpm 查看 example.rpm 安装包的信息；<br>rpm -qif /bin/df 查看/bin/df 文件所在安装包的信息；<br>rpm -qlf /bin/df 查看/bin/df 文件所在安装包中的各个文件分别被安装到哪个目录下；</p>
+<h5 id="13、rpm-e-需要卸载的安装包"><a href="#13、rpm-e-需要卸载的安装包" class="headerlink" title="13、rpm -e 需要卸载的安装包"></a>13、rpm -e 需要卸载的安装包</h5><p>在卸载之前，通常需要使用rpm -q …命令查出需要卸载的安装包名称。<br>举例如下：<br>rpm -e tomcat4 卸载 tomcat4 软件包</p>
+<h5 id="14、rpm-U-需要升级的包"><a href="#14、rpm-U-需要升级的包" class="headerlink" title="14、rpm -U 需要升级的包"></a>14、rpm -U 需要升级的包</h5><p>举例如下：<br>rpm -Uvh example.rpm 升级 example.rpm 软件包<br>RPM 验证操作<br>命令：</p>
+<h5 id="15、rpm-V-需要验证的包"><a href="#15、rpm-V-需要验证的包" class="headerlink" title="15、rpm -V 需要验证的包"></a>15、rpm -V 需要验证的包</h5><p>举例如下：<br>rpm -Vf /etc/tomcat4/tomcat4.conf<br>输出信息类似如下：<br>1S.5….T c /etc/tomcat4/tomcat4.conf<br>其中，S 表示文件大小修改过，T 表示文件日期修改过。更多的验证信息请参考rpm 帮助文件：man rpm<br>注：RPM 的其他附加命令<br>–force 强制操作如强制安装删除等；<br>–requires 显示该包的依赖关系；<br>–nodeps 忽略依赖关系并继续操作；</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="贺祥 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="贺祥 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/shell/" rel="tag"># shell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/06/21/android反编译工具/" rel="next" title="android反编译工具">
+                <i class="fa fa-chevron-left"></i> android反编译工具
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/21/git获取远程仓库分支/" rel="prev" title="git获取远程仓库分支.md">
+                git获取远程仓库分支.md <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/person3.jpg" alt="贺祥">
+            
+              <p class="site-author-name" itemprop="name">贺祥</p>
+              <p class="site-description motion-element" itemprop="description">记学学记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#一、deb-是-ubuntu-、debian-的格式-是debian发行版的软件包-ubuntu是基于debian-发行的-所有可以用。"><span class="nav-number">1.</span> <span class="nav-text">一、deb 是 ubuntu 、debian 的格式,是debian发行版的软件包,ubuntu是基于debian 发行的 所有可以用。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1、dpkg-i"><span class="nav-number">2.</span> <span class="nav-text">1、dpkg -i </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#12、dpkg-c"><span class="nav-number">3.</span> <span class="nav-text">12、dpkg -c </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#13、dpkg-I"><span class="nav-number">4.</span> <span class="nav-text">13、dpkg - I</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#14、dpkg-r"><span class="nav-number">5.</span> <span class="nav-text">14、dpkg -r </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#15、dpkg-P"><span class="nav-number">6.</span> <span class="nav-text">15、dpkg -P </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#16、dpkg-L"><span class="nav-number">7.</span> <span class="nav-text">16、dpkg -L </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#17、dpkg-l"><span class="nav-number">8.</span> <span class="nav-text">17、dpkg -l </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#18、dpkg-s"><span class="nav-number">9.</span> <span class="nav-text">18、dpkg -s </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#19、dpkg-reconfigure"><span class="nav-number">10.</span> <span class="nav-text">19、dpkg-reconfigure </span></a></li></ol><li class="nav-item nav-level-4"><a class="nav-link" href="#二、rpm"><span class="nav-number"></span> <span class="nav-text">二、rpm</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#11、rpm-i"><span class="nav-number">1.</span> <span class="nav-text">11、rpm -i </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#12、rpm-q-…"><span class="nav-number">2.</span> <span class="nav-text">12、rpm -q …</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#13、rpm-e-需要卸载的安装包"><span class="nav-number">3.</span> <span class="nav-text">13、rpm -e 需要卸载的安装包</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#14、rpm-U-需要升级的包"><span class="nav-number">4.</span> <span class="nav-text">14、rpm -U 需要升级的包</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#15、rpm-V-需要验证的包"><span class="nav-number">5.</span> <span class="nav-text">15、rpm -V 需要验证的包</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">贺祥</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动「Hosted by Coding Pages」</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

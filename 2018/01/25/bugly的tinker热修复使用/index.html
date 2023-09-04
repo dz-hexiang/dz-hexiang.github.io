@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="tinker,bugly,热修复,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言bugly 热修复使用的是微信的tinker，然后封装好了，不需要在进行后台开发，简化了步骤，简单几部就可以集成了。热修复：在用户不知情的情况升级补丁，修复bug~~~ 告别重新下载安装App微信提供的tinker，没得说上亿的用户摆在那   Android Studio IDE环境设置tinker不支持instant run模式，你需要找到File-&amp;gt;Settings-&amp;gt;Buil">
+<meta name="keywords" content="tinker,bugly,热修复">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bugly的tinker热修复使用">
+<meta property="og:url" content="http://yoursite.com/2018/01/25/bugly的tinker热修复使用/index.html">
+<meta property="og:site_name" content="Mr.HeXiang Blog">
+<meta property="og:description" content="前言bugly 热修复使用的是微信的tinker，然后封装好了，不需要在进行后台开发，简化了步骤，简单几部就可以集成了。热修复：在用户不知情的情况升级补丁，修复bug~~~ 告别重新下载安装App微信提供的tinker，没得说上亿的用户摆在那   Android Studio IDE环境设置tinker不支持instant run模式，你需要找到File-&amp;gt;Settings-&amp;gt;Buil">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/blog/tinker/1516872086.jpg">
+<meta property="og:image" content="http://yoursite.com/images/blog/tinker/1516868734.jpg">
+<meta property="og:image" content="http://yoursite.com/images/blog/tinker/1516869595.jpg">
+<meta property="og:image" content="http://yoursite.com/images/blog/tinker/1517020455.jpg">
+<meta property="og:image" content="http://yoursite.com/images/blog/tinker/1516870377.jpg">
+<meta property="og:image" content="http://yoursite.com/images/blog/tinker/device-2018-01-25-153419.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/tinker/device-2018-01-25-111812.png">
+<meta property="og:updated_time" content="2018-02-05T03:45:20.758Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bugly的tinker热修复使用">
+<meta name="twitter:description" content="前言bugly 热修复使用的是微信的tinker，然后封装好了，不需要在进行后台开发，简化了步骤，简单几部就可以集成了。热修复：在用户不知情的情况升级补丁，修复bug~~~ 告别重新下载安装App微信提供的tinker，没得说上亿的用户摆在那   Android Studio IDE环境设置tinker不支持instant run模式，你需要找到File-&amp;gt;Settings-&amp;gt;Buil">
+<meta name="twitter:image" content="http://yoursite.com/images/blog/tinker/1516872086.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/25/bugly的tinker热修复使用/">
+
+
+
+
+
+  <title>bugly的tinker热修复使用 | Mr.HeXiang Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0f926975a1c57a01e8de99ca2a500b5d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mr.HeXiang Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习,学习记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/25/bugly的tinker热修复使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">bugly的tinker热修复使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-25T17:48:00+08:00">
+                2018-01-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>bugly 热修复使用的是微信的tinker，然后封装好了，不需要在进行后台开发，简化了步骤，简单几部就可以集成了。<br>热修复：在用户不知情的情况升级补丁，修复bug~~~ 告别重新下载安装App<br>微信提供的tinker，没得说上亿的用户摆在那 </p>
+<blockquote>
+<p>Android Studio IDE环境设置<br>tinker不支持instant run模式，你需要找到File-&gt;Settings-&gt;Build,Execution,Deployment-&gt;instant run并关闭，日常调试可以tinker关闭来使用instant run。</p>
+</blockquote>
+<p>相关资源<br>bugly 热修复及官方方文档</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://bugly.qq.com/docs/user-guide/instruction-manual-android-hotfix/?v=20180119105842</span><br></pre></td></tr></table></figure>
+<p>tinker 源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/Tencent/tinker</span><br></pre></td></tr></table></figure>
+<h5 id="下面是集成及使用的详细过程"><a href="#下面是集成及使用的详细过程" class="headerlink" title="下面是集成及使用的详细过程"></a>下面是集成及使用的详细过程</h5><a id="more"></a>
+<p>####一、 Bugly 热修复集成<br>1.根目录gradle配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 只需配置tinker-support插件依赖，无需再依赖tinker插件</span><br><span class="line">  classpath &quot;com.tencent.bugly:tinker-support:1.1.1&quot;</span><br></pre></td></tr></table></figure></p>
+<p>2.在app module的“build.gradle”文件中添加依赖库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">compile &apos;com.android.support:multidex:1.0.1&apos;</span><br><span class="line">compile &apos;com.tencent.bugly:crashreport_upgrade:1.3.4&apos;</span><br><span class="line">compile &apos;com.tencent.bugly:nativecrashreport:latest.release&apos;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 依赖插件脚本</span><br><span class="line">apply from: &apos;tinker-support.gradle&apos;</span><br></pre></td></tr></table></figure>
+<p>3.tinker-support.gradle文件上代码，多渠道的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;com.tencent.bugly.tinker-support&apos;</span><br><span class="line"></span><br><span class="line">def bakPath = file(&quot;$&#123;buildDir&#125;/bakApk/&quot;)</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 此处填写每次构建生成的基准包目录</span><br><span class="line"> * todo 1.修改基准包目录 每次线上发布后，把这个目录保存下来，以后打补丁包需要</span><br><span class="line"> * bugly 官方文档：https://bugly.qq.com/docs/user-guide/faq-android-hotfix/?v=20180119105842</span><br><span class="line"> */</span><br><span class="line">def baseApkDir = &quot;xqc_v3-0125-15-23-57&quot;</span><br><span class="line">/**</span><br><span class="line"> * 对于插件各参数的详细解析请参考</span><br><span class="line"> */</span><br><span class="line">tinkerSupport &#123;</span><br><span class="line">    // 开启tinker-support插件，默认值true</span><br><span class="line">    enable = true</span><br><span class="line">    // 自动生成tinkerId, 你无须关注tinkerId，默认为false</span><br><span class="line">    //  autoGenerateTinkerId = true</span><br><span class="line">    tinkerEnable = true</span><br><span class="line">    // 指定归档目录，默认值当前module的子目录tinker</span><br><span class="line">    autoBackupApkDir = &quot;$&#123;bakPath&#125;&quot;</span><br><span class="line"></span><br><span class="line">    // 是否启用覆盖tinkerPatch配置功能，默认值false</span><br><span class="line">    // 开启后tinkerPatch配置不生效，即无需添加tinkerPatch</span><br><span class="line">    overrideTinkerPatchConfiguration = true</span><br><span class="line"></span><br><span class="line">    // 编译补丁包时，必需指定基线版本的apk，默认值为空</span><br><span class="line">    // 如果为空，则表示不是进行补丁包的编译</span><br><span class="line">    //当是多渠道打包，地址自动配的，下面三个配置无效</span><br><span class="line">    // @&#123;link tinkerPatch.oldApk &#125;</span><br><span class="line">    baseApk = &quot;$&#123;bakPath&#125;/$&#123;baseApkDir&#125;/app-release.apk&quot;</span><br><span class="line">//    baseApk = &quot;$&#123;bakPath&#125;/$&#123;baseApkDir&#125;/app-debug.apk&quot;</span><br><span class="line"></span><br><span class="line">    // 对应tinker插件applyMapping</span><br><span class="line">    baseApkProguardMapping = &quot;$&#123;bakPath&#125;/$&#123;baseApkDir&#125;/app-release-mapping.txt&quot;</span><br><span class="line">//    baseApkProguardMapping = &quot;$&#123;bakPath&#125;/$&#123;baseApkDir&#125;/app-debug-mapping.txt&quot;</span><br><span class="line"></span><br><span class="line">    // 对应tinker插件applyResourceMapping</span><br><span class="line">    baseApkResourceMapping = &quot;$&#123;bakPath&#125;/$&#123;baseApkDir&#125;/app-release-R.txt&quot;</span><br><span class="line">//    baseApkResourceMapping = &quot;$&#123;bakPath&#125;/$&#123;baseApkDir&#125;/app-debug-R.txt&quot;</span><br><span class="line"></span><br><span class="line">    //基准包tinkerId 和补丁包二选一</span><br><span class="line">    //todo 2.打补丁包的时候base改成patch 版本号改成对应基准包的</span><br><span class="line">    //平常的打包这里不用该保持base就好了</span><br><span class="line">    tinkerId = &quot;base-$&#123;version_name&#125;&quot;</span><br><span class="line"></span><br><span class="line">    //多渠道打包设置这个的时候baseApk 将无效</span><br><span class="line">    buildAllFlavorsDir = &quot;$&#123;bakPath&#125;/$&#123;baseApkDir&#125;&quot;</span><br><span class="line"></span><br><span class="line">    // 是否使用加固模式，默认为false</span><br><span class="line">    // isProtectedApp = true</span><br><span class="line"></span><br><span class="line">    // 是否采用反射Application的方式集成，无须改造Application</span><br><span class="line">    enableProxyApplication = true</span><br><span class="line"></span><br><span class="line">    // 支持新增Activity</span><br><span class="line">    supportHotplugComponent = true</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 一般来说,我们无需对下面的参数做任何的修改</span><br><span class="line"> * 对于各参数的详细介绍请参考:</span><br><span class="line"> * https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97</span><br><span class="line"> */</span><br><span class="line">tinkerPatch &#123;</span><br><span class="line">    //oldApk =&quot;$&#123;bakPath&#125;/$&#123;appName&#125;/app-release.apk&quot;</span><br><span class="line">    ignoreWarning = false</span><br><span class="line">    useSign = true</span><br><span class="line">    dex &#123;</span><br><span class="line">        dexMode = &quot;jar&quot;</span><br><span class="line">        pattern = [&quot;classes*.dex&quot;]</span><br><span class="line">        loader = []</span><br><span class="line">    &#125;</span><br><span class="line">    lib &#123;</span><br><span class="line">        pattern = [&quot;lib/*/*.so&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    res &#123;</span><br><span class="line">        pattern = [&quot;res/*&quot;, &quot;r/*&quot;, &quot;assets/*&quot;, &quot;resources.arsc&quot;, &quot;AndroidManifest.xml&quot;]</span><br><span class="line">        ignoreChange = []</span><br><span class="line">        largeModSize = 100</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    packageConfig &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    sevenZip &#123;</span><br><span class="line">        zipArtifact = &quot;com.tencent.mm:SevenZip:1.1.10&quot;</span><br><span class="line">//        path = &quot;/usr/local/bin/7za&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    buildConfig &#123;</span><br><span class="line">        keepDexApply = false</span><br><span class="line">        //tinkerId = &quot;1.0.1-base&quot;</span><br><span class="line">        //applyMapping = &quot;$&#123;bakPath&#125;/$&#123;appName&#125;/app-release-mapping.txt&quot; //  可选，设置mapping文件，建议保持旧apk的proguard混淆方式</span><br><span class="line">        //applyResourceMapping = &quot;$&#123;bakPath&#125;/$&#123;appName&#125;/app-release-R.txt&quot; // 可选，设置R.txt文件，通过旧apk文件保持ResId的分配</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="二、初始化sdk，这里使用不改造Application的方式，直接在application中初始化"><a href="#二、初始化sdk，这里使用不改造Application的方式，直接在application中初始化" class="headerlink" title="二、初始化sdk，这里使用不改造Application的方式，直接在application中初始化"></a>二、初始化sdk，这里使用不改造Application的方式，直接在application中初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">   public void onCreate() &#123;</span><br><span class="line">       super.onCreate();</span><br><span class="line">       // 设置是否开启热更新能力，默认为true</span><br><span class="line">       Beta.enableHotfix = true;</span><br><span class="line">       // 设置是否自动下载补丁</span><br><span class="line">       Beta.canAutoDownloadPatch = true;</span><br><span class="line">       // 设置是否提示用户重启</span><br><span class="line">       Beta.canNotifyUserRestart = true;</span><br><span class="line">       // 设置是否自动合成补丁</span><br><span class="line">       Beta.canAutoPatch = true;</span><br><span class="line">       // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId</span><br><span class="line">       Bugly.init(this, &quot;appid&quot;, false);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   @Override</span><br><span class="line">   protected void attachBaseContext(Context base) &#123;</span><br><span class="line">       super.attachBaseContext(base);</span><br><span class="line">       // you must install multiDex whatever tinker is installed!</span><br><span class="line">       MultiDex.install(base);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       // 安装tinker</span><br><span class="line">       Beta.installTinker();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="三、自定义重启合并补丁提示界面"><a href="#三、自定义重启合并补丁提示界面" class="headerlink" title="三、自定义重启合并补丁提示界面"></a>三、自定义重启合并补丁提示界面</h4><p> bugly 热修复提供自定ui布局方式<br> <a href="https://bugly.qq.com/docs/user-guide/advance-features-android-beta/?v=20170912151050" target="_blank" rel="noopener">https://bugly.qq.com/docs/user-guide/advance-features-android-beta/?v=20170912151050</a><br>修改重启提示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Beta.tipsDialogLayoutId = R.layout.dialog_tinker_tips;</span><br></pre></td></tr></table></figure></p>
+<p>dialog_tinker_tips是自定义对话框</p>
+<blockquote>
+<p>注意：因为要保持接口统一，需要用户在指定控件按照以下方式设置tag，否则会影响您的正常使用：<br>标题：beta_title，如：android:tag=”beta_title”<br>提示信息：beta_tip_message 如： android:tag=”beta_tip_message”<br>取消按钮：beta_cancel_button 如：android:tag=”beta_cancel_button”<br>确定按钮：beta_confirm_button 如：android:tag=”beta_confirm_button”</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;</span><br><span class="line">    android:background=&quot;#59000000&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;LinearLayout</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">        android:layout_centerVertical=&quot;true&quot;</span><br><span class="line">        android:layout_marginLeft=&quot;35dip&quot;</span><br><span class="line">        android:layout_marginRight=&quot;35dip&quot;</span><br><span class="line">        android:orientation=&quot;vertical&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:id=&quot;@+id/tv_dialog_title&quot;</span><br><span class="line">            android:layout_width=&quot;match_parent&quot;</span><br><span class="line">            android:layout_height=&quot;@dimen/item_height_40&quot;</span><br><span class="line">            android:background=&quot;@drawable/dialog_confirm_top_bg&quot;</span><br><span class="line">            android:gravity=&quot;center&quot;</span><br><span class="line">            android:tag=&quot;beta_title&quot;</span><br><span class="line">            android:text=&quot;@string/dialog_confrim_title&quot;</span><br><span class="line">            android:textColor=&quot;@color/white&quot;</span><br><span class="line">            android:textSize=&quot;@dimen/common_text_size_16&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;LinearLayout</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:background=&quot;@drawable/dialog_confirm_bottom_bg&quot;</span><br><span class="line">            android:orientation=&quot;vertical&quot;</span><br><span class="line">            android:paddingBottom=&quot;@dimen/margin_10&quot;&gt;</span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:id=&quot;@+id/tv_dialog_content&quot;</span><br><span class="line">                android:layout_width=&quot;match_parent&quot;</span><br><span class="line">                android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                android:minHeight=&quot;@dimen/item_height_75&quot;</span><br><span class="line">                android:padding=&quot;@dimen/margin_15&quot;</span><br><span class="line">                android:tag=&quot;beta_tip_message&quot;</span><br><span class="line">                android:text=&quot;@string/dialog_confirm_content&quot;</span><br><span class="line">                android:textSize=&quot;@dimen/common_text_size_15&quot; /&gt;</span><br><span class="line"></span><br><span class="line">            &lt;RelativeLayout</span><br><span class="line">                android:layout_width=&quot;match_parent&quot;</span><br><span class="line">                android:layout_height=&quot;wrap_content&quot;&gt;</span><br><span class="line"></span><br><span class="line">                &lt;TextView</span><br><span class="line">                    android:id=&quot;@+id/tv_dialog_positive&quot;</span><br><span class="line">                    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">                    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                    android:layout_alignParentEnd=&quot;true&quot;</span><br><span class="line">                    android:layout_alignParentRight=&quot;true&quot;</span><br><span class="line">                    android:layout_alignParentTop=&quot;true&quot;</span><br><span class="line">                    android:layout_marginEnd=&quot;15dp&quot;</span><br><span class="line">                    android:layout_marginRight=&quot;15dp&quot;</span><br><span class="line">                    android:padding=&quot;@dimen/margin_5&quot;</span><br><span class="line">                    android:tag=&quot;beta_confirm_button&quot;</span><br><span class="line">                    android:text=&quot;@string/dialog_confirm_positive&quot;</span><br><span class="line">                    android:textColor=&quot;@color/c_049ce5&quot;</span><br><span class="line">                    android:textSize=&quot;@dimen/common_text_size_15&quot; /&gt;</span><br><span class="line"></span><br><span class="line">                &lt;TextView</span><br><span class="line">                    android:id=&quot;@+id/tv_dialog_negative&quot;</span><br><span class="line">                    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">                    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                    android:layout_marginRight=&quot;@dimen/margin_15&quot;</span><br><span class="line">                    android:layout_toLeftOf=&quot;@id/tv_dialog_positive&quot;</span><br><span class="line">                    android:padding=&quot;@dimen/margin_5&quot;</span><br><span class="line">                    android:tag=&quot;beta_cancel_button&quot;</span><br><span class="line">                    android:text=&quot;@string/dialog_confirm_negative&quot;</span><br><span class="line">                    android:textColor=&quot;@color/c_aeaeae&quot;</span><br><span class="line">                    android:textSize=&quot;@dimen/common_text_size_15&quot; /&gt;</span><br><span class="line">            &lt;/RelativeLayout&gt;</span><br><span class="line">        &lt;/LinearLayout&gt;</span><br><span class="line">    &lt;/LinearLayout&gt;</span><br><span class="line">&lt;/RelativeLayout&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/blog/tinker/1516872086.jpg" alt="Alt text"></p>
+<h4 id="四、使用刚刚集成的bugyly热修复打包及打补丁包"><a href="#四、使用刚刚集成的bugyly热修复打包及打补丁包" class="headerlink" title="四、使用刚刚集成的bugyly热修复打包及打补丁包"></a>四、使用刚刚集成的bugyly热修复打包及打补丁包</h4><h5 id="1-打debug包"><a href="#1-打debug包" class="headerlink" title="1.打debug包"></a>1.打debug包</h5><p>调试不需要在该任何配置。</p>
+<h5 id="2-打release包"><a href="#2-打release包" class="headerlink" title="2.打release包"></a>2.打release包</h5><p>需要把<code>app/build/bakApk</code>下面对应的备份的文件夹保存起来，这个就是基准包目录，用来以后以这些文件为基准包打补丁包。<br><img src="/images/blog/tinker/1516868734.jpg" alt="Alt text"></p>
+<p>#####3. 打补丁包<br>1.找到之前打<code>release</code>包时候，保存下来的文件夹，放在<code>app/build/bakApk</code>下面</p>
+<p>2.修改配置<br>修改<code>tinker-support.gradle</code>中<code>baseApkDir</code>等于基准包目录(刚刚放在<code>bakApk</code>下的某个文件夹)</p>
+<p>修改<code>tinkerId = &quot;base-${version_name}&quot;</code> ， <code>base</code>改成<code>patch</code> ，<code>${version_name}</code>改成对应基准包的版本号<br><img src="/images/blog/tinker/1516869595.jpg" alt="Alt text"></p>
+<p>3.点击右上角<code>gradle</code>点开<code>Tasks</code>，找到<code>tinker-suport</code>就是打补丁的，比如点击<code>buildTInkerPatchXqcDevRelease</code>就是打开发环境release的补丁包，<br><img src="/images/blog/tinker/1517020455.jpg" alt="Alt text"></p>
+<p>4.登陆bugly后台-应用升级-发布补丁，上传<code>app/build/outputs/patch</code>目录下的<code>patch_signed_7zip.apk</code>补丁包并上传，</p>
+<blockquote>
+<p>发布补丁之前,必须需要有人运行过了之前的基准包apk，否则会上传不了补丁包<br><img src="/images/blog/tinker/1516870377.jpg" alt="Alt text"></p>
+</blockquote>
+<p>5.客户端每次启动会检测，并且合并补丁<br><img src="/images/blog/tinker/device-2018-01-25-153419.png" alt="Alt text"></p>
+<blockquote>
+<p>注意：用户更新补丁包需要重启两次，一次获取补丁包，一次合并补丁重启生效</p>
+<p>经测试补丁包可以合并类，资源，so库<br>补丁包是 加了新图片，并替换，修改资源文件，修改了类，加了个新的so动态库，并调用动态库native方法，重启之后如下<br><img src="/images/blog/tinker/device-2018-01-25-111812.png" alt="Alt text"></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="贺祥 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="贺祥 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tinker/" rel="tag"># tinker</a>
+          
+            <a href="/tags/bugly/" rel="tag"># bugly</a>
+          
+            <a href="/tags/热修复/" rel="tag"># 热修复</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/14/自定义实现向量图标动画VectorDrawable/" rel="next" title="自定义实现向量图标动画VectorDrawable">
+                <i class="fa fa-chevron-left"></i> 自定义实现向量图标动画VectorDrawable
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/30/用nginx-rtmp-module搭建rtmp流媒体服务器/" rel="prev" title="用nginx-rtmp-module搭建rtmp流媒体服务器">
+                用nginx-rtmp-module搭建rtmp流媒体服务器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/person3.jpg" alt="贺祥">
+            
+              <p class="site-author-name" itemprop="name">贺祥</p>
+              <p class="site-description motion-element" itemprop="description">记学学记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#下面是集成及使用的详细过程"><span class="nav-number">1.1.</span> <span class="nav-text">下面是集成及使用的详细过程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、初始化sdk，这里使用不改造Application的方式，直接在application中初始化"><span class="nav-number">2.</span> <span class="nav-text">二、初始化sdk，这里使用不改造Application的方式，直接在application中初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、自定义重启合并补丁提示界面"><span class="nav-number">3.</span> <span class="nav-text">三、自定义重启合并补丁提示界面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、使用刚刚集成的bugyly热修复打包及打补丁包"><span class="nav-number">4.</span> <span class="nav-text">四、使用刚刚集成的bugyly热修复打包及打补丁包</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-打debug包"><span class="nav-number">4.1.</span> <span class="nav-text">1.打debug包</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-打release包"><span class="nav-number">4.2.</span> <span class="nav-text">2.打release包</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">贺祥</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动「Hosted by Coding Pages」</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
