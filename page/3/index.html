@@ -449,6 +449,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/DataBinding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/DataBinding/" itemprop="url">DataBinding</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="Data-Binding"><a href="#Data-Binding" class="headerlink" title="Data Binding"></a>Data Binding</h5><p><strong>正向绑定</strong><br>当user.name的数据改动时，我们的TextView都会同步改变文字。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;layout ...&gt;</span><br><span class="line">  &lt;data&gt;</span><br><span class="line">    &lt;variable type=&quot;com.example.myapp.User&quot; name=&quot;user&quot;/&gt;</span><br><span class="line">  &lt;/data&gt;</span><br><span class="line">  &lt;RelativeLayout ...&gt;</span><br><span class="line">    &lt;TextView android:text=&quot;@&#123;user.name&#125;&quot; .../&gt;</span><br><span class="line">  &lt;/RelativeLayout&gt;</span><br><span class="line">&lt;/layout&gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>双向绑定</strong><br>现在假设一种情况，当你更换成EditText时，如果你的用户名User.name已经绑定到EditText中，当用户输入文字的时候，你原来的user.name数据并没有同步改动，因此我们需要修改成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;layout ...&gt;</span><br><span class="line">  &lt;data&gt;</span><br><span class="line">    &lt;variable type=&quot;com.example.myapp.User&quot; name=&quot;user&quot;/&gt;</span><br><span class="line">  &lt;/data&gt;</span><br><span class="line">  &lt;RelativeLayout ...&gt;</span><br><span class="line">    &lt;EditText android:text=&quot;@=&#123;user.name&#125;&quot; .../&gt;</span><br><span class="line">  &lt;/RelativeLayout&gt;</span><br><span class="line">&lt;/layout&gt;</span><br></pre></td></tr></table></figure>
+<p>跟单项绑定的差别，就是”<strong>@{}</strong>“改成了”<strong>@={}</strong>“，多了<strong>等号</strong></p>
+<p>@=符号，重要的是包括“=”符号，接收对属性的数据更改并同时侦听用户更新</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Apk瘦身优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -743,303 +892,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/FutureTask 与Future和Runable及Callable/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/FutureTask 与Future和Runable及Callable/" itemprop="url">FutureTask 与Future和Runable及Callable</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="FutureTask-与Future和Runable及Callable"><a href="#FutureTask-与Future和Runable及Callable" class="headerlink" title="FutureTask 与Future和Runable及Callable"></a>FutureTask 与Future和Runable及Callable</h5><p>延申:<br><strong>Future</strong><br>Future就是对于具体的Runnable或者Callable任务的执行结果进行取消、查询是否完成、获取结果。</p>
-<p><strong>Callable</strong><br>Callable接口很简单，是一个泛型接口，就是定义了一个call()方法，与Runnable的run()方法相比，这个有返回值，泛型V就是要返回的结果类型，可以返回子任务的执行结果。</p>
-<p><strong>Runnable</strong><br>个泛型接口,执行任务没有返回结果,执行的方法体</p>
-<p><strong>FutureTask</strong><br>FutureTask与Runnable，最大的区别有两个，一个是可以获取执行结果，另一个是可以取消</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/DataBinding/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/DataBinding/" itemprop="url">DataBinding</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="Data-Binding"><a href="#Data-Binding" class="headerlink" title="Data Binding"></a>Data Binding</h5><p><strong>正向绑定</strong><br>当user.name的数据改动时，我们的TextView都会同步改变文字。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;layout ...&gt;</span><br><span class="line">  &lt;data&gt;</span><br><span class="line">    &lt;variable type=&quot;com.example.myapp.User&quot; name=&quot;user&quot;/&gt;</span><br><span class="line">  &lt;/data&gt;</span><br><span class="line">  &lt;RelativeLayout ...&gt;</span><br><span class="line">    &lt;TextView android:text=&quot;@&#123;user.name&#125;&quot; .../&gt;</span><br><span class="line">  &lt;/RelativeLayout&gt;</span><br><span class="line">&lt;/layout&gt;</span><br></pre></td></tr></table></figure></p>
-<p><strong>双向绑定</strong><br>现在假设一种情况，当你更换成EditText时，如果你的用户名User.name已经绑定到EditText中，当用户输入文字的时候，你原来的user.name数据并没有同步改动，因此我们需要修改成：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;layout ...&gt;</span><br><span class="line">  &lt;data&gt;</span><br><span class="line">    &lt;variable type=&quot;com.example.myapp.User&quot; name=&quot;user&quot;/&gt;</span><br><span class="line">  &lt;/data&gt;</span><br><span class="line">  &lt;RelativeLayout ...&gt;</span><br><span class="line">    &lt;EditText android:text=&quot;@=&#123;user.name&#125;&quot; .../&gt;</span><br><span class="line">  &lt;/RelativeLayout&gt;</span><br><span class="line">&lt;/layout&gt;</span><br></pre></td></tr></table></figure>
-<p>跟单项绑定的差别，就是”<strong>@{}</strong>“改成了”<strong>@={}</strong>“，多了<strong>等号</strong></p>
-<p>@=符号，重要的是包括“=”符号，接收对属性的数据更改并同时侦听用户更新</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/InputManagerService/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1141,6 +993,154 @@
 <p><strong>InputDispatcher</strong>事件派发事件(InputDispatcher.cpp)<br>创建一个线程派发事件,Looper线程，基于native的Looper实现了Hanlder消息处理模型，如果有Input事件到来就被唤醒处理事件，处理完毕后继续睡眠等待<br>dispatchOnceInnerLocked ANR触发</p>
 <p>派发事件通过findTouchedWindowTargetsLocked找到目标Window，进而通过dispatchEventLocked将消息发送到目标窗口(通过Socket将事件发送到目标窗口)<br>将监听事件交给ViewRootImpl中的rootView</p>
 <p>android 事件响应机制是先 分发（先由外部的View接收，然后依次传递给其内层的最小View）再 处理 （从最小View单元（事件源）开始依次向外层传递。）的形式实现的。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/FutureTask 与Future和Runable及Callable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/FutureTask 与Future和Runable及Callable/" itemprop="url">FutureTask 与Future和Runable及Callable</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="FutureTask-与Future和Runable及Callable"><a href="#FutureTask-与Future和Runable及Callable" class="headerlink" title="FutureTask 与Future和Runable及Callable"></a>FutureTask 与Future和Runable及Callable</h5><p>延申:<br><strong>Future</strong><br>Future就是对于具体的Runnable或者Callable任务的执行结果进行取消、查询是否完成、获取结果。</p>
+<p><strong>Callable</strong><br>Callable接口很简单，是一个泛型接口，就是定义了一个call()方法，与Runnable的run()方法相比，这个有返回值，泛型V就是要返回的结果类型，可以返回子任务的执行结果。</p>
+<p><strong>Runnable</strong><br>个泛型接口,执行任务没有返回结果,执行的方法体</p>
+<p><strong>FutureTask</strong><br>FutureTask与Runnable，最大的区别有两个，一个是可以获取执行结果，另一个是可以取消</p>
 
           
         
