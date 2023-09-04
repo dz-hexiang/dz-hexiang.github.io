@@ -87,12 +87,12 @@
 <meta property="og:site_name" content="Mr.HeXiang Blog">
 <meta property="og:description" content="性能优化-卡顿卡顿线上监控方法：方法1：Coreographer帧率检测，postFrameCallback ，保存两次 doFrame 时间进行相减然后除以刷新频率，这样算出来的结果就是两次 doFrame 的掉帧数 方法2：Looper设置print ，匹配消息分发前后字符串，计算之间的耗时 方法3：开启个线程循环通过主线程Handle，post一个延迟x秒的消息去修改一个值，睡眠x秒后在去看">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/B4CA6F16-DE69-4EE2-872C-87EFE49D440F.png">
-<meta property="og:updated_time" content="2023-09-04T09:02:49.484Z">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/B4CA6F16-DE69-4EE2-872C-87EFE49D440F.png">
+<meta property="og:updated_time" content="2023-09-04T10:12:07.700Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="性能优化-卡顿">
 <meta name="twitter:description" content="性能优化-卡顿卡顿线上监控方法：方法1：Coreographer帧率检测，postFrameCallback ，保存两次 doFrame 时间进行相减然后除以刷新频率，这样算出来的结果就是两次 doFrame 的掉帧数 方法2：Looper设置print ，匹配消息分发前后字符串，计算之间的耗时 方法3：开启个线程循环通过主线程Handle，post一个延迟x秒的消息去修改一个值，睡眠x秒后在去看">
-<meta name="twitter:image" content="http://yoursite.com/images/blog/memory/performance/B4CA6F16-DE69-4EE2-872C-87EFE49D440F.png">
+<meta name="twitter:image" content="http://yoursite.com/images/blog/performance/B4CA6F16-DE69-4EE2-872C-87EFE49D440F.png">
 
 
 
@@ -405,7 +405,7 @@
 <li><p><strong>ServiceTimeout</strong>：服务在前台20s，后台200s的时间内没有处理完成。</p>
 <blockquote>
 <p> 主线程阻塞，广播接收器处理耗时，服务未响应，服务执行耗时任务，主线程死锁等都可能会导致ANR</p>
-<p> 但并不一定主线程耗时任务就会出现anr如下面这种情况，如果后续没有事件需要处理是不会产生anr的<br><img src="/images/blog/memory/performance/B4CA6F16-DE69-4EE2-872C-87EFE49D440F.png" alt="8a0823ee154241d9d1a8c25671cd2058"></p>
+<p> 但并不一定主线程耗时任务就会出现anr如下面这种情况，如果后续没有事件需要处理是不会产生anr的<br><img src="/images/blog/performance/B4CA6F16-DE69-4EE2-872C-87EFE49D440F.png" alt="8a0823ee154241d9d1a8c25671cd2058"></p>
 </blockquote>
 </li>
 </ul>
@@ -421,10 +421,10 @@
 </ol>
 <pre><code>线上收集trace，
 通过sigaction 设置个signalHandler
-![5d1cb110e2b99a3a802b6253b08b2331](/images/blog/memory/performance/C6F2F841-9249-48E6-B149-54254F4F1B5D.png)
-![25b204164d9e7690496f1803597bbab2](/images/blog/memory/performance/242AAE03-C21C-422C-B1C1-F12C716657B7.png)
+![5d1cb110e2b99a3a802b6253b08b2331](/images/blog/performance/C6F2F841-9249-48E6-B149-54254F4F1B5D.png)
+![25b204164d9e7690496f1803597bbab2](/images/blog/performance/242AAE03-C21C-422C-B1C1-F12C716657B7.png)
 Xhook hook write 函数拿到trace文件，这个文件包含很全面的anr信息
-![9c38971886e1c4b71365960bc3769841](/images/blog/memory/performance/D8E8CEB3-625E-4FA3-9709-1D811FD020D1.png)
+![9c38971886e1c4b71365960bc3769841](/images/blog/performance/D8E8CEB3-625E-4FA3-9709-1D811FD020D1.png)
 </code></pre>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#适合6.0以上，没有权限获取了</span><br><span class="line">adb bugreport</span><br></pre></td></tr></table></figure>
 <pre><code>崩溃异常辅助日志搜集
 /system/bin/logcat 手机自己的日志工具，也可以用adb locat

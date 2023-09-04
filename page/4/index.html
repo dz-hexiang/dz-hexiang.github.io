@@ -436,6 +436,154 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/ThreadPoolExecutor的使用和理解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/ThreadPoolExecutor的使用和理解/" itemprop="url">ThreadPoolExecutor的使用和理解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="ThreadPoolExecutor的使用和理解"><a href="#ThreadPoolExecutor的使用和理解" class="headerlink" title="ThreadPoolExecutor的使用和理解"></a>ThreadPoolExecutor的使用和理解</h5><p>corePoolSize,//核心线程数,当线程数超过workQueue阻塞队列数,并且核心数线程已满,会创建新的线程直到达到最大线程<br>                maximumPoolSize,//最大线程数,<br>                keepAliveTime,//空闲线程等待时间,时间到结束释放<br>                unit,//等待时间单位<br>                workQueue, //线程阻塞队列<br>                threadFactory,//线程生产工厂<br>                handler);//当线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</p>
+<p>ThreadFactory是一个线程工厂,负责生产线程的</p>
+<p>例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.concurrent.ArrayBlockingQueue;</span><br><span class="line">import java.util.concurrent.BlockingQueue;</span><br><span class="line">import java.util.concurrent.LinkedBlockingQueue;</span><br><span class="line">import java.util.concurrent.RejectedExecutionHandler;</span><br><span class="line">import java.util.concurrent.ThreadFactory;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line">import java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line">public class ThreadPollTest &#123;</span><br><span class="line">	static ThreadPoolExecutor executor;</span><br><span class="line">    public static void main(String[] args) throws InterruptedException, IOException &#123;</span><br><span class="line">        int corePoolSize = 2;</span><br><span class="line">        int maximumPoolSize = 4;</span><br><span class="line">        long keepAliveTime = 60;</span><br><span class="line">        TimeUnit unit = TimeUnit.SECONDS;</span><br><span class="line">        BlockingQueue&lt;Runnable&gt; workQueue = new LinkedBlockingQueue&lt;&gt;(10);</span><br><span class="line">        ThreadFactory threadFactory = new NameTreadFactory();</span><br><span class="line">        RejectedExecutionHandler handler = new MyIgnorePolicy();</span><br><span class="line">        executor = new ThreadPoolExecutor(</span><br><span class="line">        		corePoolSize,//核心线程数,当线程数超过workQueue阻塞队列数,并且核心数线程已满,会创建新的线程直到达到最大线程</span><br><span class="line">        		maximumPoolSize,//最大线程数,</span><br><span class="line">        		keepAliveTime,//空闲线程等待时间,时间到结束释放</span><br><span class="line">        		unit,//等待时间单位</span><br><span class="line">                workQueue, //线程阻塞队列</span><br><span class="line">                threadFactory,//线程生产工厂</span><br><span class="line">                handler);//当线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</span><br><span class="line">        executor.prestartAllCoreThreads(); // 预启动所有核心线程</span><br><span class="line">        </span><br><span class="line">        for (int i = 1; i &lt;= 16; i++) &#123;</span><br><span class="line">            MyTask task = new MyTask(String.valueOf(i));</span><br><span class="line">            executor.execute(task);</span><br><span class="line">        &#125;</span><br><span class="line">  </span><br><span class="line">    &#125;</span><br><span class="line">    //线程工厂</span><br><span class="line">    static class NameTreadFactory implements ThreadFactory &#123;</span><br><span class="line"></span><br><span class="line">        private final AtomicInteger mThreadNum = new AtomicInteger(1);</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public Thread newThread(Runnable r) &#123;</span><br><span class="line">            Thread t = new Thread(r, &quot;my-thread-&quot; + mThreadNum.getAndIncrement());</span><br><span class="line">            System.out.println(t.getName() + &quot; has been created&quot;);</span><br><span class="line">            return t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</span><br><span class="line">    public static class MyIgnorePolicy implements RejectedExecutionHandler &#123;</span><br><span class="line"></span><br><span class="line">        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) &#123;</span><br><span class="line">            doLog(r, e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private void doLog(Runnable r, ThreadPoolExecutor e) &#123;</span><br><span class="line">            System.err.println( r.toString() + &quot; rejected&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //例子执行任务</span><br><span class="line">    static class MyTask implements Runnable &#123;</span><br><span class="line">        private String name;</span><br><span class="line"></span><br><span class="line">        public MyTask(String name) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(this.toString() + &quot; is running!activityCount:&quot;+executor.getActiveCount()</span><br><span class="line">                +&quot;,getCompletedTaskCount:&quot;+executor.getCompletedTaskCount()</span><br><span class="line">                +&quot;,getTaskCount:&quot;+executor.getTaskCount()</span><br><span class="line">                +&quot;,getQueue().size:&quot;+executor.getQueue().size()</span><br><span class="line">                );</span><br><span class="line">                Thread.sleep(3000); //让任务执行慢点</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public String getName() &#123;</span><br><span class="line">            return name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public String toString() &#123;</span><br><span class="line">            return &quot;MyTask [name=&quot; + name + &quot;]&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/SystemServer进程的创建及Launcher启动/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -548,154 +696,6 @@
 <p>systemReady 方法中调用 mActivityManagerService.startHomeActivityLocked启动launcher<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">startHomeActivityLocked(currentUserId, &quot;systemReady&quot;);</span><br></pre></td></tr></table></figure></p>
 <p>下面代码1处调用ActivityStarter中的 startActivityMayWait 或者startActivity ,又开始走<strong>Activity启动流程</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">void startHomeActivity(Intent intent, ActivityInfo aInfo, String reason) &#123;</span><br><span class="line">        mSupervisor.moveHomeStackTaskToTop(reason);</span><br><span class="line">		//代码1</span><br><span class="line">        mLastHomeActivityStartResult = obtainStarter(intent, &quot;startHomeActivity: &quot; + reason)</span><br><span class="line">                .setOutActivity(tmpOutRecord)</span><br><span class="line">                .setCallingUid(0)</span><br><span class="line">                .setActivityInfo(aInfo)</span><br><span class="line">                .execute();</span><br><span class="line">        mLastHomeActivityStartRecord = tmpOutRecord[0];</span><br><span class="line">        if (mSupervisor.inResumeTopActivity) &#123;</span><br><span class="line">            // If we are in resume section already, home activity will be initialized, but not</span><br><span class="line">            // resumed (to avoid recursive resume) and will stay that way until something pokes it</span><br><span class="line">            // again. We need to schedule another resume.</span><br><span class="line">            mSupervisor.scheduleResumeTopActivities();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <h5 id="2-5进入消息循环"><a href="#2-5进入消息循环" class="headerlink" title="2.5进入消息循环"></a>2.5进入消息循环</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Loop forever.</span><br><span class="line">Looper.loop();</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/ThreadPoolExecutor的使用和理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/ThreadPoolExecutor的使用和理解/" itemprop="url">ThreadPoolExecutor的使用和理解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="ThreadPoolExecutor的使用和理解"><a href="#ThreadPoolExecutor的使用和理解" class="headerlink" title="ThreadPoolExecutor的使用和理解"></a>ThreadPoolExecutor的使用和理解</h5><p>corePoolSize,//核心线程数,当线程数超过workQueue阻塞队列数,并且核心数线程已满,会创建新的线程直到达到最大线程<br>                maximumPoolSize,//最大线程数,<br>                keepAliveTime,//空闲线程等待时间,时间到结束释放<br>                unit,//等待时间单位<br>                workQueue, //线程阻塞队列<br>                threadFactory,//线程生产工厂<br>                handler);//当线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</p>
-<p>ThreadFactory是一个线程工厂,负责生产线程的</p>
-<p>例子:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.concurrent.ArrayBlockingQueue;</span><br><span class="line">import java.util.concurrent.BlockingQueue;</span><br><span class="line">import java.util.concurrent.LinkedBlockingQueue;</span><br><span class="line">import java.util.concurrent.RejectedExecutionHandler;</span><br><span class="line">import java.util.concurrent.ThreadFactory;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line">import java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line">public class ThreadPollTest &#123;</span><br><span class="line">	static ThreadPoolExecutor executor;</span><br><span class="line">    public static void main(String[] args) throws InterruptedException, IOException &#123;</span><br><span class="line">        int corePoolSize = 2;</span><br><span class="line">        int maximumPoolSize = 4;</span><br><span class="line">        long keepAliveTime = 60;</span><br><span class="line">        TimeUnit unit = TimeUnit.SECONDS;</span><br><span class="line">        BlockingQueue&lt;Runnable&gt; workQueue = new LinkedBlockingQueue&lt;&gt;(10);</span><br><span class="line">        ThreadFactory threadFactory = new NameTreadFactory();</span><br><span class="line">        RejectedExecutionHandler handler = new MyIgnorePolicy();</span><br><span class="line">        executor = new ThreadPoolExecutor(</span><br><span class="line">        		corePoolSize,//核心线程数,当线程数超过workQueue阻塞队列数,并且核心数线程已满,会创建新的线程直到达到最大线程</span><br><span class="line">        		maximumPoolSize,//最大线程数,</span><br><span class="line">        		keepAliveTime,//空闲线程等待时间,时间到结束释放</span><br><span class="line">        		unit,//等待时间单位</span><br><span class="line">                workQueue, //线程阻塞队列</span><br><span class="line">                threadFactory,//线程生产工厂</span><br><span class="line">                handler);//当线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</span><br><span class="line">        executor.prestartAllCoreThreads(); // 预启动所有核心线程</span><br><span class="line">        </span><br><span class="line">        for (int i = 1; i &lt;= 16; i++) &#123;</span><br><span class="line">            MyTask task = new MyTask(String.valueOf(i));</span><br><span class="line">            executor.execute(task);</span><br><span class="line">        &#125;</span><br><span class="line">  </span><br><span class="line">    &#125;</span><br><span class="line">    //线程工厂</span><br><span class="line">    static class NameTreadFactory implements ThreadFactory &#123;</span><br><span class="line"></span><br><span class="line">        private final AtomicInteger mThreadNum = new AtomicInteger(1);</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public Thread newThread(Runnable r) &#123;</span><br><span class="line">            Thread t = new Thread(r, &quot;my-thread-&quot; + mThreadNum.getAndIncrement());</span><br><span class="line">            System.out.println(t.getName() + &quot; has been created&quot;);</span><br><span class="line">            return t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</span><br><span class="line">    public static class MyIgnorePolicy implements RejectedExecutionHandler &#123;</span><br><span class="line"></span><br><span class="line">        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) &#123;</span><br><span class="line">            doLog(r, e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private void doLog(Runnable r, ThreadPoolExecutor e) &#123;</span><br><span class="line">            System.err.println( r.toString() + &quot; rejected&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //例子执行任务</span><br><span class="line">    static class MyTask implements Runnable &#123;</span><br><span class="line">        private String name;</span><br><span class="line"></span><br><span class="line">        public MyTask(String name) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(this.toString() + &quot; is running!activityCount:&quot;+executor.getActiveCount()</span><br><span class="line">                +&quot;,getCompletedTaskCount:&quot;+executor.getCompletedTaskCount()</span><br><span class="line">                +&quot;,getTaskCount:&quot;+executor.getTaskCount()</span><br><span class="line">                +&quot;,getQueue().size:&quot;+executor.getQueue().size()</span><br><span class="line">                );</span><br><span class="line">                Thread.sleep(3000); //让任务执行慢点</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public String getName() &#123;</span><br><span class="line">            return name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public String toString() &#123;</span><br><span class="line">            return &quot;MyTask [name=&quot; + name + &quot;]&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1037,6 +1037,154 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/二分查找/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/二分查找/" itemprop="url">二分查找</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h5><p>二分查找也称<strong>折半查找</strong>（Binary Search），它是一种效率较高的查找方法。但是，折半查找要求线性表必须采用顺<strong>序存储结构</strong>，而且表中元素按关键字有序排列</p>
+<p>算法要求<br>1.必须采用顺序存储结构。<br>2.必须按关键字大小有序排列。</p>
+<p>二分查找只适用顺序存储结构。为保持表的有序性，在顺序结构里插入和删除都必须移动大量的结点。因此，二分查找特别<strong>适用于那种一很少改动、而又经常需要查找的线性表</strong>。</p>
+<h5 id="循环实现"><a href="#循环实现" class="headerlink" title="循环实现"></a>循环实现</h5><p>java实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public static int binarySearch(Integer[] srcArray, int des) &#123;</span><br><span class="line">    //定义初始最小、最大索引</span><br><span class="line">    int low = 0;</span><br><span class="line">    int high = srcArray.length - 1;</span><br><span class="line">    //确保不会出现重复查找，越界</span><br><span class="line">    while (low &lt;= high) &#123;</span><br><span class="line">        //计算出中间索引值</span><br><span class="line">        int middle = (high + low)&gt;&gt;&gt;1 ;//防止溢出</span><br><span class="line">        if (des == srcArray[middle]) &#123;</span><br><span class="line">            return middle;</span><br><span class="line">        //判断下限</span><br><span class="line">        &#125; else if (des &lt; srcArray[middle]) &#123;</span><br><span class="line">            high = middle - 1;</span><br><span class="line">        //判断上限</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            low = middle + 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //若没有，则返回-1</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/为什么子线程弹Toast报错及为什么Handle需要Loop对象/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1148,154 +1296,6 @@
 <p>而且handler会关联Loop当中的mQueue对象,用来发消息,比如sendMessageDelayed 最终会通过mQueue对象发送消息,loop对象收到消息,会回调mQueue对象关联的loop对象的handleMessage(Message msg)的接口,完成消息通信.</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public Handler(Callback callback, boolean async) &#123;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">    mLooper = Looper.myLooper();</span><br><span class="line">    if (mLooper == null) &#123;</span><br><span class="line">        throw new RuntimeException(</span><br><span class="line">            &quot;Can&apos;t create handler inside thread &quot; + Thread.currentThread()</span><br><span class="line">                    + &quot; that has not called Looper.prepare()&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    mQueue = mLooper.mQueue;</span><br><span class="line">    mCallback = callback;</span><br><span class="line">    mAsynchronous = async;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/二分查找/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/二分查找/" itemprop="url">二分查找</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h5><p>二分查找也称<strong>折半查找</strong>（Binary Search），它是一种效率较高的查找方法。但是，折半查找要求线性表必须采用顺<strong>序存储结构</strong>，而且表中元素按关键字有序排列</p>
-<p>算法要求<br>1.必须采用顺序存储结构。<br>2.必须按关键字大小有序排列。</p>
-<p>二分查找只适用顺序存储结构。为保持表的有序性，在顺序结构里插入和删除都必须移动大量的结点。因此，二分查找特别<strong>适用于那种一很少改动、而又经常需要查找的线性表</strong>。</p>
-<h5 id="循环实现"><a href="#循环实现" class="headerlink" title="循环实现"></a>循环实现</h5><p>java实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public static int binarySearch(Integer[] srcArray, int des) &#123;</span><br><span class="line">    //定义初始最小、最大索引</span><br><span class="line">    int low = 0;</span><br><span class="line">    int high = srcArray.length - 1;</span><br><span class="line">    //确保不会出现重复查找，越界</span><br><span class="line">    while (low &lt;= high) &#123;</span><br><span class="line">        //计算出中间索引值</span><br><span class="line">        int middle = (high + low)&gt;&gt;&gt;1 ;//防止溢出</span><br><span class="line">        if (des == srcArray[middle]) &#123;</span><br><span class="line">            return middle;</span><br><span class="line">        //判断下限</span><br><span class="line">        &#125; else if (des &lt; srcArray[middle]) &#123;</span><br><span class="line">            high = middle - 1;</span><br><span class="line">        //判断上限</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            low = middle + 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //若没有，则返回-1</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
           
         
       
@@ -1701,7 +1701,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/原子性可见性有序性/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/反转链表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -1720,7 +1720,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/09/原子性可见性有序性/" itemprop="url">原子性可见性有序性</a></h1>
+                <a class="post-title-link" href="/2019/02/09/反转链表/" itemprop="url">反转链表</a></h1>
         
 
         <div class="post-meta">
@@ -1797,9 +1797,9 @@
       
         
           
-            <h5 id="原子性，可见性，有序性"><a href="#原子性，可见性，有序性" class="headerlink" title="原子性，可见性，有序性"></a>原子性，可见性，有序性</h5><h5 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h5><p>原子性是指一个操作是不可中断的，要么全部执行成功要么全部执行失败，有着“同生共死”的感觉。<code>在多个线程一起执行的时候，一个操作一旦开始，就不会被其他线程所干扰</code>.<code>volatile并不能保证原子性</code>,<code>synchronized满足原子性</code>。</p>
-<h5 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h5><p>可见性是指当一个线程修改了共享变量后，其他线程能够立即得知这个修改。通过之前对synchronzed内存语义进行了分析，当线程获取锁时会从主内存中获取共享变量的最新值，释放锁的时候会将共享变量同步到主内存中。从而，<code>synchronized具有可见性</code>。同样的在volatile分析中，会通过在指令中添加lock指令，以实现内存可见性。因此, <code>volatile具有可见性</code></p>
-<h5 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h5><p>synchronized语义表示锁在同一时刻只能由一个线程进行获取，当锁被占用后，其他线程只能等待。因此，synchronized语义就要求线程在访问读写共享变量时只能“串行”执行，因此<code>synchronized具有有序性</code>。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volatile包含禁止指令重排序的语义，其具有有序性</span><br></pre></td></tr></table></figure></p>
+            <h5 id="反转链表"><a href="#反转链表" class="headerlink" title="反转链表"></a>反转链表</h5><p>递归方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">   public ListNode reverseList(ListNode head) &#123;</span><br><span class="line">     if(head == null || head.next == null) return head;</span><br><span class="line">        ListNode p = reverseList(head.next);</span><br><span class="line">        head.next.next = head;</span><br><span class="line">        head.next = null;</span><br><span class="line">        return p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>循环方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public ListNode reverseList(ListNode head) &#123;</span><br><span class="line">      ListNode cur = head, pre = null, next = null;</span><br><span class="line">      while(cur != null)&#123;</span><br><span class="line">          next = cur.next;</span><br><span class="line">          cur.next = pre;</span><br><span class="line">          pre = cur;</span><br><span class="line">          cur = next;</span><br><span class="line">      &#125;</span><br><span class="line">      return pre;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
 
           
         

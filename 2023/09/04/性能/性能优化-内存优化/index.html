@@ -87,23 +87,23 @@
 <meta property="og:site_name" content="Mr.HeXiang Blog">
 <meta property="og:description" content="性能优化-内存Shallow Size对象自身占用的内存大小，不包括它引用的对象 Retained Size当前对象大小+当前对象可直接或间接引用到的对象的大小总和 Bitmap内存在native中，不影响java虚拟机内存上限，android 8.0之后才在native中的，测试系统api 34模拟器中，循环调用BitmapFactory.decodeResource创建bitmap只是nati">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/CDA8C129-2247-4A89-9617-C6085E0C7935.png">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/4FA1DD03-4FD9-41F8-8119-333CF93F143A.png">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/7429B1BF-C02B-4D50-87E1-317277A674AB.png">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/EB7522F4-DD43-43E2-9DC4-8DAAAF4420DB.png">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/11739B63-A536-4AD5-B683-8311B94A0D9B.png">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/A25AF862-BD93-481F-9AE1-C85C820B03FE.png">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/1B4801AF-A4D2-43F2-AA54-686889CA5455.png">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/07AD26CC-EA05-4EFF-9CD5-53B8C2A5F464.png">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/A9E62B12-DD60-4A16-8B09-0198B53B9FBF.png">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/13B7CC2D-F454-4CEA-876C-316A2BD98E4A.png">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/E71EC872-1C59-404E-A6FC-6871F72A1DA0.png">
-<meta property="og:image" content="http://yoursite.com/images/blog/memory/performance/943D55FB-616E-4738-B86D-EDE595DF9A77.png">
-<meta property="og:updated_time" content="2023-09-04T09:03:00.698Z">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/CDA8C129-2247-4A89-9617-C6085E0C7935.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/4FA1DD03-4FD9-41F8-8119-333CF93F143A.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/7429B1BF-C02B-4D50-87E1-317277A674AB.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/EB7522F4-DD43-43E2-9DC4-8DAAAF4420DB.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/11739B63-A536-4AD5-B683-8311B94A0D9B.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/A25AF862-BD93-481F-9AE1-C85C820B03FE.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/1B4801AF-A4D2-43F2-AA54-686889CA5455.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/07AD26CC-EA05-4EFF-9CD5-53B8C2A5F464.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/A9E62B12-DD60-4A16-8B09-0198B53B9FBF.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/13B7CC2D-F454-4CEA-876C-316A2BD98E4A.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/E71EC872-1C59-404E-A6FC-6871F72A1DA0.png">
+<meta property="og:image" content="http://yoursite.com/images/blog/performance/943D55FB-616E-4738-B86D-EDE595DF9A77.png">
+<meta property="og:updated_time" content="2023-09-04T10:12:28.569Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="性能优化-内存">
 <meta name="twitter:description" content="性能优化-内存Shallow Size对象自身占用的内存大小，不包括它引用的对象 Retained Size当前对象大小+当前对象可直接或间接引用到的对象的大小总和 Bitmap内存在native中，不影响java虚拟机内存上限，android 8.0之后才在native中的，测试系统api 34模拟器中，循环调用BitmapFactory.decodeResource创建bitmap只是nati">
-<meta name="twitter:image" content="http://yoursite.com/images/blog/memory/performance/CDA8C129-2247-4A89-9617-C6085E0C7935.png">
+<meta name="twitter:image" content="http://yoursite.com/images/blog/performance/CDA8C129-2247-4A89-9617-C6085E0C7935.png">
 
 
 
@@ -391,14 +391,14 @@
         <h5 id="性能优化-内存"><a href="#性能优化-内存" class="headerlink" title="性能优化-内存"></a>性能优化-内存</h5><p><strong>Shallow Size</strong><br>对象自身占用的内存大小，不包括它引用的对象</p>
 <p><strong>Retained Size</strong><br>当前对象大小+当前对象可直接或间接引用到的对象的大小总和</p>
 <p><strong>Bitmap内存在native中</strong>，<strong>不影响java虚拟机内存上限</strong>，android 8.0之后才在native中的，测试系统api 34模拟器中，循环调用BitmapFactory.decodeResource创建bitmap只是native内存增长</p>
-<p><strong>code，stack，java</strong>变化很小，只有<strong>native</strong>和<strong>other</strong> 的内存一直在增长<br><img src="/images/blog/memory/performance/CDA8C129-2247-4A89-9617-C6085E0C7935.png" alt="b58dc04118154515f020948120ebaa02"></p>
-<p>每次创建bitmap对cpu都有一定的消耗<br><img src="/images/blog/memory/performance/4FA1DD03-4FD9-41F8-8119-333CF93F143A.png" alt="7da8ca02a98712a09e9a72627660bae4"></p>
-<p>java对象内存很小<br><img src="/images/blog/memory/performance/7429B1BF-C02B-4D50-87E1-317277A674AB.png" alt="87c4f03fc12800b0dfce61688978b46d"></p>
-<p>native内存已经1.3G多了，java 虚拟机内存的内存也没有过多变化<br><img src="/images/blog/memory/performance/EB7522F4-DD43-43E2-9DC4-8DAAAF4420DB.png" alt="80168fddcd4bf7ef6dbbd1d282769a12"></p>
-<p>被强制杀掉进程了<br><img src="/images/blog/memory/performance/11739B63-A536-4AD5-B683-8311B94A0D9B.png" alt="5768e37e872a9c1662668979df1bf56f"></p>
-<p>陆续杀了一些其他进程，接着是demo进程<br>系统终止进程 “com.example.jnidemo” 来缓解内存和交换空间的压力，java虚拟机没有达到上限，但native 尝试分配太多内存也会被杀掉，可以主动释放些内存，实际中除了泄露应该用不这么多内存的<br><img src="/images/blog/memory/performance/A25AF862-BD93-481F-9AE1-C85C820B03FE.png" alt="2f758fb912cc4ff71a246c0e36604273"></p>
-<p>换个真手机，1200块的普通oppo手机，总内存达到8.8G，natvie 3.7G，others 5G，才被杀掉<br><img src="/images/blog/memory/performance/1B4801AF-A4D2-43F2-AA54-686889CA5455.png" alt="928e9f5dccf4a79c671ab1596f7af2ec"></p>
-<p>通过bitmap创建申请了几乎8g的native 内存，但java 虚拟机内存一点变化都没有<br><img src="/images/blog/memory/performance/07AD26CC-EA05-4EFF-9CD5-53B8C2A5F464.png" alt="9af3917956e332ce6e487da3f842e669"></p>
+<p><strong>code，stack，java</strong>变化很小，只有<strong>native</strong>和<strong>other</strong> 的内存一直在增长<br><img src="/images/blog/performance/CDA8C129-2247-4A89-9617-C6085E0C7935.png" alt="b58dc04118154515f020948120ebaa02"></p>
+<p>每次创建bitmap对cpu都有一定的消耗<br><img src="/images/blog/performance/4FA1DD03-4FD9-41F8-8119-333CF93F143A.png" alt="7da8ca02a98712a09e9a72627660bae4"></p>
+<p>java对象内存很小<br><img src="/images/blog/performance/7429B1BF-C02B-4D50-87E1-317277A674AB.png" alt="87c4f03fc12800b0dfce61688978b46d"></p>
+<p>native内存已经1.3G多了，java 虚拟机内存的内存也没有过多变化<br><img src="/images/blog/performance/EB7522F4-DD43-43E2-9DC4-8DAAAF4420DB.png" alt="80168fddcd4bf7ef6dbbd1d282769a12"></p>
+<p>被强制杀掉进程了<br><img src="/images/blog/performance/11739B63-A536-4AD5-B683-8311B94A0D9B.png" alt="5768e37e872a9c1662668979df1bf56f"></p>
+<p>陆续杀了一些其他进程，接着是demo进程<br>系统终止进程 “com.example.jnidemo” 来缓解内存和交换空间的压力，java虚拟机没有达到上限，但native 尝试分配太多内存也会被杀掉，可以主动释放些内存，实际中除了泄露应该用不这么多内存的<br><img src="/images/blog/performance/A25AF862-BD93-481F-9AE1-C85C820B03FE.png" alt="2f758fb912cc4ff71a246c0e36604273"></p>
+<p>换个真手机，1200块的普通oppo手机，总内存达到8.8G，natvie 3.7G，others 5G，才被杀掉<br><img src="/images/blog/performance/1B4801AF-A4D2-43F2-AA54-686889CA5455.png" alt="928e9f5dccf4a79c671ab1596f7af2ec"></p>
+<p>通过bitmap创建申请了几乎8g的native 内存，但java 虚拟机内存一点变化都没有<br><img src="/images/blog/performance/07AD26CC-EA05-4EFF-9CD5-53B8C2A5F464.png" alt="9af3917956e332ce6e487da3f842e669"></p>
 <p><strong>RGB_565格式设置不一定生效</strong>，系统会查看当前图片是否有透明通道，没有透明通道的是你才会生效，如下面代码，只有把图片去掉图透明通道，才是每像素4字节，否则都是8字节每像素</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val optionsNew = BitmapFactory.Options()                optionsNew.inPreferredConfig = android.graphics.Bitmap.Config.RGB_565</span><br><span class="line"></span><br><span class="line">BitmapFactory.decodeResource(resources, R.mipmap.testtemplatenoalpha, optionsNew)</span><br></pre></td></tr></table></figure>
 <p><strong>Bitmap.createBitmap</strong> 也是放native中</p>
@@ -415,13 +415,13 @@
 <p><strong>Allocated</strong>：您的应用分配的 Java/Kotlin 对象数。此数字没有计入 C 或 C++ 中分配的对象。</p>
 <p><strong>dump简易信息</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell dumpsys meminfo com.example.jnidemo</span><br></pre></td></tr></table></figure>
-<p>看到大致内存信息，像code，native heap dex so等<br><img src="/images/blog/memory/performance/A9E62B12-DD60-4A16-8B09-0198B53B9FBF.png" alt="45fdf95595e0af352cd50576f72c2954"></p>
-<p>内存统计，Activity数量和view的数量<br><img src="/images/blog/memory/performance/13B7CC2D-F454-4CEA-876C-316A2BD98E4A.png" alt="83651dc13a6e2cf59f7a5eb27cd71830"></p>
+<p>看到大致内存信息，像code，native heap dex so等<br><img src="/images/blog/performance/A9E62B12-DD60-4A16-8B09-0198B53B9FBF.png" alt="45fdf95595e0af352cd50576f72c2954"></p>
+<p>内存统计，Activity数量和view的数量<br><img src="/images/blog/performance/13B7CC2D-F454-4CEA-876C-316A2BD98E4A.png" alt="83651dc13a6e2cf59f7a5eb27cd71830"></p>
 <p>看更详细的信息，这个需要debug包</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell run-as com.example.jnidemo cat /proc/18047/maps</span><br></pre></td></tr></table></figure>
-<p><img src="/images/blog/memory/performance/E71EC872-1C59-404E-A6FC-6871F72A1DA0.png" alt="2b57e7029fc339703a800166a51b9f01"></p>
+<p><img src="/images/blog/performance/E71EC872-1C59-404E-A6FC-6871F72A1DA0.png" alt="2b57e7029fc339703a800166a51b9f01"></p>
 <p>可以用个python脚本把上面的内存地址计算成大小,做个排序</p>
-<p><img src="/images/blog/memory/performance/943D55FB-616E-4738-B86D-EDE595DF9A77.png" alt="35154a15ef10436033e9a0d092c14f2c"></p>
+<p><img src="/images/blog/performance/943D55FB-616E-4738-B86D-EDE595DF9A77.png" alt="35154a15ef10436033e9a0d092c14f2c"></p>
 <p><strong>用命令dump内存堆</strong><br>dump 内存堆到指定目录</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell am dumpheap $pid /data/local/tmp/xx.hprof</span><br></pre></td></tr></table></figure>
 <p>还需要调用 转成能够分析的hprof </p>
