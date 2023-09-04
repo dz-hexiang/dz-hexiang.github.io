@@ -282,6 +282,796 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/NDK编译多个平台的FFMPEG/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/22/NDK编译多个平台的FFMPEG/" itemprop="url">NDK编译多个平台的FFMPEG</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-22T17:36:17+08:00">
+                2018-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/音视频/" itemprop="url" rel="index">
+                    <span itemprop="name">音视频</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="NDK编译多个平台的FFMPEG"><a href="#NDK编译多个平台的FFMPEG" class="headerlink" title="NDK编译多个平台的FFMPEG"></a>NDK编译多个平台的FFMPEG</h5><p>编译配置里面的新名词</p>
+<ol>
+<li>Toolchain — tools that are used for compiling and building of sources.</li>
+<li>Sysroot  — sysroot 是一个包含针对您的<code>目标的系统标头和库</code>的目录</li>
+<li>Prefix — directory in which result of building will be written to.</li>
+<li>Cross-prefix — directory of compiler to be used.</li>
+<li>ABI — architecture of processor (i.e. x86, arm-v6, armv8–64 and so om).</li>
+<li>CFLAGS — flags for C-compiler.</li>
+<li>LDFLAGS — flags for linker.</li>
+</ol>
+<h5 id="android支持的7钟CPU架构"><a href="#android支持的7钟CPU架构" class="headerlink" title="android支持的7钟CPU架构"></a>android支持的7钟CPU架构</h5><p>armeabi 第5代 ARM v5TE，使用软件浮点运算，兼容所有ARM设备，通用性强，速度慢（只支持armeabi）</p>
+<p>armeabi-v7a 第7代 ARM v7，使用硬件浮点运算，具有高级扩展功能（支持 armeabi 和 armeabi-v7a，目前大部分手机都是这个架构）</p>
+<p>arm64-v8a 第8代，64位，包含AArch32、AArch64两个执行状态对应32、64bit（支持 armeabi-v7a、armeabi 和 arm64-v8a）</p>
+<p>*x86 intel 32位，一般用于平板（支持 armeabi(性能有所损耗) 和 x86）</p>
+<p>x86_64 intel 64位，一般用于平板（支持 x86 和 x86_64）</p>
+<p>mips 基本没见过（支持 mips）</p>
+<p>mips64 基本没见过（支持 mips 和 mips_64）</p>
+<h5 id="利用独立工具链接生成不同cpu架构的头文件"><a href="#利用独立工具链接生成不同cpu架构的头文件" class="headerlink" title="利用独立工具链接生成不同cpu架构的头文件"></a>利用独立工具链接生成不同cpu架构的头文件</h5><p><a href="https://developer.android.com/ndk/guides/standalone_toolchain" target="_blank" rel="noopener">https://developer.android.com/ndk/guides/standalone_toolchain</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=arm --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/arm</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=arm64 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/arm64</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=x86 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=x86_64 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86_64</span><br></pre></td></tr></table></figure></p>
+<p>另外一种利用toolchain方式生成，生成arm64，android 的api 必须对应21 （Android 5.0    API 21    Lollipop）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--toolchain=aarch64-linux-android-4.9  --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86_64</span><br></pre></td></tr></table></figure></p>
+<h5 id="–arch-有4种选项"><a href="#–arch-有4种选项" class="headerlink" title="–arch 有4种选项"></a>–arch 有4种选项</h5><p> arm arm64 x86 x86_64</p>
+<p>./configure \<br>  –cross-prefix=/home/hx/Downloads/ffmpeg-android/toolchain-android/bin/aarch64-linux-android- \<br>  –sysroot=”/home/hx/Downloads/ffmpeg-android/toolchain-android/sysroot” \<br>  –host=aarch64-linux \<br>  –enable-pic \<br>  –disable-asm \<br>  –enable-static \<br>  –disable-shared \<br>  –disable-opencl \<br>  –prefix=”/home/hx/Downloads/ffmpeg-android/build/arm64-v8a” \<br>  –disable-cli &amp;&amp;<br>   make -j8 &amp;&amp;make install</p>
+<p>./configure –target-os=linux –cross-prefix=/home/hx/Downloads/ffmpeg-android/toolchain-android/bin/aarch64-linux-android- –arch=arm64 –cpu=armv8-a –enable-runtime-cpudetect –sysroot=/home/hx/Downloads/ffmpeg-android/toolchain-android/sysroot –enable-pic –enable-libx264 –enable-libass –enable-libfreetype –enable-libfribidi –enable-libmp3lame –enable-fontconfig –enable-pthreads –disable-debug –enable-version3 –enable-hardcoded-tables –disable-ffplay –disable-ffprobe –enable-gpl –enable-yasm –disable-doc –enable-shared –enable-static –pkg-config=/home/hx/Downloads/ffmpeg-android/ffmpeg-pkg-config –prefix=/home/hx/Downloads/ffmpeg-android/build/arm64-v8a –extra-cflags=-I/home/hx/Downloads/ffmpeg-android/toolchain-android/include  –extra-ldflags=-L/home/hx/Downloads/ffmpeg-android/toolchain-android/lib –extra-libs=’-lpng -lexpat -lm’ –extra-cxxflags= &amp;&amp;make -j 8 &amp;&amp; make install</p>
+<blockquote>
+<p>错误：checking host system type… Invalid configuration `aarch64-linux-android’:<br>解决方法：更新config.sub and config.guess，或者更新整个类库</p>
+</blockquote>
+<p>armeabi 兼容是最全的，armeabi-v7速度比较块，但有些arm的cpu不兼容</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/源码分析ANR超时/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/22/源码分析ANR超时/" itemprop="url">源码分析ANR超时</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-22T17:36:17+08:00">
+                2018-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="ANR超时"><a href="#ANR超时" class="headerlink" title="ANR超时"></a>ANR超时</h4><p>Activity 超时 5秒<br>ActivityManagerService.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// How long we wait until we timeout on key dispatching.</span><br><span class="line">    static final int KEY_DISPATCHING_TIMEOUT = 5*1000;</span><br></pre></td></tr></table></figure></p>
+<p>前台service 超时默认20秒  后台service 超时200秒<br> android framework 源码中 ActiveServices.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// How long we wait for a service to finish executing.</span><br><span class="line">static final int SERVICE_TIMEOUT = 20*1000;</span><br><span class="line"></span><br><span class="line">// How long we wait for a service to finish executing.</span><br><span class="line">static final int SERVICE_BACKGROUND_TIMEOUT = SERVICE_TIMEOUT * 10;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void serviceTimeout(ProcessRecord proc) &#123;</span><br><span class="line">       //...</span><br><span class="line">       //proc.execServicesFg 是否前台执行任务</span><br><span class="line"></span><br><span class="line">            final long maxTime =  now -</span><br><span class="line">                    (proc.execServicesFg ? SERVICE_TIMEOUT : SERVICE_BACKGROUND_TIMEOUT);</span><br><span class="line">          //...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>  广播,前台 10秒 后台60秒<br>ActivityManagerService.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// How long we allow a receiver to run before giving up on it.</span><br><span class="line">   static final int BROADCAST_FG_TIMEOUT = 10*1000;</span><br><span class="line">   static final int BROADCAST_BG_TIMEOUT = 60*1000;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/21/ubuntu下编译ffmpeg/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/21/ubuntu下编译ffmpeg/" itemprop="url">ubuntu下编译ffmpeg</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-21T17:36:17+08:00">
+                2018-11-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/音视频/" itemprop="url" rel="index">
+                    <span itemprop="name">音视频</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h5 id="Ubuntu下编译ffmpeg"><a href="#Ubuntu下编译ffmpeg" class="headerlink" title="Ubuntu下编译ffmpeg"></a>Ubuntu下编译ffmpeg</h5><p> 官网指导：<a href="https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu" target="_blank" rel="noopener">https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu</a></p>
+<h5 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://git.ffmpeg.org/gitweb/ffmpeg.git</span><br></pre></td></tr></table></figure>
+<h5 id="切换分支"><a href="#切换分支" class="headerlink" title="切换分支"></a>切换分支</h5><p>查看远程分支，切换release版本最新的分支到本地，为了稳定，编译少bug，选择release版本的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch -a</span><br><span class="line">git checkout -b remotes/origin/release/4.1</span><br></pre></td></tr></table></figure></p>
+<p>在当前目录创建个bin文件夹，最为编译安装文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir bin</span><br></pre></td></tr></table></figure>
+<h5 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update -qq &amp;&amp; sudo apt-get -y install \</span><br><span class="line">  autoconf \</span><br><span class="line">  automake \</span><br><span class="line">  build-essential \</span><br><span class="line">  cmake \</span><br><span class="line">  git-core \</span><br><span class="line">  libass-dev \</span><br><span class="line">  libfreetype6-dev \</span><br><span class="line">  libsdl2-dev \</span><br><span class="line">  libtool \</span><br><span class="line">  libva-dev \</span><br><span class="line">  libvdpau-dev \</span><br><span class="line">  libvorbis-dev \</span><br><span class="line">  libxcb1-dev \</span><br><span class="line">  libxcb-shm0-dev \</span><br><span class="line">  libxcb-xfixes0-dev \</span><br><span class="line">  pkg-config \</span><br><span class="line">  texinfo \</span><br><span class="line">  wget \</span><br><span class="line">  zlib1g-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nasm</span><br><span class="line">sudo apt-get install yasm</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/21/ubuntu下编译ffmpeg/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/14/内部类匿名内部类局部类/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/14/内部类匿名内部类局部类/" itemprop="url">内部类-局部内部类-匿名内部类</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-14T10:29:00+08:00">
+                2018-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h5 id="内部类（常规内部类，静态内部类），局部内部类，匿名内部类。"><a href="#内部类（常规内部类，静态内部类），局部内部类，匿名内部类。" class="headerlink" title="内部类（常规内部类，静态内部类），局部内部类，匿名内部类。"></a>内部类（常规内部类，静态内部类），局部内部类，匿名内部类。</h5><blockquote>
+<p>下面的述语中，成员内部类是指<code>常规内部类</code>与<code>静态内部类</code>。</p>
+</blockquote>
+<p>getDeclaringClass():Class&lt;?&gt;<br>获取成员内部类在定义时所在的类。</p>
+<p><code>getEnclosingClass()</code>:Class&lt;?&gt;<br>获取内部类在定义时所在的类。</p>
+<p>getEnclosingConstructor():Constructor<br>获取局部或匿名内部类在定义时所在的构造器。</p>
+<p>getEnclosingMethod():Method<br>获取局部或匿名内部类在定义时所在的方法。</p>
+<p><code>isMemberClass():</code>boolean<br>查看是否成员内部类。</p>
+<p><code>isLocalClass():</code>boolean<br>查看是否局部内部类。</p>
+<p><code>isAnonymousClass()</code>:boolean<br>查看是否匿名内部类。</p>
+<p>例子：<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/14/内部类匿名内部类局部类/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/02/ubuntu环境mosquitto安装及测试最大连接数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/02/ubuntu环境mosquitto安装及测试最大连接数/" itemprop="url">ubuntu环境mosquitto安装及测试最大连接数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-02T22:29:00+08:00">
+                2018-09-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="ubuntu环境mosquitto安装及测试最大连接数"><a href="#ubuntu环境mosquitto安装及测试最大连接数" class="headerlink" title="ubuntu环境mosquitto安装及测试最大连接数"></a>ubuntu环境mosquitto安装及测试最大连接数</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">c=1 -d</span><br><span class="line">while [ $c -le 5000 ]</span><br><span class="line">do</span><br><span class="line">mosquitto_sub -d -t hexiang -k 900 &amp;</span><br><span class="line"> (( c++ ))</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<h5 id="查看连接数"><a href="#查看连接数" class="headerlink" title="查看连接数"></a>查看连接数</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -na | awk &apos;/^tcp/ &#123;++S[$NF]&#125; END &#123;for(a in S) print a, S[a]&#125;&apos;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -na|grep ESTAB|grep 1883|wc -l</span><br></pre></td></tr></table></figure>
+<h5 id="查看cpu-占用高的线程"><a href="#查看cpu-占用高的线程" class="headerlink" title="查看cpu 占用高的线程"></a>查看cpu 占用高的线程</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps H -eo user,pid,ppid,tid,time,%cpu,cmd --sort=%cpu</span><br></pre></td></tr></table></figure>
+<h5 id="结束进程及所有连接"><a href="#结束进程及所有连接" class="headerlink" title="结束进程及所有连接"></a>结束进程及所有连接</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill -9 `ps -ef|grep mosquitto|awk &apos;&#123;print $2&#125;&apos;`</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#(max processes)</span><br><span class="line">ulimit -u 12000</span><br><span class="line">#(max files)</span><br><span class="line">ulimit -n 12000</span><br></pre></td></tr></table></figure>
+<h5 id="windows-dos-命令查看-连接数"><a href="#windows-dos-命令查看-连接数" class="headerlink" title="windows dos 命令查看 连接数"></a>windows dos 命令查看 连接数</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -an|find &quot;:1883&quot; |find  &quot;ESTABLISHED&quot; /c</span><br></pre></td></tr></table></figure>
+<p>#####订阅远程主机<br>mosquitto_sub -h 192.168.11.16 -t hexiang</p>
+<h5 id="mosquitto安装错误处理"><a href="#mosquitto安装错误处理" class="headerlink" title="mosquitto安装错误处理"></a>mosquitto安装错误处理</h5><blockquote>
+<p>mosquitto: error while loading shared libraries: libwebsockets.so.4.0.0: cannot open shared object file: No such file or directory</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/lib64/libwebsockets.so.4.0.0 /usr/lib/libwebsockets.so.4.0.0</span><br></pre></td></tr></table></figure>
+<h5 id="mosquitto-脚本安装-for-ubuntu"><a href="#mosquitto-脚本安装-for-ubuntu" class="headerlink" title="mosquitto 脚本安装 for ubuntu"></a>mosquitto 脚本安装 for ubuntu</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">#print hello world in the console window</span><br><span class="line">echo -e &quot;开始安装-----------------------------------------------------------&quot;</span><br><span class="line">echo -e &quot;author:hexiang&quot;</span><br><span class="line">echo -e &quot;name:dz.hexiang&quot;</span><br><span class="line">echo -e &quot;mail:472482006@qq.com&quot;</span><br><span class="line">echo -e &quot;初始设置请稍等...&quot;</span><br><span class="line">sleep 3s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo -e &quot;开始安装wget下载工具&quot;</span><br><span class="line"></span><br><span class="line">yum -y install wget</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo -e &quot;开始下载即时通信服务器源码...&quot;</span><br><span class="line">cd  /home</span><br><span class="line">wget http://mosquitto.org/files/source/mosquitto-1.4.9.tar.gz</span><br><span class="line">echo -e &quot;开始解压即时通信服务器源码...&quot;</span><br><span class="line">tar -xzvf mosquitto-1.4.9.tar.gz</span><br><span class="line">cd mosquitto-1.4.9;</span><br><span class="line"></span><br><span class="line">echo -e &quot;开始进行配置...&quot;</span><br><span class="line"></span><br><span class="line">#WITH_SRV ,WITH_UUID,WITH_WEBSOCKETS</span><br><span class="line">sed -i -E &quot;s/^#WITH_SRV:=.*$/WITH_SRV:=yes/g&quot; config.mk</span><br><span class="line">sed -i -E &quot;s/^WITH_SRV:=.*$/WITH_SRV:=yes/g&quot; config.mk</span><br><span class="line"></span><br><span class="line">sed -i -E &quot;s/^#WITH_UUID:=.*$/WITH_UUID:=yes/g&quot; config.mk</span><br><span class="line">sed -i -E &quot;s/^WITH_UUID:=.*$/WITH_UUID:=yes/g&quot; config.mk</span><br><span class="line"></span><br><span class="line">sed -i -E &quot;s/^#WITH_WEBSOCKETS:=.*$/WITH_WEBSOCKETS:=yes/g&quot; config.mk</span><br><span class="line">sed -i -E &quot;s/^WITH_WEBSOCKETS:=.*$/WITH_WEBSOCKETS:=yes/g&quot; config.mk</span><br><span class="line"></span><br><span class="line">echo -e &quot;即时通信配置成功开始安装相关支持库...&quot;</span><br><span class="line">cd /home</span><br><span class="line">wget http://c-ares.haxx.se/download/c-ares-1.10.0.tar.gz</span><br><span class="line">tar xvf c-ares-1.10.0.tar.gz</span><br><span class="line">cd c-ares-1.10.0</span><br><span class="line">./configure</span><br><span class="line">make&amp;make install</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">apt install libuuid-devel -y</span><br><span class="line">apt install cmake -y</span><br><span class="line">apt install uuid-dev  -y</span><br><span class="line"></span><br><span class="line">cd /home;</span><br><span class="line">wget https://github.com/warmcat/libwebsockets/archive/v1.3-chrome37-firefox30.tar.gz</span><br><span class="line">tar zxvf v1.3-chrome37-firefox30.tar.gz</span><br><span class="line">cd libwebsockets-1.3-chrome37-firefox30;</span><br><span class="line">mkdir build; cd build;</span><br><span class="line">cmake .. -DLIB_SUFFIX=64</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo -e &quot;即时通信开始编译安装...&quot;</span><br><span class="line">cd /home/mosquitto-1.4.9</span><br><span class="line">make&amp;make install</span><br><span class="line"></span><br><span class="line">mv /etc/mosquitto/mosquitto.conf.example /etc/mosquitto/mosquitto.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo -e &quot;配置相关信息...&quot;</span><br><span class="line">sed -i -E &quot;s/^#autosave_interval 1800$/autosave_interval 1800/g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &quot;s/^#persistence false$/persistence true/g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &quot;s/^#persistence_file mosquitto.db$/persistence_file mosquitto.db/g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line"></span><br><span class="line">sed -i -E &quot;s/^autosave_interval 1800$/#autosave_interval 1800/g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &quot;s/^persistence true$/#persistence true/g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &quot;s/^persistence_file mosquitto.db$/#persistence_file mosquitto.db/g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &quot;s/^persistence_location \/var\/mosquitto\/$/#persistence_location \/var\/mosquitto\//g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &quot;s/^listener 1883$/#listener 1883/g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &quot;s/^listener 8888$/#listener 8888/g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &quot;s/^protocol websockets$/#protocol websockets/g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &quot;s/^user root$/#user root/g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &quot;s/^allow_anonymous true$/#allow_anonymous true/g&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line"></span><br><span class="line">sed -i -E &apos;$ a autosave_interval 1800&apos; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &quot;$ a persistence true&quot; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &apos;$ a persistence_file mosquitto.db&apos; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &apos;$ a persistence_location /var/mosquitto/&apos; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &apos;$ a listener 1883&apos; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &apos;$ a listener 8888&apos; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &apos;$ a protocol websockets&apos; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &apos;$ a user root&apos; /etc/mosquitto/mosquitto.conf</span><br><span class="line">sed -i -E &apos;$ a allow_anonymous true&apos; /etc/mosquitto/mosquitto.conf</span><br><span class="line"></span><br><span class="line">#sed -i -E &apos;$ a --------------&apos; /etc/mosquitto/mosquitto.conf</span><br><span class="line"></span><br><span class="line">touch /etc/ld.so.conf.d/liblocal.conf</span><br><span class="line">#添加下面两行配置</span><br><span class="line"></span><br><span class="line">echo -e &apos;/usr/local/lib64\n/usr/local/lib&apos;&gt;/etc/ld.so.conf.d/liblocal.conf</span><br><span class="line"></span><br><span class="line">#刷新</span><br><span class="line">ldconfig</span><br><span class="line"></span><br><span class="line">echo -e &quot;启动即时通信服务...&quot;</span><br><span class="line">cd /usr/local/sbin</span><br><span class="line">mosquitto -c /etc/mosquitto/mosquitto.conf -d</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo -e &quot;-----------------------------------------------------------&quot;</span><br><span class="line">echo -e &quot;配置防火墙...&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#安装iptables-services</span><br><span class="line">yum install iptables-services -y</span><br><span class="line">#启动firewalld服务</span><br><span class="line">echo -e &quot;设置开机启动防火墙...&quot;</span><br><span class="line">systemctl enable firewalld.service</span><br><span class="line">echo -e &quot;启动防火墙...&quot;</span><br><span class="line">systemctl start firewalld.service</span><br><span class="line">echo -e &quot;设置开机启动防火墙规则...&quot;</span><br><span class="line">systemctl enable iptables.service</span><br><span class="line">echo -e &quot;启动防火墙规则...&quot;</span><br><span class="line">systemctl start iptables.service</span><br><span class="line">#查看iptables现有规则</span><br><span class="line">iptables -L -n</span><br><span class="line">#先允许所有,不然有可能会杯具</span><br><span class="line">iptables -P INPUT ACCEPT</span><br><span class="line">#清空所有默认规则</span><br><span class="line">iptables -F</span><br><span class="line">#清空所有自定义规则</span><br><span class="line">iptables -X</span><br><span class="line"></span><br><span class="line">#所有计数器归0</span><br><span class="line">iptables -Z</span><br><span class="line">echo -e &quot;开启各种服务端口...&quot;</span><br><span class="line">#开放1888 端口</span><br><span class="line">iptables -A INPUT -p tcp --dport 1888 -j ACCEPT</span><br><span class="line">#开放8888端口</span><br><span class="line">iptables -A INPUT -p tcp --dport 1883 -j ACCEPT</span><br><span class="line"></span><br><span class="line">iptables -A INPUT -p tcp --dport 8888 -j ACCEPT</span><br><span class="line">#开放8888端口</span><br><span class="line"></span><br><span class="line">iptables -A INPUT -p udp --dport 5060 -j ACCEPT</span><br><span class="line"></span><br><span class="line">#开放8888端口</span><br><span class="line">iptables -A INPUT -p tcp --dport 8087 -j ACCEPT</span><br><span class="line">iptables -A INPUT -p tcp --dport 8088 -j ACCEPT</span><br><span class="line">iptables -A INPUT -p tcp --dport 8086 -j ACCEPT</span><br><span class="line">iptables -A INPUT -p tcp --dport 8085 -j ACCEPT</span><br><span class="line">iptables -A INPUT -p tcp --dport 1935 -j ACCEPT</span><br><span class="line">#保存上述规则</span><br><span class="line">service iptables save</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#查看状态</span><br><span class="line">systemctl restart iptables.service</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo -e &quot;下面设置开机自动启动各种服务...&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#echo -e &apos;mosquitto -c /etc/mosquitto/mosquitto.conf -d\ncd /usr/local/sbin/ ; ./opensipsctl start\nsystemctl restart WowzaStreamingEngine.service\nsystemctl restart  iptables.service&apos;&gt;/etc/rc.d/rc.local</span><br><span class="line"></span><br><span class="line">#2.加入以下命令</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">chmod +x /etc/rc.d/rc.local</span><br><span class="line">sed -i -E &apos;$ a mosquitto -c \/etc\/mosquitto\/mosquitto.conf -d&apos; /etc/rc.d/rc.local</span><br><span class="line">sed -i -E &apos;$ a cd \/usr\/local\/sbin\/ ; .\/opensipsctl start&apos; /etc/rc.d/rc.local</span><br><span class="line">sed -i -E &apos;$ a systemctl restart  iptables.service&apos; /etc/rc.d/rc.local</span><br><span class="line">sed -i -E &apos;$ a systemctl restart WowzaStreamingEngine.service&apos; /etc/rc.d/rc.local</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/13/懒人反编译工具/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1033,798 +1823,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/03/调用jni的两种方法javah和RegisterNatives/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/03/调用jni的两种方法javah和RegisterNatives/" itemprop="url">调用jni的两种方法javah和RegisterNatives</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-03T22:21:28+08:00">
-                2018-02-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JNI/" itemprop="url" rel="index">
-                    <span itemprop="name">JNI</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>调用jni的有两种方法：<br>一种是通过javah 自动生成jni文件<br>一种是加载类库的时候，调用JNIEnv 指针的RegisterNatives方法注册native方法</p>
-<blockquote>
-<p>RegisterNatives方式有3种好处<br>1、jni种函数命名自由，不必像javah自动生成的函数声明那样，必须特定的命名方式；<br>2、效率高。传统方式下，Java类call本地函数时，通常是依靠VM去动态寻找.so中的本地函数(因此它们才需要特定规则的命名格式)，而使用RegisterNatives将本地函数向VM进行登记，可以让其更有效率的找到函数；</p>
-<p>3、运行时动态调整本地函数与Java函数值之间的映射关系，只需要多次call RegisterNatives()方法，并传入不同的映射表参数即可。</p>
-</blockquote>
-<h4 id="一、javah生成jni"><a href="#一、javah生成jni" class="headerlink" title="一、javah生成jni"></a>一、javah生成jni</h4><ol>
-<li><p>java类中声明 native 方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public native String stringFromJNI();</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>通过javah方法生成jni文件。（cmd命令进入包根目录，javah 包名.类名）</p>
-</li>
-</ol>
-<blockquote>
-<p>生成方法会带JNIEXPORT void JNICALL  方法名很长，包名和native方法结合在一起。如：</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//返回类型</span><br><span class="line">JNIEXPORT jstring</span><br><span class="line">JNICALL</span><br><span class="line">//生成的方法名字</span><br><span class="line">Java_libyuv_aimissu_com_libyuvtestdemo_MainActivity_stringFromJNI(</span><br><span class="line">        JNIEnv *env,</span><br><span class="line">        jobject /* this */) &#123;</span><br><span class="line">    std::string hello = &quot;Hello from C++&quot;;</span><br><span class="line">    return env-&gt;NewStringUTF(hello.c_str());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="二、RegisterNatives-注册native方法"><a href="#二、RegisterNatives-注册native方法" class="headerlink" title="二、RegisterNatives 注册native方法"></a>二、RegisterNatives 注册native方法</h4>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/02/03/调用jni的两种方法javah和RegisterNatives/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/03/直播推流方案及过程分解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/03/直播推流方案及过程分解/" itemprop="url">直播推流方案及过程分解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-03T19:36:17+08:00">
-                2018-02-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/音视频/" itemprop="url" rel="index">
-                    <span itemprop="name">音视频</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="直播过程"><a href="#直播过程" class="headerlink" title="直播过程"></a>直播过程</h4><p>1.相机预览及数据采集Camera — 取数据(onPreviewFrame(Byte[] rawFrameData, Camera camera))<br>2.原始帧处理（Rotate旋转/Scale缩放：使用Libyuv/FFmpeg等工具库）<br>3.编码器编码得到相应的h24数据（openh264库编码）<br>4.发送给流媒体服务器 （librtmp库推流）<br>5.服务器接受及转发</p>
-<h4 id="一、数据采集及预览"><a href="#一、数据采集及预览" class="headerlink" title="一、数据采集及预览"></a>一、数据采集及预览</h4><p>1.<a href="SurfaceView%E9%A2%84%E8%A7%88Camera.md">Surfaceview+Camera</a><br>2.GLSurfaceView +SurfaceTexture （openglees 做滤镜美颜功能）</p>
-<h4 id="二、原始帧处理"><a href="#二、原始帧处理" class="headerlink" title="二、原始帧处理"></a>二、原始帧处理</h4><p>onPreviewFrame 默认得到的是NV21格式的数据，需要转换程I420<br>2.1转换I420（YUV420P）</p>
-<blockquote>
-<p>为什么要使用转I420<br>1.Camera预览格式：NV21、YV12 ，默认是NV21 格式<br>2.H264编码必须要用 I420格式的YUV420<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/02/03/直播推流方案及过程分解/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></blockquote></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/02/SurfaceView预览Camera/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/02/SurfaceView预览Camera/" itemprop="url">SurfaceView预览camera</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T19:20:01+08:00">
-                2018-02-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>SurfaceView 预览Camera<br>实现步骤</p>
-<h5 id="1-增加权限"><a href="#1-增加权限" class="headerlink" title="1.增加权限"></a>1.增加权限</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:name=&quot;android.permission.CAMERA&quot;/&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="2-动态申请权限"><a href="#2-动态申请权限" class="headerlink" title="2.动态申请权限"></a>2.动态申请权限</h5><pre><code>//检查访问摄像头权限
-if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
-} else {
-    //拥有权限
-    initCameraView();
-}
-</code></pre><h5 id="3-为SurfaceView的SurfaceHolder增加回调"><a href="#3-为SurfaceView的SurfaceHolder增加回调" class="headerlink" title="3.为SurfaceView的SurfaceHolder增加回调"></a>3.为SurfaceView的SurfaceHolder增加回调</h5><blockquote>
-<p>类中要实现回调 implements SurfaceHolder.Callback</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">private void initCameraView() &#123;</span><br><span class="line">    surfaceView = findViewById(R.id.surfaceview);</span><br><span class="line">    surfaceHolder = surfaceView.getHolder();</span><br><span class="line">    surfaceHolder.addCallback(this);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/02/02/SurfaceView预览Camera/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/用nginx-rtmp-module搭建rtmp流媒体服务器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/30/用nginx-rtmp-module搭建rtmp流媒体服务器/" itemprop="url">用nginx-rtmp-module搭建rtmp流媒体服务器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T19:36:17+08:00">
-                2018-01-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/音视频/" itemprop="url" rel="index">
-                    <span itemprop="name">音视频</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>利用开源的<code>nginx-rtmp-module</code>和<code>Nginx</code>搭建流媒体服务器。<code>Nginx</code>是一个非常出色的<code>http</code>服务器，<code>nginx-rtmp-module</code>是一个开源的<code>Nginx</code>扩展模块，拥有很多功能特性，像接收<code>rtmp</code>推流拉流，<code>hls</code>直播等：</p>
-<p>1.RTMP/HLS/MPEG-DASH live streaming<br>2.RTMP Video on demand FLV/MP4, playing from local filesystem or HTTP<br>3.Stream relay support for distributed streaming: push &amp; pull models<br>4.Recording streams in multiple FLVs<br>5.H264/AAC support<br>6.Online transcoding with FFmpeg<br>7.HTTP callbacks (publish/play/record/update etc)<br>8.Running external programs on certain events (exec)<br>9.HTTP control module for recording audio/video and dropping clients<br>10.Advanced buffering techniques to keep memory allocations at a minimum level for faster streaming and low memory footprint<br>11.Proved to work with Wirecast, FMS, Wowza, JWPlayer, FlowPlayer, StrobeMediaPlayback, ffmpeg, avconv, rtmpdump, flvstreamer and many more<br>12.Statistics in XML/XSL in machine- &amp; human- readable form<br>13.Linux/FreeBSD/MacOS/Windows</p>
-<h5 id="下面是配置安装使用详细过程"><a href="#下面是配置安装使用详细过程" class="headerlink" title="下面是配置安装使用详细过程"></a>下面是配置安装使用详细过程</h5>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/30/用nginx-rtmp-module搭建rtmp流媒体服务器/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/25/bugly的tinker热修复使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/25/bugly的tinker热修复使用/" itemprop="url">bugly的tinker热修复使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-25T17:48:00+08:00">
-                2018-01-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>bugly 热修复使用的是微信的tinker，然后封装好了，不需要在进行后台开发，简化了步骤，简单几部就可以集成了。<br>热修复：在用户不知情的情况升级补丁，修复bug~~~ 告别重新下载安装App<br>微信提供的tinker，没得说上亿的用户摆在那 </p>
-<blockquote>
-<p>Android Studio IDE环境设置<br>tinker不支持instant run模式，你需要找到File-&gt;Settings-&gt;Build,Execution,Deployment-&gt;instant run并关闭，日常调试可以tinker关闭来使用instant run。</p>
-</blockquote>
-<p>相关资源<br>bugly 热修复及官方方文档</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://bugly.qq.com/docs/user-guide/instruction-manual-android-hotfix/?v=20180119105842</span><br></pre></td></tr></table></figure>
-<p>tinker 源码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/Tencent/tinker</span><br></pre></td></tr></table></figure>
-<h5 id="下面是集成及使用的详细过程"><a href="#下面是集成及使用的详细过程" class="headerlink" title="下面是集成及使用的详细过程"></a>下面是集成及使用的详细过程</h5>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/25/bugly的tinker热修复使用/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1872,7 +1875,7 @@ if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != Pack
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

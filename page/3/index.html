@@ -282,6 +282,619 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Activity启动过程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/Activity启动过程/" itemprop="url">Activity启动过程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Activity启动过程"><a href="#Activity启动过程" class="headerlink" title="Activity启动过程"></a>Activity启动过程</h4><p>Activity</p>
+<h5 id="1-startActivity"><a href="#1-startActivity" class="headerlink" title="1.startActivity"></a>1.startActivity</h5><h5 id="2-startActivityForResult"><a href="#2-startActivityForResult" class="headerlink" title="2.startActivityForResult"></a>2.startActivityForResult</h5><p>Instrumentation</p>
+<h5 id="3-execStartActivity"><a href="#3-execStartActivity" class="headerlink" title="3.execStartActivity"></a>3.execStartActivity</h5><p>ActivityManagerService</p>
+<h5 id="4-startActivity"><a href="#4-startActivity" class="headerlink" title="4.startActivity"></a>4.startActivity</h5><h5 id="5-startActivityAsUser"><a href="#5-startActivityAsUser" class="headerlink" title="5.startActivityAsUser"></a>5.startActivityAsUser</h5><p>ActivityStarter</p>
+<h5 id="6-startActivityMayWait"><a href="#6-startActivityMayWait" class="headerlink" title="6.startActivityMayWait"></a>6.startActivityMayWait</h5><p>解析出Intent相匹配的Activityinfo<br>得到启动Activity的Task</p>
+<h5 id="7-startActivityLocked"><a href="#7-startActivityLocked" class="headerlink" title="7.startActivityLocked"></a>7.startActivityLocked</h5><p>禁止App切换恢复<br>校验参数</p>
+<h5 id="8-startActivityUnchecked"><a href="#8-startActivityUnchecked" class="headerlink" title="8.startActivityUnchecked"></a>8.startActivityUnchecked</h5><h5 id="ActivityStackSupervisor"><a href="#ActivityStackSupervisor" class="headerlink" title="ActivityStackSupervisor"></a>ActivityStackSupervisor</h5><h5 id="9-resumeFocusedStackTopActivityLocked"><a href="#9-resumeFocusedStackTopActivityLocked" class="headerlink" title="9.resumeFocusedStackTopActivityLocked"></a>9.resumeFocusedStackTopActivityLocked</h5><p>ActivityStack</p>
+<h5 id="10-resumeTopActivityUncheckedLocked"><a href="#10-resumeTopActivityUncheckedLocked" class="headerlink" title="10.resumeTopActivityUncheckedLocked"></a>10.resumeTopActivityUncheckedLocked</h5><h5 id="11-resumeTopActivityInnerLocked"><a href="#11-resumeTopActivityInnerLocked" class="headerlink" title="11.resumeTopActivityInnerLocked"></a>11.resumeTopActivityInnerLocked</h5><p>判断是否又resume的Activity有则暂停<br>唤醒目标ActivityActivity或重启Acitivity</p>
+<p>ActivityStackSupervisor</p>
+<h5 id="12-startSpecificActivityLocked"><a href="#12-startSpecificActivityLocked" class="headerlink" title="12.startSpecificActivityLocked"></a>12.startSpecificActivityLocked</h5><p>没有启动app的,通过zygote创建应用进程startProcessLocked<br>启动了了进入14步启动realStartActivityLocked<br>ActivityManagerService</p>
+<h5 id="13-startProcessLocked"><a href="#13-startProcessLocked" class="headerlink" title="13.startProcessLocked"></a>13.startProcessLocked</h5><p>ActivityStackSupervisor</p>
+<h5 id="14-realStartActivityLocked"><a href="#14-realStartActivityLocked" class="headerlink" title="14.realStartActivityLocked"></a>14.realStartActivityLocked</h5><p>通过发送事务执行事务 最后执行LaunchActivityItem 和ResumeActivityItem 的execute<br>最终调用activityThread.handleLaunchActivity, activityThread.handleResumeActivity<br> handleLaunchActivity 会调用performLaunchActivity<br>mInstrumentation.newActivity 创建acitivty<br>activity.attach 创建phonewindow<br> mInstrumentation.callActivityOnCreate<br>调用created 调用onCreated 中window.setContentView生成dectoView</p>
+<p>handleResumeActivity<br>WindowManagerGlobal把dectoView添加到window addView 会生ViewRootImpl<br>scheduleTraversals performTraversals performMeasure performLayout performDraw view绘画工作机制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Create activity launch transaction.</span><br><span class="line">            final ClientTransaction clientTransaction = ClientTransaction.obtain(app.thread,</span><br><span class="line">                    r.appToken);</span><br><span class="line">            clientTransaction.addCallback(LaunchActivityItem.obtain(new Intent(r.intent),</span><br><span class="line">   ...</span><br><span class="line">            if (andResume) &#123;</span><br><span class="line">                lifecycleItem = ResumeActivityItem.obtain(mService.isNextTransitionForward());</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                lifecycleItem = PauseActivityItem.obtain();</span><br><span class="line">            &#125;</span><br><span class="line">            clientTransaction.setLifecycleStateRequest(lifecycleItem);</span><br><span class="line"></span><br><span class="line">            // Schedule transaction.</span><br><span class="line">            mService.getLifecycleManager().scheduleTransaction(clientTransaction);</span><br></pre></td></tr></table></figure>
+<p>ActivityThread.this.scheduleTransaction</p>
+<p>ActivityThread 的父类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public abstract class ClientTransactionHandler &#123;</span><br><span class="line">// Schedule phase related logic and handlers.</span><br><span class="line"></span><br><span class="line">/** Prepare and schedule transaction for execution. */</span><br><span class="line">void scheduleTransaction(ClientTransaction transaction) &#123;</span><br><span class="line">    transaction.preExecute(this);</span><br><span class="line">    sendMessage(ActivityThread.H.EXECUTE_TRANSACTION, transaction);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ActivityThread H 中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">case EXECUTE_TRANSACTION:</span><br><span class="line">                   final ClientTransaction transaction = (ClientTransaction) msg.obj;</span><br><span class="line">                   mTransactionExecutor.execute(transaction);//最后执行LaunchActivityItem 和PauseActivityItem 等里面的execute方法</span><br><span class="line">                   if (isSystem()) &#123;</span><br><span class="line">                       // Client transactions inside system process are recycled on the client side</span><br><span class="line">                       // instead of ClientLifecycleManager to avoid being cleared before this</span><br><span class="line">                       // message is handled.</span><br><span class="line">                       transaction.recycle();</span><br><span class="line">                   &#125;</span><br><span class="line">                   // TODO(lifecycler): Recycle locally scheduled transactions.</span><br></pre></td></tr></table></figure>
+<p>LaunchActivityItem 中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">  public void execute(ClientTransactionHandler client, IBinder token,</span><br><span class="line">          PendingTransactionActions pendingActions) &#123;</span><br><span class="line">      Trace.traceBegin(TRACE_TAG_ACTIVITY_MANAGER, &quot;activityStart&quot;);</span><br><span class="line">      ActivityClientRecord r = new ActivityClientRecord(token, mIntent, mIdent, mInfo,</span><br><span class="line">              mOverrideConfig, mCompatInfo, mReferrer, mVoiceInteractor, mState, mPersistentState,</span><br><span class="line">              mPendingResults, mPendingNewIntents, mIsForward,</span><br><span class="line">              mProfilerInfo, client);</span><br><span class="line">      client.handleLaunchActivity(r, pendingActions, null /* customIntent */);</span><br><span class="line">      Trace.traceEnd(TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/blog/1552553835680.png" alt="Alt text"></p>
+<p><img src="/images/blog/20171010211659716.png" alt="Alt text"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/Apk瘦身优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/Apk瘦身优化/" itemprop="url">Apk瘦身优化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="Apk瘦身优化"><a href="#Apk瘦身优化" class="headerlink" title="Apk瘦身优化"></a>Apk瘦身优化</h5><p>资源混淆 minifyEnabled true<br>开启资源压缩 shrinkResources true</p>
+<p>移除无用代码、功能；<br>移除无用的库、避免功能雷同的库；<br>缩减方法数；</p>
+<p>重复资源优化<br>移除无用的资源文件；<br>Drawable目录只保留一份资源；<br>对图片进行压缩；<br>PNG转换JPG；<br>使用矢量图；<br>使用WebP；<br>资源在线化；</p>
+<p>3 So瘦身</p>
+<p>保留特定架构的so库,比如armeabi几户支持所有手机,像微信一样</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/DataBinding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/DataBinding/" itemprop="url">DataBinding</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="Data-Binding"><a href="#Data-Binding" class="headerlink" title="Data Binding"></a>Data Binding</h5><p><strong>正向绑定</strong><br>当user.name的数据改动时，我们的TextView都会同步改变文字。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;layout ...&gt;</span><br><span class="line">  &lt;data&gt;</span><br><span class="line">    &lt;variable type=&quot;com.example.myapp.User&quot; name=&quot;user&quot;/&gt;</span><br><span class="line">  &lt;/data&gt;</span><br><span class="line">  &lt;RelativeLayout ...&gt;</span><br><span class="line">    &lt;TextView android:text=&quot;@&#123;user.name&#125;&quot; .../&gt;</span><br><span class="line">  &lt;/RelativeLayout&gt;</span><br><span class="line">&lt;/layout&gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>双向绑定</strong><br>现在假设一种情况，当你更换成EditText时，如果你的用户名User.name已经绑定到EditText中，当用户输入文字的时候，你原来的user.name数据并没有同步改动，因此我们需要修改成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;layout ...&gt;</span><br><span class="line">  &lt;data&gt;</span><br><span class="line">    &lt;variable type=&quot;com.example.myapp.User&quot; name=&quot;user&quot;/&gt;</span><br><span class="line">  &lt;/data&gt;</span><br><span class="line">  &lt;RelativeLayout ...&gt;</span><br><span class="line">    &lt;EditText android:text=&quot;@=&#123;user.name&#125;&quot; .../&gt;</span><br><span class="line">  &lt;/RelativeLayout&gt;</span><br><span class="line">&lt;/layout&gt;</span><br></pre></td></tr></table></figure>
+<p>跟单项绑定的差别，就是”<strong>@{}</strong>“改成了”<strong>@={}</strong>“，多了<strong>等号</strong></p>
+<p>@=符号，重要的是包括“=”符号，接收对属性的数据更改并同时侦听用户更新</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/FutureTask 与Future和Runable及Callable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/FutureTask 与Future和Runable及Callable/" itemprop="url">FutureTask 与Future和Runable及Callable</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="FutureTask-与Future和Runable及Callable"><a href="#FutureTask-与Future和Runable及Callable" class="headerlink" title="FutureTask 与Future和Runable及Callable"></a>FutureTask 与Future和Runable及Callable</h5><p>延申:<br><strong>Future</strong><br>Future就是对于具体的Runnable或者Callable任务的执行结果进行取消、查询是否完成、获取结果。</p>
+<p><strong>Callable</strong><br>Callable接口很简单，是一个泛型接口，就是定义了一个call()方法，与Runnable的run()方法相比，这个有返回值，泛型V就是要返回的结果类型，可以返回子任务的执行结果。</p>
+<p><strong>Runnable</strong><br>个泛型接口,执行任务没有返回结果,执行的方法体</p>
+<p><strong>FutureTask</strong><br>FutureTask与Runnable，最大的区别有两个，一个是可以获取执行结果，另一个是可以取消</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/InputManagerService/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -582,7 +1195,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/LruCache分析/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/DexClassLoader和PathClassLoader的区别/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -601,7 +1214,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/09/LruCache分析/" itemprop="url">LruCache分析</a></h1>
+                <a class="post-title-link" href="/2019/02/09/DexClassLoader和PathClassLoader的区别/" itemprop="url">DexClassLoader和PathClassLoader的区别</a></h1>
         
 
         <div class="post-meta">
@@ -678,17 +1291,7 @@
       
         
           
-            <h5 id="LruCache分析"><a href="#LruCache分析" class="headerlink" title="LruCache分析"></a>LruCache分析</h5><p>工作原理<br>LruCache (Least Recently Used) 是安卓中一个关于内存缓存的类，特别是在操作图片的时候，大量的图片会导致oom，所以采用lru，可以保持一个最大size的内存缓存，最近使用的会放进队列的头部,如果超过这个size，最久未使用的放进队列的尾部，会首先删除，以保证内存不会无限增加.</p>
-<p>实现<br>LruCache 封装了 LinkedHashMap，提供了 LRU 缓存的功能；<br>LruCache 通过 trimToSize 方法自动删除最近最少访问的键值对；<br>LruCache 不允许空键值；<br>LruCache 线程安全；<br>LruCache 的源码在不同版本中不一样，需要区分<br>继承 LruCache 时，必须要复写 sizeOf 方法，用于计算每个条目的大小。</p>
-<p>特点</p>
-<blockquote>
-<p>Key和Value都允许空<br>Key重复会覆盖Value允许重复<br>有序<br>非线程安全</p>
-</blockquote>
-<h5 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h5><p>LinkedHashMap 继承了HashMap 实现了Map接口<br>HashMap+LinkedList，即它既使用HashMap操作数据结构，又使用LinkedList维护插入元素的先后顺序</p>
-<h5 id="单向链表"><a href="#单向链表" class="headerlink" title="单向链表"></a>单向链表</h5><p>单向链表(单链表)是链表的一种，它由节点组成，每个节点都包含下一个节点的指针。</p>
-<h5 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h5><p>双向链表(双链表)是链表的一种。和单链表一样，双链表也是由节点组成，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱</p>
-<h5 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h5><p>LinkedList类是双向列表,列表中的每个节点都包含了对前一个和后一个元素的引用.</p>
-<h5 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h5><p>HashMap 是一个散列表，数组+单项链表 单向链表 它存储的内容是键值对(key-value)映射。</p>
+            <h5 id="DexClassLoader和PathClassLoader的区别"><a href="#DexClassLoader和PathClassLoader的区别" class="headerlink" title="DexClassLoader和PathClassLoader的区别"></a>DexClassLoader和PathClassLoader的区别</h5><p>1、DexClassLoader可以加载jar/apk/dex，可以从SD卡中加载未安装的apk<br>2、PathClassLoader只能加载系统中已经安装过的apk</p>
 
           
         
@@ -884,7 +1487,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/String和StringBuffer和StringBuilder类的区别/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/LruCache分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -903,7 +1506,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/09/String和StringBuffer和StringBuilder类的区别/" itemprop="url">tring和StringBuffer 和 StringBuilder 类的区别</a></h1>
+                <a class="post-title-link" href="/2019/02/09/LruCache分析/" itemprop="url">LruCache分析</a></h1>
         
 
         <div class="post-meta">
@@ -980,16 +1583,17 @@
       
         
           
-            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>String和StringBuffer 和 StringBuilder 类的区别</p>
-<h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4><p>字符串，字符串是常量，它们的值在创建之后不能更改。</p>
+            <h5 id="LruCache分析"><a href="#LruCache分析" class="headerlink" title="LruCache分析"></a>LruCache分析</h5><p>工作原理<br>LruCache (Least Recently Used) 是安卓中一个关于内存缓存的类，特别是在操作图片的时候，大量的图片会导致oom，所以采用lru，可以保持一个最大size的内存缓存，最近使用的会放进队列的头部,如果超过这个size，最久未使用的放进队列的尾部，会首先删除，以保证内存不会无限增加.</p>
+<p>实现<br>LruCache 封装了 LinkedHashMap，提供了 LRU 缓存的功能；<br>LruCache 通过 trimToSize 方法自动删除最近最少访问的键值对；<br>LruCache 不允许空键值；<br>LruCache 线程安全；<br>LruCache 的源码在不同版本中不一样，需要区分<br>继承 LruCache 时，必须要复写 sizeOf 方法，用于计算每个条目的大小。</p>
+<p>特点</p>
 <blockquote>
-<p>第二次赋值其实改变了引用地址了，区分对象和引用</p>
+<p>Key和Value都允许空<br>Key重复会覆盖Value允许重复<br>有序<br>非线程安全</p>
 </blockquote>
-<h5 id="StringBuffer"><a href="#StringBuffer" class="headerlink" title="StringBuffer"></a>StringBuffer</h5><p>字符串缓冲区（StringBuffer）支持可变的字符串，是线程安全的可变字符序列。可将字符串缓冲区安全地用于多个线程。可以在必要时对这些方法进行同步</p>
-<h5 id="StringBuilder"><a href="#StringBuilder" class="headerlink" title="StringBuilder"></a>StringBuilder</h5><p>字符串缓冲区（StringBuilder）支持可变的字符串，适用于单个线程，与StringBuffer的最大区别是StringBuilder线程不安全。该类被设计用作 StringBuffer 的一个简易替换，如果可能，建议优先采用该类，因为在大多数实现中，它比 StringBuffer 要快。</p>
-<blockquote>
-<p>简单的字符串用String<br>频繁更改变换修改的用StringBuilder或者StringBuffer<br>考虑线程安全用StringBuffer<br>单线程StringBullder<br>高性能StringBullder</p>
-</blockquote>
+<h5 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h5><p>LinkedHashMap 继承了HashMap 实现了Map接口<br>HashMap+LinkedList，即它既使用HashMap操作数据结构，又使用LinkedList维护插入元素的先后顺序</p>
+<h5 id="单向链表"><a href="#单向链表" class="headerlink" title="单向链表"></a>单向链表</h5><p>单向链表(单链表)是链表的一种，它由节点组成，每个节点都包含下一个节点的指针。</p>
+<h5 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h5><p>双向链表(双链表)是链表的一种。和单链表一样，双链表也是由节点组成，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱</p>
+<h5 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h5><p>LinkedList类是双向列表,列表中的每个节点都包含了对前一个和后一个元素的引用.</p>
+<h5 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h5><p>HashMap 是一个散列表，数组+单项链表 单向链表 它存储的内容是键值对(key-value)映射。</p>
 
           
         
@@ -1172,612 +1776,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/SystemServer进程的创建及Launcher启动/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/SystemServer进程的创建及Launcher启动/" itemprop="url">SystemServer进程的创建及Launcher启动</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="SystemServer进程的创建及Launcher启动"><a href="#SystemServer进程的创建及Launcher启动" class="headerlink" title="SystemServer进程的创建及Launcher启动"></a>SystemServer进程的创建及Launcher启动</h4><h4 id="1-SystemServer进程的创建"><a href="#1-SystemServer进程的创建" class="headerlink" title="1.SystemServer进程的创建"></a>1.SystemServer进程的创建</h4><p>ZygoteInit.main方法中里fork出个SystemServer进程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">/* Hardcoded command line to start the system server */</span><br><span class="line">       String args[] = &#123;</span><br><span class="line">           &quot;--setuid=1000&quot;,</span><br><span class="line">           &quot;--setgid=1000&quot;,</span><br><span class="line">           &quot;--setgroups=1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1018,1021,1023,1024,1032,1065,3001,3002,3003,3006,3007,3009,3010&quot;,</span><br><span class="line">           &quot;--capabilities=&quot; + capabilities + &quot;,&quot; + capabilities,</span><br><span class="line">           &quot;--nice-name=system_server&quot;,</span><br><span class="line">           &quot;--runtime-args&quot;,</span><br><span class="line">           &quot;--target-sdk-version=&quot; + VMRuntime.SDK_VERSION_CUR_DEVELOPMENT,</span><br><span class="line">           &quot;com.android.server.SystemServer&quot;,</span><br><span class="line">       &#125;;</span><br><span class="line">       ZygoteConnection.Arguments parsedArgs = null;</span><br><span class="line"></span><br><span class="line">       int pid;</span><br><span class="line"></span><br><span class="line">       try &#123;</span><br><span class="line">           parsedArgs = new ZygoteConnection.Arguments(args);</span><br><span class="line">           ZygoteConnection.applyDebuggerSystemProperty(parsedArgs);</span><br><span class="line">           ZygoteConnection.applyInvokeWithSystemProperty(parsedArgs);</span><br><span class="line"></span><br><span class="line">           boolean profileSystemServer = SystemProperties.getBoolean(</span><br><span class="line">                   &quot;dalvik.vm.profilesystemserver&quot;, false);</span><br><span class="line">           if (profileSystemServer) &#123;</span><br><span class="line">               parsedArgs.runtimeFlags |= Zygote.PROFILE_SYSTEM_SERVER;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           /* Request to fork the system server process */</span><br><span class="line">           pid = Zygote.forkSystemServer(</span><br><span class="line">                   parsedArgs.uid, parsedArgs.gid,</span><br><span class="line">                   parsedArgs.gids,</span><br><span class="line">                   parsedArgs.runtimeFlags,</span><br><span class="line">                   null,</span><br><span class="line">                   parsedArgs.permittedCapabilities,</span><br><span class="line">                   parsedArgs.effectiveCapabilities);</span><br><span class="line">       &#125; catch (IllegalArgumentException ex) &#123;</span><br><span class="line">           throw new RuntimeException(ex);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
-<h4 id="2-SystemServer-main方法"><a href="#2-SystemServer-main方法" class="headerlink" title="2.SystemServer.main方法"></a>2.SystemServer.main方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">      new SystemServer().run();</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>run方法</p>
-<h5 id="2-1-创建loop对象"><a href="#2-1-创建loop对象" class="headerlink" title="2.1. 创建loop对象"></a>2.1. 创建loop对象</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Prepare the main looper thread (this thread).</span><br><span class="line">Looper.prepareMainLooper();</span><br></pre></td></tr></table></figure>
-<h5 id="2-2-创建了系统上下文"><a href="#2-2-创建了系统上下文" class="headerlink" title="2.2 创建了系统上下文"></a>2.2 创建了系统上下文</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Initialize the system context.</span><br><span class="line">createSystemContext();</span><br></pre></td></tr></table></figure>
-<p>创建AcitivityThread<br>这里创建的ActivityThread 和ActivityThread.main()中创建的不是同一个<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private void createSystemContext() &#123;</span><br><span class="line">	// systemMain()中创建activityThread 调用activityThread .attach(true, 0); 会创建Application,Instrumentation ,并调用applicition.onCreate()</span><br><span class="line">    ActivityThread activityThread = ActivityThread.systemMain();</span><br><span class="line">    //创建context,创建LoadedApk</span><br><span class="line">    mSystemContext = activityThread.getSystemContext();</span><br><span class="line">    mSystemContext.setTheme(DEFAULT_SYSTEM_THEME);</span><br><span class="line"></span><br><span class="line">    final Context systemUiContext = activityThread.getSystemUiContext();</span><br><span class="line">    systemUiContext.setTheme(DEFAULT_SYSTEM_THEME);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="2-3启动SystemServiceManager"><a href="#2-3启动SystemServiceManager" class="headerlink" title="2.3启动SystemServiceManager"></a>2.3启动SystemServiceManager</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// Create the system service manager.</span><br><span class="line">         mSystemServiceManager = new SystemServiceManager(mSystemContext);</span><br><span class="line">         mSystemServiceManager.setStartInfo(mRuntimeRestart,</span><br><span class="line">                 mRuntimeStartElapsedTime, mRuntimeStartUptime);</span><br><span class="line">         LocalServices.addService(SystemServiceManager.class, mSystemServiceManager);</span><br><span class="line">         // Prepare the thread pool for init tasks that can be parallelized</span><br><span class="line">         SystemServerInitThreadPool.get();</span><br></pre></td></tr></table></figure>
-<h5 id="2-4-启动相关服务"><a href="#2-4-启动相关服务" class="headerlink" title="2.4 启动相关服务"></a>2.4 启动相关服务</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Start services.</span><br><span class="line"> try &#123;</span><br><span class="line">     traceBeginAndSlog(&quot;StartServices&quot;);</span><br><span class="line">     startBootstrapServices();</span><br><span class="line">     startCoreServices();</span><br><span class="line">     startOtherServices();</span><br><span class="line">     SystemServerInitThreadPool.shutdown();</span><br><span class="line"> &#125; catch (Throwable ex) &#123;</span><br><span class="line">     Slog.e(&quot;System&quot;, &quot;******************************************&quot;);</span><br><span class="line">     Slog.e(&quot;System&quot;, &quot;************ Failure starting system services&quot;, ex);</span><br><span class="line">     throw ex;</span><br><span class="line"> &#125; finally &#123;</span><br><span class="line">     traceEnd();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>2.4.1<strong>startBootstrapServices()</strong>启动了ActivityManagerService ,PowerManagerService,PackageManagerService …等</p>
-<p>2.4.2<br><strong>startCoreServices()</strong>启动了BatteryService,UsageStatsService,WebViewUpdateService</p>
-<p>2.4.3 <strong>startOtherServices()</strong>启动了AlarmManagerService,BluetoothService,NotificationManagerService …等</p>
-<p>mActivityManagerService.systemReady 启动<strong>launcher</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// We now tell the activity manager it is okay to run third party</span><br><span class="line">      // code.  It will call back into us once it has gotten to the state</span><br><span class="line">      // where third party code can really run (but before it has actually</span><br><span class="line">      // started launching the initial applications), for us to complete our</span><br><span class="line">      // initialization.</span><br><span class="line">      mActivityManagerService.systemReady(...)</span><br></pre></td></tr></table></figure></p>
-<p>systemReady 方法中调用 mActivityManagerService.startHomeActivityLocked启动launcher<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">startHomeActivityLocked(currentUserId, &quot;systemReady&quot;);</span><br></pre></td></tr></table></figure></p>
-<p>下面代码1处调用ActivityStarter中的 startActivityMayWait 或者startActivity ,又开始走<strong>Activity启动流程</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">void startHomeActivity(Intent intent, ActivityInfo aInfo, String reason) &#123;</span><br><span class="line">        mSupervisor.moveHomeStackTaskToTop(reason);</span><br><span class="line">		//代码1</span><br><span class="line">        mLastHomeActivityStartResult = obtainStarter(intent, &quot;startHomeActivity: &quot; + reason)</span><br><span class="line">                .setOutActivity(tmpOutRecord)</span><br><span class="line">                .setCallingUid(0)</span><br><span class="line">                .setActivityInfo(aInfo)</span><br><span class="line">                .execute();</span><br><span class="line">        mLastHomeActivityStartRecord = tmpOutRecord[0];</span><br><span class="line">        if (mSupervisor.inResumeTopActivity) &#123;</span><br><span class="line">            // If we are in resume section already, home activity will be initialized, but not</span><br><span class="line">            // resumed (to avoid recursive resume) and will stay that way until something pokes it</span><br><span class="line">            // again. We need to schedule another resume.</span><br><span class="line">            mSupervisor.scheduleResumeTopActivities();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="2-5进入消息循环"><a href="#2-5进入消息循环" class="headerlink" title="2.5进入消息循环"></a>2.5进入消息循环</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Loop forever.</span><br><span class="line">Looper.loop();</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/ThreadPoolExecutor的使用和理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/ThreadPoolExecutor的使用和理解/" itemprop="url">ThreadPoolExecutor的使用和理解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="ThreadPoolExecutor的使用和理解"><a href="#ThreadPoolExecutor的使用和理解" class="headerlink" title="ThreadPoolExecutor的使用和理解"></a>ThreadPoolExecutor的使用和理解</h5><p>corePoolSize,//核心线程数,当线程数超过workQueue阻塞队列数,并且核心数线程已满,会创建新的线程直到达到最大线程<br>                maximumPoolSize,//最大线程数,<br>                keepAliveTime,//空闲线程等待时间,时间到结束释放<br>                unit,//等待时间单位<br>                workQueue, //线程阻塞队列<br>                threadFactory,//线程生产工厂<br>                handler);//当线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</p>
-<p>ThreadFactory是一个线程工厂,负责生产线程的</p>
-<p>例子:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.concurrent.ArrayBlockingQueue;</span><br><span class="line">import java.util.concurrent.BlockingQueue;</span><br><span class="line">import java.util.concurrent.LinkedBlockingQueue;</span><br><span class="line">import java.util.concurrent.RejectedExecutionHandler;</span><br><span class="line">import java.util.concurrent.ThreadFactory;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line">import java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line">public class ThreadPollTest &#123;</span><br><span class="line">	static ThreadPoolExecutor executor;</span><br><span class="line">    public static void main(String[] args) throws InterruptedException, IOException &#123;</span><br><span class="line">        int corePoolSize = 2;</span><br><span class="line">        int maximumPoolSize = 4;</span><br><span class="line">        long keepAliveTime = 60;</span><br><span class="line">        TimeUnit unit = TimeUnit.SECONDS;</span><br><span class="line">        BlockingQueue&lt;Runnable&gt; workQueue = new LinkedBlockingQueue&lt;&gt;(10);</span><br><span class="line">        ThreadFactory threadFactory = new NameTreadFactory();</span><br><span class="line">        RejectedExecutionHandler handler = new MyIgnorePolicy();</span><br><span class="line">        executor = new ThreadPoolExecutor(</span><br><span class="line">        		corePoolSize,//核心线程数,当线程数超过workQueue阻塞队列数,并且核心数线程已满,会创建新的线程直到达到最大线程</span><br><span class="line">        		maximumPoolSize,//最大线程数,</span><br><span class="line">        		keepAliveTime,//空闲线程等待时间,时间到结束释放</span><br><span class="line">        		unit,//等待时间单位</span><br><span class="line">                workQueue, //线程阻塞队列</span><br><span class="line">                threadFactory,//线程生产工厂</span><br><span class="line">                handler);//当线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</span><br><span class="line">        executor.prestartAllCoreThreads(); // 预启动所有核心线程</span><br><span class="line">        </span><br><span class="line">        for (int i = 1; i &lt;= 16; i++) &#123;</span><br><span class="line">            MyTask task = new MyTask(String.valueOf(i));</span><br><span class="line">            executor.execute(task);</span><br><span class="line">        &#125;</span><br><span class="line">  </span><br><span class="line">    &#125;</span><br><span class="line">    //线程工厂</span><br><span class="line">    static class NameTreadFactory implements ThreadFactory &#123;</span><br><span class="line"></span><br><span class="line">        private final AtomicInteger mThreadNum = new AtomicInteger(1);</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public Thread newThread(Runnable r) &#123;</span><br><span class="line">            Thread t = new Thread(r, &quot;my-thread-&quot; + mThreadNum.getAndIncrement());</span><br><span class="line">            System.out.println(t.getName() + &quot; has been created&quot;);</span><br><span class="line">            return t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //线程数大于maximumPoolSize+workQueue的时候会执行RejectedExecutionHandler</span><br><span class="line">    public static class MyIgnorePolicy implements RejectedExecutionHandler &#123;</span><br><span class="line"></span><br><span class="line">        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) &#123;</span><br><span class="line">            doLog(r, e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private void doLog(Runnable r, ThreadPoolExecutor e) &#123;</span><br><span class="line">            System.err.println( r.toString() + &quot; rejected&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //例子执行任务</span><br><span class="line">    static class MyTask implements Runnable &#123;</span><br><span class="line">        private String name;</span><br><span class="line"></span><br><span class="line">        public MyTask(String name) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(this.toString() + &quot; is running!activityCount:&quot;+executor.getActiveCount()</span><br><span class="line">                +&quot;,getCompletedTaskCount:&quot;+executor.getCompletedTaskCount()</span><br><span class="line">                +&quot;,getTaskCount:&quot;+executor.getTaskCount()</span><br><span class="line">                +&quot;,getQueue().size:&quot;+executor.getQueue().size()</span><br><span class="line">                );</span><br><span class="line">                Thread.sleep(3000); //让任务执行慢点</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public String getName() &#123;</span><br><span class="line">            return name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public String toString() &#123;</span><br><span class="line">            return &quot;MyTask [name=&quot; + name + &quot;]&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/ViewModel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/ViewModel/" itemprop="url">ViewModel</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="ViewModel"><a href="#ViewModel" class="headerlink" title="ViewModel"></a>ViewModel</h5><p>ViewModel类设计用于以生命周期意识的方式存储和管理与UI相关的数据。VIEWModel类允许数据在配置更改（如屏幕旋转）中生存。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/invalidate和postInvalidate及requestLayout方法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/invalidate和postInvalidate及requestLayout方法/" itemprop="url">invalidate和postInvalidate及requestLayout方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="invalidate和postInvalidate及requestLayout方法"><a href="#invalidate和postInvalidate及requestLayout方法" class="headerlink" title="invalidate和postInvalidate及requestLayout方法"></a>invalidate和postInvalidate及requestLayout方法</h5><p><strong>invalidate() postInvalidate()</strong><br><strong>共同点</strong>：都是调用onDraw()方法，然后去达到重绘view的目的</p>
-<p><strong>区别</strong>：invalidate()用于主线程，postInvalidate()用于子线程</p>
-<p> <strong>requestLayout()</strong></p>
-<p>也可以达到重绘view的目的，但是与前两者不同，它会先调用onMearsure() onLayout() ，再调用ondraw()方法。重新进行一次测量,布局,绘制的过程</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1825,7 +1828,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

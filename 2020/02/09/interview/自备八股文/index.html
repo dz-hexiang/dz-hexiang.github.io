@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android Studio,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="####  自备八股文1、HashMap底层实现原理hashmap 是key value 键值对方式存储数据，线程不安全 数据结构：jdk1.7底层实现是 数组+链表 ；jdk1.8底层实现是 数组+链表+[红黑树] 数组是连续内存的读取效果高， 链表是解决hash碰撞问题 红黑树是解决链表过长时间复杂度过低，红黑树时间复杂度#O(logn)，通过左右旋转自我调节，转红黑树时机，链表长度大于8，数">
+<meta name="keywords" content="Android Studio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自备八股文">
+<meta property="og:url" content="http://yoursite.com/2020/02/09/interview/自备八股文/index.html">
+<meta property="og:site_name" content="Mr.HeXiang Blog">
+<meta property="og:description" content="####  自备八股文1、HashMap底层实现原理hashmap 是key value 键值对方式存储数据，线程不安全 数据结构：jdk1.7底层实现是 数组+链表 ；jdk1.8底层实现是 数组+链表+[红黑树] 数组是连续内存的读取效果高， 链表是解决hash碰撞问题 红黑树是解决链表过长时间复杂度过低，红黑树时间复杂度#O(logn)，通过左右旋转自我调节，转红黑树时机，链表长度大于8，数">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5f630db4520b4d77a40a8d45e45cff47~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp">
+<meta property="og:updated_time" content="2023-08-16T08:27:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自备八股文">
+<meta name="twitter:description" content="####  自备八股文1、HashMap底层实现原理hashmap 是key value 键值对方式存储数据，线程不安全 数据结构：jdk1.7底层实现是 数组+链表 ；jdk1.8底层实现是 数组+链表+[红黑树] 数组是连续内存的读取效果高， 链表是解决hash碰撞问题 红黑树是解决链表过长时间复杂度过低，红黑树时间复杂度#O(logn)，通过左右旋转自我调节，转红黑树时机，链表长度大于8，数">
+<meta name="twitter:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5f630db4520b4d77a40a8d45e45cff47~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/09/interview/自备八股文/">
+
+
+
+
+
+  <title>自备八股文 | Mr.HeXiang Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0f926975a1c57a01e8de99ca2a500b5d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mr.HeXiang Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习,学习记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/09/interview/自备八股文/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">自备八股文</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-09T19:16:22+08:00">
+                2020-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#### </p>
+<h5 id="自备八股文"><a href="#自备八股文" class="headerlink" title="自备八股文"></a>自备八股文</h5><h5 id="1、HashMap底层实现原理"><a href="#1、HashMap底层实现原理" class="headerlink" title="1、HashMap底层实现原理"></a>1、HashMap底层实现原理</h5><p>hashmap 是key value 键值对方式存储数据，线程不安全</p>
+<p><strong>数据结构</strong>：jdk1.7底层实现是 数组+链表 ；jdk1.8底层实现是 数组+链表+[红黑树]</p>
+<p>数组是连续内存的读取效果高，</p>
+<p>链表是解决hash碰撞问题</p>
+<p>红黑树是解决链表过长时间复杂度过低，红黑树时间复杂度#O(logn)，通过左右旋转自我调节，转红黑树时机，链表长度大于8，数组长度大于64</p>
+<blockquote>
+<p>可以存入null值</p>
+<p>调用hashCode计算出hash值，在通过哈希算法得到数组下标</p>
+<p>加载因子（默认0.75）</p>
+</blockquote>
+<h5 id="2、TCP三次握手，4此挥手"><a href="#2、TCP三次握手，4此挥手" class="headerlink" title="2、TCP三次握手，4此挥手"></a>2、TCP三次握手，4此挥手</h5><p><strong>三次握手</strong></p>
+<p>第1次握手：客户端发送一个带有SYN（synchronize）标志的数据包给服务端；</p>
+<p>第2次握手：服务端接收成功后，回传一个带有SYN/ACK标志的数据包传递确认信息，表示我收到了；</p>
+<p>第3次握手：客户端再回传一个带有ACK标志的数据包，表示我知道了，握手结束。</p>
+<p>其中：SYN标志位数置1，表示建立TCP连接；ACK标志表示验证字段。</p>
+<p><strong>4次挥手</strong></p>
+<p>1次挥手：客户端发送一个FIN，用来关闭客户端到服务端的数据传送，客户端进入FIN_WAIT_1状态；</p>
+<p>第2次挥手：服务端收到FIN后，发送一个ACK给客户端，确认序号为收到序号+1（与SYN相同，一个FIN占用一个序号），服务端进入CLOSE_WAIT状态；</p>
+<p>第3次挥手：服务端发送一个FIN，用来关闭服务端到客户端的数据传送，服务端进入LAST_ACK状态；</p>
+<p>第4次挥手：客户端收到FIN后，客户端t进入TIME_WAIT状态，接着发送一个ACK给Server，确认序号为收到序号+1，服务端进入CLOSED状态，完成四次挥手。</p>
+<p>其中：FIN标志位数置1，表示断开TCP连接。</p>
+<p><strong>为什么TCP连接的时候是3次？2次不可以吗？</strong></p>
+<ul>
+<li>因为需要考虑连接时丢包的问题，如果只握手2次，第二次握手时如果服务端发给客户端的确认报文段丢失，此时服务端已经准备好了收发数(可以理解服务端已经连接成功)据，而客户端一直没收到服务端的确认报文，所以客户端就不知道服务端是否已经准备好了(可以理解为客户端未连接成功)，这种情况下客户端不会给服务端发数据，也会忽略服务端发过来的数据。如果是三次握手，即便发生丢包也不会有问题，比如如果第三次握手客户端发的确认ack报文丢失，服务端在一段时间内没有收到确认ack报文的话就会重新进行第二次握手，也就是服务端会重发SYN报文段，客户端收到重发的报文段后会再次给服务端发送确认ack报文。</li>
+</ul>
+<p><strong>为什么TCP连接的时候是3次，关闭的时候却是4次？</strong></p>
+<ul>
+<li>因为只有在客户端和服务端都没有数据要发送的时候才能断开TCP。而客户端发出FIN报文时只能保证客户端没有数据发了，服务端还有没有数据发客户端是不知道的。而服务端收到客户端的FIN报文后只能先回复客户端一个确认报文来告诉客户端我服务端已经收到你的FIN报文了，但我服务端还有一些数据没发完，等这些数据发完了服务端才能给客户端发FIN报文(所以不能一次性将确认报文和FIN报文发给客户端，就是这里多出来了一次)。</li>
+</ul>
+<p><strong>为什么客户端发出第四次挥手的确认报文后要等2MSL的时间才能释放TCP连接？</strong></p>
+<ul>
+<li>这里同样是要考虑丢包的问题，如果第四次挥手的报文丢失，服务端没收到确认ack报文就会重发第三次挥手的报文，这样报文一去一回最长时间就是2MSL，所以需要等这么长时间来确认服务端确实已经收到了。</li>
+</ul>
+<h5 id="3-大图加载"><a href="#3-大图加载" class="headerlink" title="3.大图加载"></a>3.大图加载</h5><p> 局部区域加载 BitmapRegionDecoder，第三方开源区域加载subsampling-scale-image-view</p>
+<p>BitmapOptions采样率设置</p>
+<p>当inSampleSize &lt; 1时，inSampleSize就默认是1。<br>inSampleSize，高度是：height / inSampleSize</p>
+<p>inbitmap bitmap复用</p>
+<h5 id="4-Glide缓存机制"><a href="#4-Glide缓存机制" class="headerlink" title="4.Glide缓存机制"></a>4.Glide缓存机制</h5><p><strong>内存缓存</strong>其实分两个部分，<code>ActiveResource</code>缓存与<code>LRU</code>缓存</p>
+<p><code>ActiveResources</code> 就是一个弱引用的 <code>HashMap</code> ，用来缓存正在使用中的图片,使用 <code>ActiveResources</code> 来缓存正在使用中的图片，可以<strong>保护这些图片不会被 <code>LruCache</code> 算法回收掉</strong></p>
+<p>内存缓存加载顺序如下：</p>
+<p>1.根据图片地址，宽高，变换，签名等生成<code>key</code></p>
+<p>2.第一次加载没有获取到活动缓存。</p>
+<p>3.接着加载内存资源缓存，先清理掉内存缓存，在添加进行活动缓存。</p>
+<p>4.第二次加载活动缓存已经存在。</p>
+<p>5.当前图片引用为 0 的时候，清理活动资源，并且添加进内存资源。</p>
+<p>6.又回到了第一步，然后就这样环环相扣。</p>
+<p><strong>磁盘缓存</strong>策略</p>
+<ul>
+<li><code>DiskCacheStrategy.NONE</code>：表示不缓存任何内容。</li>
+<li><code>DiskCacheStrategy.RESOURCE</code>：在资源解码后将数据写入磁盘缓存，即经过缩放等转换后的图片资源。</li>
+<li><code>DiskCacheStrategy.DATA</code>：在资源解码前将原始数据写入磁盘缓存。</li>
+<li><code>DiskCacheStrategy.ALL</code> ：使用<code>DATA</code>和<code>RESOURCE</code>缓存远程数据，仅使用<code>RESOURCE</code>来缓存本地数据。</li>
+<li><code>DiskCacheStrategy.AUTOMATIC</code>：它会尝试对本地和远程图片使用最佳的策略。当你加载远程数据时，<code>AUTOMATIC</code> 策略仅会存储未被你的加载过程修改过的原始数据，因为下载远程数据相比调整磁盘上已经存在的数据要昂贵得多。对于本地数据，<code>AUTOMATIC</code> 策略则会仅存储变换过的缩略图，因为即使你需要再次生成另一个尺寸或类型的图片，取回原始数据也很容易。默认使用这种缓存策略</li>
+</ul>
+<p>在了解磁盘缓存时我们主要需要明确一个概念，是当我们使用 <code>Glide</code> 去加载一张图片的时候，<code>Glide</code> 默认并不会将原始图片展示出来，而是会对图片进行压缩和转换，总之就是经过种种一系列操作之后得到的图片，就叫转换过后的图片。</p>
+<p><a href="https://zhuanlan.zhihu.com/p/471723045" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/471723045</a></p>
+<h5 id="5-OKHTTP"><a href="#5-OKHTTP" class="headerlink" title="5.OKHTTP"></a>5.OKHTTP</h5><p><a href="https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650267613&amp;idx=1&amp;sn=a4f1ae77700723e548cf9209bbab61b5&amp;chksm=88632eb2bf14a7a44d752ef76ebdb55297c9478ca5bd485d13167f0ee985c5e7b172fd984996&amp;scene=27" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MzI3NjE2MA==&amp;mid=2650267613&amp;idx=1&amp;sn=a4f1ae77700723e548cf9209bbab61b5&amp;chksm=88632eb2bf14a7a44d752ef76ebdb55297c9478ca5bd485d13167f0ee985c5e7b172fd984996&amp;scene=27</a></p>
+<p>重点责任链拦截器：</p>
+<p>重点分发：</p>
+<p>重点连接复用：</p>
+<ol>
+<li><p>首先会尝试使用 已给请求分配的连接。（已分配连接的情况例如重定向时的再次请求，说明上次已经有了连接）</p>
+</li>
+<li><p>若没有 已分配的可用连接，就尝试从连接池中匹配获取。因为此时没有路由信息，所以匹配条件：address一致——host、port、代理等一致，且匹配的连接可以接受新的请求。</p>
+</li>
+<li><p>若从连接池没有获取到，则传入routes 路由再次尝试获取，这主要是针对Http2.0的一个操作，Http2.0可以复用square.com与square.ca的连接</p>
+</li>
+<li><p>若第二次也没有获取到，就创建RealConnection实例，进行TCP + TLS握手，与服务端建立连接。</p>
+</li>
+<li><p>此时为了确保Http2.0连接的多路复用性，会第三次从连接池匹配。因为新建立的连接的握手过程是非线程安全的，所以此时可能连接池新存入了相同的连接。</p>
+</li>
+<li><p>第三次若匹配到，就使用已有连接，释放刚刚新建的连接；若未匹配到，则把新连接存入连接池并返回。</p>
+</li>
+</ol>
+<h5 id="5-TCP-和-UDP-区别"><a href="#5-TCP-和-UDP-区别" class="headerlink" title="5.TCP 和 UDP 区别"></a>5.TCP 和 UDP 区别</h5><p>TCP 连接；可靠；有序；面向字节流；速度慢；较重量；全双工；适用于文件传输、浏览器等</p>
+<ul>
+<li>全双工：A 给 B 发消息的同时，B 也能给 A 发</li>
+<li>半双工：A 给 B 发消息的同时，B 不能给 A 发</li>
+</ul>
+<p>UDP 无连接；不可靠；无序；面向报文；速度快；轻量；适用于即时通讯、视频通话等</p>
+<h5 id="6-ARouter原理"><a href="#6-ARouter原理" class="headerlink" title="6.ARouter原理"></a>6.ARouter原理</h5><p>ARouter通过Apt技术，生成保存<strong>路径(路由path)</strong>和<strong>被注解(@Router)的组件类</strong>的映射关系的类，利用这些保存了映射关系的类，Arouter根据用户的请求postcard（明信片）寻找到要跳转的目标地址(class),使用Intent跳转。</p>
+<h5 id="7-JNI引用"><a href="#7-JNI引用" class="headerlink" title="7.JNI引用"></a>7.JNI引用</h5><p><strong>本地引用：</strong></p>
+<p>当natvie函数返回时候会自动释放，比如env-&gt;FindClass</p>
+<p>只在创建的线程中有效，不能跨线程使用</p>
+<p>局部引用是受JVM负责的引用类型，受JVM管理</p>
+<p><strong>全局引用：</strong></p>
+<p>native函数返回时候不会自动释放，需要手动进行释放，env-&gt;DeleteGlobalRef函数</p>
+<p>可以跨线程使用</p>
+<p>不受JVM管理</p>
+<p><strong> 弱全局引用：</strong></p>
+<p>它和全局引用类似，不同的是弱全局引用是可以被GC回收的，被GC回收会指向NULL</p>
+<h5 id="8-DVM和JVM的区别"><a href="#8-DVM和JVM的区别" class="headerlink" title="8.DVM和JVM的区别"></a>8.DVM和JVM的区别</h5><ol>
+<li><p>JVM基于栈指令多，DVM基于寄存器指令更简洁</p>
+</li>
+<li><p>执行字节不同，java是把.class文件打包成jar，DVM需要把class转换成dex文件</p>
+</li>
+<li><p>每一个DVM都有一个进程，Zygote fock进程初始化的时候创建了虚拟机</p>
+</li>
+<li><p>DVM拥有预加载共享机制，DVM不同应用之间在运行时可以共享相同的类，而JVM不同的程序，打包以后的程序都是彼此独立的</p>
+</li>
+<li><p>DVM有zygote进程创建和初始化</p>
+</li>
+<li><p>DVM早期没有JIT编译器，即时编译，早期都需要将dex代码编译成机器码</p>
+</li>
+</ol>
+<h5 id="9-ART与DVM的区别"><a href="#9-ART与DVM的区别" class="headerlink" title="9.ART与DVM的区别"></a>9.ART与DVM的区别</h5><p>android 4.4 之前是Dalvik虚拟机，之后是ART（Andorid Runtime）虚拟机</p>
+<ul>
+<li><p>DVM是基于32位CPU设计的，ART支持64位兼容32位</p>
+</li>
+<li><p>ART针对垃圾回收机制进行了改进，将GC暂停由次降为1次，GC会暂停所有线程，印象新能</p>
+</li>
+<li><p>ART运行时堆空间和DVM不同，Zygote Space ImageSpace那</p>
+</li>
+</ul>
+<p>android 4.4 之前JIT（运行时编译）</p>
+<p>android 5.0~7.0 AOT（系统安装时候，预先编译一次存本地，安装时间边长）</p>
+<p>android 7.0 开始JIT（新增即时编译）+AOT（部分预先编译，首次安装时并不会全部编译成机器码，减少安装时间）</p>
+<h5 id="10-双亲委派"><a href="#10-双亲委派" class="headerlink" title="10.双亲委派"></a>10.双亲委派</h5><p>首先判断该class是否已经加载，如果没有则不是自身去查找而是委托给父类加载器进行查找，这样依次递归，直到委托到最顶层BootStrap ClassLoader 如果BootStrap ClassLoader 找到了则直接返回，如果没有找到则依次向下查找，如果还没找到则会交由自身去查找</p>
+<p>Custom ClassLoader -&gt; AppCassLoader -&gt; ExtClassLoader -&gt; Bootstrap ClassLoader</p>
+<h5 id="11-Native注册方式"><a href="#11-Native注册方式" class="headerlink" title="11.Native注册方式"></a>11.Native注册方式</h5><p>java的native方法通过方法指针来与jni进行关联</p>
+<ol>
+<li><p>静态注册</p>
+<p>根据方法名，将java方法和JNI函数建立关联，如果JAVA_COM_xx.xx…</p>
+<p>javah可以查看class中naitve方法的函数名字，没找到调用时候会报错</p>
+<p>初次调用时候需要建立关联影响效率</p>
+</li>
+<li><p>动态注册</p>
+<p>JNI_OnLoad 时候通过调用evn-&gt;RegisterNatives注册native方法</p>
+</li>
+</ol>
+<h5 id="12-Launch-Mode-Activity-启动模式"><a href="#12-Launch-Mode-Activity-启动模式" class="headerlink" title="12.Launch Mode Activity 启动模式"></a>12.Launch Mode Activity 启动模式</h5><ul>
+<li><p>standard： 默认模式，每次启动Activity 都会创建一个新的Activity</p>
+</li>
+<li><p>singleTop：如果启动Activity已处于栈顶，则不会创建，同时该Activity的OnNewIntent会被调用；如果不在栈顶，则会重新创建Activity</p>
+</li>
+<li><p>singleTask：如果启动Activity 已经在它想归属的栈中，则不会创建，会将该栈该Activity 以上的所有Activity出栈，同时调用该Activity的OnNewIntent方法；如果不存在，则会重新创建该Activity，如果栈不存在则会创建新栈，然后创建Acitivity压入栈中</p>
+</li>
+<li><p>singleInstance：和singleTask基本类似，不同的是singleInstance 栈中只有它这一个Activity 实例</p>
+</li>
+</ul>
+<h5 id="13-UI优化"><a href="#13-UI优化" class="headerlink" title="13.UI优化"></a>13.UI优化</h5><ol>
+<li><p>层级减少，view的绘制是深度优先的，层级越高越耗时</p>
+</li>
+<li><p>利用Constratlayout，relayout减少布局层级，同层级下linelayout比relayout要好</p>
+</li>
+<li><p>利用ViewStub按需加载，减少不必要内容，1提高加载速度</p>
+</li>
+<li><p>利用merge标签减少层级，inflate 参数attachroot 需为true</p>
+</li>
+<li><p>可以固定宽度就不使用wrap_content，避免增加measure的计算成本，如setText 如果固定宽度，或者match_parent不会触发requestLayout</p>
+</li>
+<li><p>局部刷新，缩小最小单位，避免复杂布局因一个很小单位整个刷新了</p>
+</li>
+<li><p>刷新次数，刷新频率控制，buffer</p>
+</li>
+<li><p>分析工具 手机自带工具gpu profile rending ，16ms基准线，横轴代表时间，纵轴代码耗时，超过16ms有可能丢帧，不同颜色不同意义，蓝色，mesaure /layout 橙色GPU</p>
+</li>
+<li><p>过度绘制，白色：无过度绘制，蓝色：1次过多绘制，绿色：2次过多绘制，淡红色：3次过多绘制，深红色：4次过多绘制，很严重需要优化</p>
+</li>
+<li><p>分析工具Systrace</p>
+</li>
+<li><p>分析工具traceView</p>
+</li>
+<li><p>卡顿监控Looper.setMessageLogger 监听回调匹配字符串计算每一帧耗时</p>
+</li>
+</ol>
+<h5 id="14-启动优化"><a href="#14-启动优化" class="headerlink" title="14.启动优化"></a>14.启动优化</h5><ol>
+<li><p>初略讲下app启动过程</p>
+<p>像AMS binder调用</p>
+<p>ASM向zygote fork进程</p>
+<p>ActivityThread.main，同时把binder对象注册到AMS</p>
+<p>像AMS发起binder调用 ams.attachApplication，告诉AMS启动好了</p>
+<p> handleBindApplication-&gt;mInstrumentation.callApplicationOnCreate-&gt;aplication.onCreate</p>
+<p>接着Actity启动</p>
+</li>
+<li><p>冷启动可以更改的地方，Aplication.onCreate，梳理onCreate 的耗时任务，分批加载，按部加载，延时加载，有向无环图</p>
+</li>
+<li><p>热启动，延迟杀死Activity</p>
+</li>
+<li><p>Activity 耗时优化</p>
+</li>
+<li><p>检查耗时命令 adb shell am start</p>
+</li>
+<li><p>分析耗时工具System trace ，traceview，gpu profile rending</p>
+</li>
+<li><p>合并Splash 和MainActivity</p>
+</li>
+</ol>
+<h5 id="15-内存优化"><a href="#15-内存优化" class="headerlink" title="15.内存优化"></a>15.内存优化</h5><ol>
+<li><p>合理数据结构</p>
+</li>
+<li><p>避免内存泄漏，leakcannry</p>
+</li>
+<li><p>weakreference 使用及统计内存GC次数</p>
+</li>
+<li><p>利用mat分析泄漏，gc root exclude weakreference</p>
+</li>
+<li><p>图片优化</p>
+</li>
+<li><p>复用图片缓存池子</p>
+</li>
+<li><p>只保留一套图片框架</p>
+</li>
+<li><p>图片裁剪</p>
+</li>
+<li><p>阿里云裁剪，原图大小</p>
+</li>
+<li><p>大图加载，局部区域加载</p>
+</li>
+<li><p>inbitmp 属性，true 可以复用可用位图</p>
+</li>
+<li><p>图片检查插件，按需加载，符合view的高宽，</p>
+</li>
+<li><p>glide加载代替原生资源加载</p>
+</li>
+<li><p>图片格式</p>
+</li>
+<li><p>删除无用代码，混淆代码，减少code 内存，probuf选择简洁版的</p>
+</li>
+<li><p>动态so库，按需加载</p>
+</li>
+<li><p>gpu内存释放</p>
+</li>
+<li><p>进程保活，提高进程优先级</p>
+</li>
+<li><p>监听onTrimMemory 主动释放一些资源内存，回收一些不可见的资源</p>
+</li>
+</ol>
+<h5 id="16-瘦身优化"><a href="#16-瘦身优化" class="headerlink" title="16.瘦身优化"></a>16.瘦身优化</h5><ol>
+<li><p>使用网络图片，网络资源</p>
+</li>
+<li><p>tinyping 压缩图片</p>
+</li>
+<li><p>转webp</p>
+</li>
+<li><p>删除无用代码</p>
+</li>
+<li><p>andResGuard 压缩资源，及资源映射路径，resource.src不要压缩</p>
+</li>
+<li><p>混淆代码，混淆力度</p>
+</li>
+<li><p>只保留一套主流xxdp的图片</p>
+</li>
+<li><p>只保留一套so库</p>
+</li>
+<li><p>插件化</p>
+</li>
+<li><p>protobuf 用简洁版本nano那个</p>
+</li>
+</ol>
+<h5 id="17-组件化"><a href="#17-组件化" class="headerlink" title="17.组件化"></a>17.组件化</h5><p>模块之间隔离，加快编译速度</p>
+<p>组件下面增加资源，增加api目录，写个plugin插件，动态生成个api module，动态把资源，和java 文件添加进项目中，动态添加库依赖</p>
+<h5 id="18-垃圾回收算法："><a href="#18-垃圾回收算法：" class="headerlink" title="18.垃圾回收算法："></a>18.垃圾回收算法：</h5><ul>
+<li>标记-清除算法：<br>标记-清除算法分为“标记”和“清除”两个阶段，首先通过可达性分析，标记出所有需要回收的对象，然后统一回收所有被标记的对象。<br>标记-清除算法有两个缺陷，一个是效率问题，标记和清除的过程效率都不高，另外一个就是，清除结束后会造成大量的碎片空间。有可能会造成在申请大块内存的时候因为没有足够的连续空间导致再次 GC</li>
+<li><p>复制算法<br>将内存分成两块，每次申请内存时都使用其中的一块，当内存不够时，将这一块内存中所有存活的复制到另一块上。然后将然后再把已使用的内存整个清理掉。<br>复制算法解决了空间碎片的问题。但是也带来了新的问题。因为每次在申请内存时，都只能使用一半的内存空间。内存利用率严重不足。  </p>
+</li>
+<li><p>标记-整理算法<br>标记-整理算法的“标记”过程与“标记-清除算法”的标记过程一致，但标记之后不会直接清理。而是将所有存活对象都移动到内存的一端。移动结束后直接清理掉剩余部分  </p>
+</li>
+<li><p>分代收集算法<br>分代收集是将内存划分成了新生代和老年代。分配的依据是对象的生存周期，或者说经历过的 GC 次数。对象创建时，一般在新生代申请内存，当经历一次 GC 之后如果对还存活，那么对象的年龄 +1。当年龄超过一定值，如果对象还存活，那么该对象会进入老年代</p>
+</li>
+</ul>
+<h5 id="19-jvm创建对象"><a href="#19-jvm创建对象" class="headerlink" title="19.jvm创建对象"></a>19.jvm创建对象</h5><p> jvm创建对象主要经过检查是否加载过、分配内存、内存空间初始化、设置对象头、初始化对象</p>
+<h5 id="20-jvm内存模型"><a href="#20-jvm内存模型" class="headerlink" title="20.jvm内存模型"></a>20.jvm内存模型</h5><p>虚拟机栈、本地方法栈、程序计数器、堆内存、方法区</p>
+<h5 id="21-Okhttp连接复用"><a href="#21-Okhttp连接复用" class="headerlink" title="21.Okhttp连接复用"></a>21.Okhttp连接复用</h5><p>如果连接没有达到上限，主机地址完全匹配就重用连接，循环清理空闲连接</p>
+<p>连接复用：</p>
+<ol>
+<li><p>首先会尝试使用 已给请求分配的连接。（已分配连接的情况例如重定向时的再次请求，说明上次已经有了连接）</p>
+</li>
+<li><p>若没有 已分配的可用连接，就尝试从连接池中匹配获取。因为此时没有路由信息，所以匹配条件：address一致——host、port、代理等一致，且匹配的连接可以接受新的请求。</p>
+</li>
+<li><p>若从连接池没有获取到，则传入routes 路由再次尝试获取，这主要是针对Http2.0的一个操作，Http2.0可以复用square.com与square.ca的连接</p>
+</li>
+<li><p>若第二次也没有获取到，就创建RealConnection实例，进行TCP + TLS握手，与服务端建立连接。</p>
+</li>
+<li><p>此时为了确保Http2.0连接的多路复用性，会第三次从连接池匹配。因为新建立的连接的握手过程是非线程安全的，所以此时可能连接池新存入了相同的连接。</p>
+</li>
+<li><p>第三次若匹配到，就使用已有连接，释放刚刚新建的连接；若未匹配到，则把新连接存入连接池并返回。</p>
+</li>
+</ol>
+<h5 id="22-Java深拷贝和浅拷贝的区别"><a href="#22-Java深拷贝和浅拷贝的区别" class="headerlink" title="22.Java深拷贝和浅拷贝的区别"></a>22.Java深拷贝和浅拷贝的区别</h5><p><strong>浅拷贝</strong>是指拷贝对象时仅仅拷贝对象本身（包括对象中的基本变量），而不拷贝对象包含的引用指向的对象。</p>
+<p><strong>深拷贝</strong>不仅拷贝对象本身，而且拷贝对象包含的引用指向的所有对象。</p>
+<h5 id="23-px和dp等单位之间的关系"><a href="#23-px和dp等单位之间的关系" class="headerlink" title="23.px和dp等单位之间的关系"></a>23.px和dp等单位之间的关系</h5><p>dp * 密度 +0.5 向上取整 == px</p>
+<h5 id="24-类的加载步骤"><a href="#24-类的加载步骤" class="headerlink" title="24.类的加载步骤"></a>24.类的加载步骤</h5><ol>
+<li><p>装载，根据查找路径找到class将文件导入</p>
+</li>
+<li><p>链接</p>
+<p>检查：检查加载的class文件正确性能</p>
+<p>准备：给类中的静态变量分配内存空间</p>
+<p>解析：将符号引用转成直接引用</p>
+</li>
+<li><p>初始化：对静态变量和静态代码块执行初始化工作</p>
+</li>
+</ol>
+<h5 id="25-事件传递，事件分发"><a href="#25-事件传递，事件分发" class="headerlink" title="25.事件传递，事件分发"></a>25.事件传递，事件分发</h5><p>InputManagerService -&gt; inputReader -&gt; inputDispatch -&gt; Activity </p>
+<p>-&gt; phoneWindow -&gt; dectorVIew （ViewGroup）</p>
+<p>dectorView 就是FrameLayout 就是个ViewGroup</p>
+<p>ViewGroup .dispatchTouchEvent -&gt;  ViewGroup.InterceptTouchEvent -&gt; 如果true onTouchEvent</p>
+<p>false  for循环分发到坐标点的子view ，child.dispatchTouchEvent child有可能是viewgroup也可能是view 这样一直传递知道消费，有一个子view消费就会终止for循环</p>
+<p>view 的时间传递优先级高到低</p>
+<p>view的.dispatchTouchEvent -&gt; onTouch -&gt; OnTouchEvent -&gt; perFromClick </p>
+<h5 id="26-事件冲突"><a href="#26-事件冲突" class="headerlink" title="26.事件冲突"></a>26.事件冲突</h5><p>父view intercptTouchEvent 拦截</p>
+<p>子view调用父view parent.requestDisallowInterceptTouchEvent(false) 拦截</p>
+<p>如果requestDisallowInterceptTouchEvent设置了true，那么父控件就不会拦截这个事件，就会通过dispatchTransformedTouchEvent将事件传给子控件</p>
+<h5 id="27-ThreadLocal-原理"><a href="#27-ThreadLocal-原理" class="headerlink" title="27.ThreadLocal 原理"></a>27.ThreadLocal 原理</h5><p>每个线程都维护了一个ThreadLocalMap变量</p>
+<p>ThreadLocalMap 里面的map存着同个线程不同的threadLocal 值是个数组  Entry[] table;</p>
+<p>ThreadLocal.get()方法就是获取到Enry的i值，如果等于key则返回，如果不等于key则遍历找Entry的key是否相等，是就返回Entry的value</p>
+<h5 id="28-HTTPS过程"><a href="#28-HTTPS过程" class="headerlink" title="28.HTTPS过程"></a>28.HTTPS过程</h5><p>HTTPS通信主要包括几个节点，发起请求、验证身份、协商秘钥、加密会话，具体流程如下(此例子只有客户端对服务端的单向验证)：</p>
+<p>　　1、客户端向服务端发起建立HTTPS请求。</p>
+<p>　　2、服务器向客户端发送数字证书。</p>
+<p>　　3、客户端验证数字证书，证书验证通过后客户端生成会话密钥(双向验证则此处客户端也会向服务器发送证书)。</p>
+<p>　　4、服务器生成会话密钥(双向验证此处服务端也会对客户端的证书验证)。</p>
+<p>　　5、客户端与服务端开始进行加密会话。</p>
+<h5 id="29-DNS解析过程"><a href="#29-DNS解析过程" class="headerlink" title="29.DNS解析过程"></a>29.DNS解析过程</h5><p>以客户端访问 www.windows.com为例来说明<br>1、 首先客户端检查在本地的host文件是否有这个域名对应的IP，若无跳到第二步<br>2、 客户端检查本地缓冲，看是否有信息，若无跳到下面一步<br>3、 客户端将请求发送到本地DNS服务器，本地DNS服务器检查缓存信息，若无跳到下面一步<br>4、 本地DNS服务器检查区域文件是否有对应IP，若无跳到下面一步<br>5、 本地DNS服务器根据cache.dns文件中指定的根DNS服务器的IP地址，转向根DNS查询<br>6、 根DNS收到查询请求以后，查看区域文件记录，若无，将其管辖范围内的.com服务器的IP地址告诉本地DNS服务器<br>7、 .com服务器收到查询请求后，查看区域文件记录，若无，则将其管辖范围内.xxx服务器的IP地址告诉本地DNS服务器<br>8）.xxx服务器收到查询请求后，分析需要解析的域名，若无，则查询失败，若有，返回www.的IP地址给本地服务器<br>9）本地DNS服务器将www.的IP地址返回给客户端，客户端通过这个IP地址与WEB站点建立连接</p>
+<h5 id="30-插件化原理"><a href="#30-插件化原理" class="headerlink" title="30.插件化原理"></a>30.插件化原理</h5><ul>
+<li><strong>资源插件化</strong>：</li>
+</ul>
+<ol>
+<li><p>通过反射创建AssetManager对象，调用AssetManager的addAssetPath方法加载plugin路径，来加载插件资源</p>
+</li>
+<li><p>重新Actvity 的getAssets 方法，可以返回插件资源和宿主资源</p>
+<pre><code>@Override
+public AssetManager getAssets(){
+    if(mAssetManager==null){
+       return super.getAsset() //宿主资源
+    }
+    return mAssetManager; //插件资源
+}
+</code></pre></li>
+<li><p>加载外部资源，加载外部插件classLoader ，通过反射获取到插件里面准备好的类获取资源</p>
+</li>
+</ol>
+<ul>
+<li><strong>Activity 插件化</strong>：</li>
+</ul>
+<p>启动Manifest中没有的Activity，mainifest无法该，一般通过占坑方式，预埋一些Activity绕过AMS的检查，然后在换回真实的Actvity跳转。</p>
+<p>Hook点1：hook ActivityThread的Instrumention，</p>
+<p>代理exexStartActivity 方法，换成占坑Activity去校验，</p>
+<p>代理newActivity 创建acitivity 恢复成需要跳转的Activity</p>
+<p>Hook点2：hook ActivityManagerNatvie 动态代理，</p>
+<p>代理 startActivity 方法替换成占坑Activity</p>
+<p>hook ActivityThread 里面有个handle 的mCallback 对象，handler的分发机制，优先执行mCallback，msg.what == LAUNCH_ACTIVITY （handleLaunchActivity）在这里换成真实跳转的Activity</p>
+<p>插件中的类加载：</p>
+<p>方案1：为每个插件创建个classLoader 加载插件中的类，是个dexClassLoader 可以加载插件的资源</p>
+<p>方案2：合并多个dex，hook dexElements，把插件的和宿主的合成一个新的数组，然后反射替换宿主的</p>
+<p>方案3：直接替换系统的classload 为我们自定义的classloader，自定义classLoader会优先尝试通过宿主classload加载，如果不能加载，则遍历插件classLoader加载</p>
+<p>hook点，context的packageInfo（是个LoadedApk）的classloader</p>
+<ul>
+<li><strong>Servcie插件化</strong></li>
+</ul>
+<p>也是通过占坑方式</p>
+<p>startService</p>
+<p>Hook点：hook ActivityManagerNatvie 动态代理，</p>
+<p>代理 startService方法替换成占坑Servcie</p>
+<p>hook ActivityThread 里面有个handle 的mCallback 对象，handler的分发机制，优先执行mCallback，msg.what == CREATE_SERVICE（handleCreateService）在这里换成真实跳转的Service 跟hook Activity 很像</p>
+<p>bindServcie hook点跟startServcie差不多只是方法名不同，参数不同，还是生命周期</p>
+<ul>
+<li><strong>广播插件化</strong></li>
+</ul>
+<p>也是通过占坑方式</p>
+<ol>
+<li><p>初始化的时候，把插件化的静态广播当作动态广播使用，解析获取到插件里面的静态广播，动态注册进AMS</p>
+</li>
+<li><p>坑位receiver相当于静态代理，对广播进行分发</p>
+</li>
+</ol>
+<ul>
+<li><strong>ContentProvider插件化</strong></li>
+</ul>
+<p>也需要占坑</p>
+<p>1、在启动时候Application onCreate之前，attach中，反射ActivityThread 调用installContentProvider 安装插件中的ContentProvider，（普通contentprovider获取也是通过这个安装，创建时机aplication创建在attach的时候）具体点：解析插件xml 构造providerinfo 数组，反射调用installContentProviders方法</p>
+<p>2、通过占坑Contentprovider静态代理转发到插件化contentProvider</p>
+<h5 id="31-热修复原理："><a href="#31-热修复原理：" class="headerlink" title="31.热修复原理："></a>31.热修复原理：</h5><p><strong>代码修复：</strong></p>
+<p>方案1：底层替换方案，在已加载类中替换原有的方法。</p>
+<p>原理：hook虚拟机，替换java方法对应的ArtMethod native方法，修改结构体里面的字段，在原有类基础上修改，无法新增减字段方法，会破环结构</p>
+<p>代表：andfix，sophix</p>
+<p>缺点：限制只能修改方法，不稳定兼容性差</p>
+<p>方案2：类加载方案</p>
+<p>原理：在App重启的时候去加载新的补丁类，把补丁类插入到dexElement前面</p>
+<p>pre-verify问题，类重复问题来自不同包</p>
+<p>android 7.0，虚拟机有个优化，加载类的时候，如果这个class引用的所有非系统类都和该类在同一个dex中类都来自同一个dex中，就会为这个class打个CLASS_ISPREVERUFUED标识</p>
+<p>qq空间，是破坏这个打标识机制，每个类中插入一个外部类，插桩臃肿</p>
+<p>tinker 是合成全量dex，会有一定损耗</p>
+<p>代表：tinker，qq空间qfix，</p>
+<p>优点：修复范围广，限制少，兼容性强</p>
+<p>缺点：需要冷启动</p>
+<p><strong>资源修复：</strong></p>
+<ol>
+<li><p>构造一个新的AssetManager 通过反射调用addAssetPath添加补丁中的资源，得到一个新的AssetManager，</p>
+</li>
+<li><p>找到所有AseetManager替换成新的</p>
+</li>
+</ol>
+<p><strong>动态库修复：</strong></p>
+<p>方案1：自定义动态库加载，替换掉原生的，优先判断是否有补丁包的动态库加载</p>
+<p>缺点：第三方库的修不了</p>
+<p>方案2：反射修改DexPathList的nativeLibraryPathElement数组，把补丁的动态库插入到最前面</p>
+<p><strong>Robust</strong>：另外一种热i修复方案，即时生效，补丁成功率高，体积小，性能损耗少，不用合成全量dex，也不用hook底层</p>
+<p>缺点只支持修改方法，不支持4大组件动态库那些</p>
+<p>原理：</p>
+<p>插桩：</p>
+<p>Robust为每个class增加个ChangeQuickRedirect的静态成员变量，每个方法都插入一段逻辑，当 changeQuickRedirect不为null时，会执行补丁分发逻辑，执行补丁方法</p>
+<p>补丁：</p>
+<p>需要动态生成补丁执行类，补丁映射类(被修复类，和补丁类的映射)，代理分发类，新增的类，把每个类里面的调用都修改成了反射调用，混淆问题</p>
+<p>加载补丁：</p>
+<p>加载补丁不需要重启即使生效，通过DexClassLoader加载一个jar包。找到补丁映射类，反射设置 ChangeQuickRedirect 静态变量为这个代理分发类</p>
+<p>流程：</p>
+<p>插装：plugin -&gt; trasmform  ASM或者javassit对白名单了的类进行方法插装</p>
+<p>生成补丁包：</p>
+<p>plugin -&gt; trasmform </p>
+<p>遍历class 找出补丁的方法及类</p>
+<p>通过JAVASISST动态生成补丁执行类，补丁映射类(被修复类，和补丁类的映射)，代理分发类，新增的类，把每个类里面的调用都修改成了反射调用，处理混淆问题</p>
+<p>生成匿名内部类</p>
+<p>把生成的类打成jar包</p>
+<p>d8脱糖转成dex</p>
+<p>dex反编译成smali，遍历文件替换混淆问题，破折号的问题</p>
+<p>smali文件重新编译成dex</p>
+<p>重新打成jar</p>
+<p>开发robust遇到的问题，lambda问题，适配AGP 7x，dex 升到最高也不行换成d8，混淆问题，有些方法动态成了带了破折号，通过转smali文件进行替换，增加配置接受jekins构建系统的配置参数，下载基本包的mapping和插装的方法文件，简化构建流程</p>
+<h5 id="Java-内存分配模型"><a href="#Java-内存分配模型" class="headerlink" title="Java 内存分配模型"></a>Java 内存分配模型</h5><ol>
+<li>方法区：存储类信息、常量、静态变量等，所有线程共享（存静态常量）</li>
+<li>虚拟机栈：存储局部变量表、操作数栈等（存Java变量引用）</li>
+<li>本地方法栈：存native变量引用</li>
+<li>堆：内存最大的区域，对象的实际存储位置，栈中只是对象的引用，GC和内存泄漏的主战场，所有线程共享（存对象）</li>
+<li>程序计数器：计算当前线程的当前方法执行到多少行</li>
+</ol>
+<h5 id="手机ANR-crash"><a href="#手机ANR-crash" class="headerlink" title="手机ANR crash"></a>手机ANR crash</h5><p>6.0 以下手机监听 用FileObserver 监听/data/anr/trace.txt 文件，变化了之后调用AMS 获取进程状态，getProcessesInErrorState </p>
+<p>6.0 以上获取 通过jni 调用 sigaction 注册监听 SIGQUIT信号，然后在去AMS查询状态</p>
+<h5 id="apk-打包重点task"><a href="#apk-打包重点task" class="headerlink" title="apk 打包重点task"></a>apk 打包重点task</h5><p>compileDebugAidl  //处理AIDL</p>
+<p>generateDebugBuildConfig  //生成 BuildConfig.java</p>
+<p>mergeDebugResources //合并资源文件</p>
+<p>processDebugManifest   //合并 manifest 文件<br>processDebugResources   //aapt 打包资源</p>
+<p>mergeDebugAssets //合并 assets 文件</p>
+<p>transformClassesWithDexBuilderForDebug  //class 打包 dex<br>transformDexArchiveWithExternalLibsDexMergerForDebug   //打包三方库的 dex，在 dex 增量的时候就不需要再 merge 了，节省时间<br>transformDexArchiveWithDexMergerForDebug 打包最终的 dex</p>
+<p>packageDebug 打包 apk</p>
+<h5 id="内存碎片化："><a href="#内存碎片化：" class="headerlink" title="内存碎片化："></a>内存碎片化：</h5><p>分页管理机制</p>
+<p>不要频繁申请、释放内存空间，减少内存碎片 避免内存抖动</p>
+<h5 id="PMS安装过程："><a href="#PMS安装过程：" class="headerlink" title="PMS安装过程："></a>PMS安装过程：</h5><ol>
+<li><p>验证签名: 确保 APK 文件的签名与开发者的签名匹配，确保应用程序来自可信的来源。</p>
+</li>
+<li><p>权限检查: 检查应用程序请求的权限，以确保用户授予适当的权限。</p>
+</li>
+<li><p>版本检查: 检查应用程序的版本与已安装应用的版本进行比较，以确定是安装新应用还是更新已有应用。</p>
+</li>
+<li><p>复制Apk拷贝到/data/app的目录下</p>
+</li>
+<li><p>PMS解析apk的清单文件，读取四大组件的信息</p>
+</li>
+<li><p>为app分配用户ID和用户组ID(按照权限分组)</p>
+</li>
+<li><p>最后发送了ACTION_PACKAGE_ADDED广播，launcher接收到这个广播之后就会在桌面上添加应用图标了</p>
+</li>
+<li><p>把上面的信息记录在一个xml文件中，以备下次安装使用</p>
+</li>
+<li><p>优化odex</p>
+</li>
+</ol>
+<h5 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h5><p>进程通信机制的一种，由于两个进程可以直接访问同一块内存区分，减少了复制操作</p>
+<ol>
+<li><p>创建内存共享区 shmget函数</p>
+</li>
+<li><p>映射内存共享区 shmat函数</p>
+</li>
+<li><p>访问共享区 shmget函数</p>
+</li>
+<li><p>进程通信</p>
+</li>
+<li><p>撤销进程共享区 shmdt</p>
+</li>
+<li><p>删除内存共享区</p>
+</li>
+</ol>
+<h5 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h5><p>进程通信方式的一种</p>
+<p>管道是单向的，一根读，一根写</p>
+<p>一边进程写，另一边进程就可以读</p>
+<p>管道容量有限制65536字节</p>
+<h5 id="socket"><a href="#socket" class="headerlink" title="socket"></a>socket</h5><p>进程通信方式的一种</p>
+<ul>
+<li><p>服务端监听ipc请求</p>
+</li>
+<li><p>客户端发送ipc申请</p>
+</li>
+<li><p>双方成功简历ipc连接</p>
+</li>
+<li><p>客户端向服务器发送数据，证明ipc通信是有效的</p>
+</li>
+</ul>
+<p>client: sorcket()-&gt;bind()-&gt;connect-&gt;read/write-&gt;close;</p>
+<p>server:socket()-&gt;bind()-&gt;listen-&gt;accept-&gt;ready/write-&gt;close</p>
+<h5 id="mmap"><a href="#mmap" class="headerlink" title="mmap"></a>mmap</h5><p>可以实现进程间的通信，一个函数</p>
+<p>可以将某个设备或者文件映射到应用进程的内存空间中，这样访问这个块内存相当于对这个设备或者文件进行read()/write(),这种方式减少数据复制次数，提高进程通信效率,只拷贝了一次</p>
+<p>优点</p>
+<p>mmap 防止数据丢失，提高读写效率<br>mmap对文件的读写操作只需要对磁盘到用户主存的一次数据拷贝过程，减少了数据的拷贝次数，提高文件读写效率。<br>mmap使用逻辑内存对磁盘文件进行映射，操作内存就相当于操作文件，不需要开启线程，操作mmap的速度和操作内存的速度一样快。<br>mmap提供一块随时写入的内存，app只管往里写入数据，由操作系统如内存不足。进程退出时负责将内存写回到文件。不必担心crash导致数据丢失。<br>mmap的适用场景是大文件的频繁读写，这样就可以节省很多IO的耗时。<br>即使进程意外死亡, 也能够通过 Linux 内核的保护机制, 将进行了文件映射的内存数据刷入到文件中, 提升了数据写入的可靠性<br>缺点：</p>
+<p>因为mmap是按照页存储方式进行存储，每页4096字节，如果数据只有100字节，则正页将有大大的浪费。<br>写回文件的工作由系统负责，但是并不是实时的，是定期写回到磁盘的，中间如果发生内核崩溃、断电等，还是会丢失数据，不过可以通过msync将数据同步回磁盘。</p>
+<h5 id="匿名共享内存"><a href="#匿名共享内存" class="headerlink" title="匿名共享内存"></a>匿名共享内存</h5><p>可以将指定的物理内存分别映射到各个进程自己的虚拟地址空间中</p>
+<p>Ashmem的实现依托于/dev/ashmem设备，核心函数open，mmap，ioctl</p>
+<h6 id="ART虚拟机的运行时堆"><a href="#ART虚拟机的运行时堆" class="headerlink" title="ART虚拟机的运行时堆"></a>ART虚拟机的运行时堆</h6><p>DVM: zygote space , allocation space</p>
+<p>ART:  zygote space , allocation space , image space , larget object space</p>
+<h5 id="启动优化，合并MainActivity和SplashActivity"><a href="#启动优化，合并MainActivity和SplashActivity" class="headerlink" title="启动优化，合并MainActivity和SplashActivity"></a>启动优化，合并MainActivity和SplashActivity</h5><p>要解决的问题主要有 2 个：</p>
+<ul>
+<li>合并后如何解决外部通过 Activity 名称跳转的问题；</li>
+<li>如果解决 LaunchMode 与多实例的问题。</li>
+</ul>
+<p>第 1 个问题比较容易解决，我们可以通过 activity-alias+targetActivity 将 SplashActivity 指向 MainActivity 解决。接下来我们来看一下第二个问题。</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5f630db4520b4d77a40a8d45e45cff47~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="图片"></p>
+<p>第二个问题：使用 singletop 虽然能够解决 home 出去再次进入无法回到之前页面的问题，但是随之而来的是 <strong>MainActivity 多实例</strong>的问题。</p>
+<p>解决方案是，在加上对于应用内所有启动 MainActivity 的 Intent 增加 <strong>FLAG_ACTIVITY_NEW_TASK 与 FLAG_ACTIVITY_CLEAR_TOP</strong> 的 flag，以实现类似于 singletask 的 clear top 的特性。</p>
+<p>修改启动 MainActivity Intent 的 Component 信息，将其改从 MainActivity 改为 <strong>SplashActivity</strong></p>
+<p>hook activity 跳转，有好几种方式</p>
+<p>Hook ActivityManagerNative gDeault +动态代理</p>
+<p> hook Instrumentaion 的实现方案，在高版本的 Android 系统上我们也可以以 AppComponentFactory instantiateActivity 的方式替换。</p>
+<ol>
+<li>良好的逻辑思维和编程习惯，具备独立解决技术问题的能力；  </li>
+<li>学习能力强，有责任感，有良好的沟通能力，具备团队合作精神；  </li>
+<li>熟练使用Java/Kotlin/C/C++程序设计语言；  </li>
+<li>深刻理解Android开发平台及框架原理，熟悉Android各版本系统特性  </li>
+<li>熟悉Android各移动终端特性，有Android平台各类常见问题的应对经验  </li>
+<li>熟悉Android性能优化点及相关优化分析工具  </li>
+<li>熟练掌握Android应用常规业务开发；  </li>
+<li>熟练掌握常见的TCP/IP网络协议；</li>
+</ol>
+<h5 id="http和https的区别"><a href="#http和https的区别" class="headerlink" title="http和https的区别"></a>http和https的区别</h5><p>两者的区别在于：</p>
+<p>1、HTTPS协议需要去ca申请证书。 一般免费证书比较少，所以需要一定的费用;</p>
+<p>2、HTTP是超文本传输??协议，信息以明文传输，HTTPS是安全的ssl加密传输协议;</p>
+<p>3、HTTP和HTTPS使用完全不同的连接方式，使用的端口也不同。 HTTP 为 80，HTTPS 为 443;</p>
+<ol>
+<li>HTTP 连接非常简单且无状态。 HTTPS 是由 SSL HTTP 协议构建的网络协议，可用于加密传输和身份认证，比 HTTP 协议更安全。</li>
+</ol>
+<p>综上所述，HTTPS相比HTTP，增加了很多握手、加密、解密的过程。 虽然过程比较复杂，但是可以保证数据传输的安全。以上是关于HTTP与HTTPS之间区别的介绍。</p>
+<h5 id="反射机制"><a href="#反射机制" class="headerlink" title="反射机制"></a>反射机制</h5><p>运行时候加载类，获得对象属性，方法</p>
+<h5 id="Java序列化"><a href="#Java序列化" class="headerlink" title="Java序列化"></a>Java序列化</h5><p>Java序列化就是指把Java对象转换为字节序列的过程</p>
+<p>Java反序列化就是指把字节序列恢复为Java对象的过程。</p>
+<p>序列化目的：在传递和保存对象时.保证对象的完整性和可传递性。网络传输，接口请求</p>
+<h5 id="ViewModel"><a href="#ViewModel" class="headerlink" title="ViewModel"></a>ViewModel</h5><p>Fragment 之间共享数据，</p>
+<p>Activity 旋转屏幕数据一致</p>
+<p>在 Activity 中提供了 <code>onRetainNonConfigurationInstance</code> 方法，用于处理配置发生改变时数据的保存。随后在重新创建的 Activity 中调用 <code>getLastNonConfigurationInstance</code> 获取上次保存的数据。</p>
+<p>实例化的 ViewModel 都缓存在一个叫做 ViewModelStore 的封装对象中，其实质是一个 HashMap; key 是class</p>
+<h5 id="Android-各个版本特性"><a href="#Android-各个版本特性" class="headerlink" title="Android 各个版本特性"></a>Android 各个版本特性</h5><p>android 11:  </p>
+<p>  分区存储,访问其他需要更多权限，强制实行， AndroidManifest 中添加了   requestLegacyExternalStorage=true 标志将不再生效</p>
+<p>   android resource.src 不能压缩，否则无法签名对齐，上不了华为市场</p>
+<p>android 12：在后台应用无法再启动前台服务</p>
+<p>android 10：</p>
+<pre><code>在后台运行时访问设备位置信息需要权限
+
+应用处于后台时，无法启动Activity
+
+外部存储权限设置
+</code></pre><p>android 13：静态广播和动态广播必须设置可见性，细分媒体权限</p>
+<p>android 9：隐私变更</p>
+<p>android 8：所有通知都必须分配一个渠道</p>
+<p>android 7：多窗口分屏模式，支持java8 使用lambda，支持app应用签名v2的打包方式</p>
+<p>android 6：运行时申请权限</p>
+<h5 id="卡顿监控"><a href="#卡顿监控" class="headerlink" title="卡顿监控"></a>卡顿监控</h5><ol>
+<li><p>方案1：Coreographer帧率检测，postFrameCallback ，保存两次 doFrame 时间进行相减然后除以刷新频率，这样算出来的结果就是两次 doFrame 的掉帧数</p>
+</li>
+<li><p>方案2：Looper设置print ，匹配消息分发前后字符串，计算之间的耗时</p>
+</li>
+<li><p>方案3：handler postDelay 循环延迟消息检查，run的时候检查hasMessages(0) 待确定方案</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="贺祥 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="贺祥 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-Studio/" rel="tag"># Android Studio</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/09/interview/常用命令/" rel="next" title="常用命令">
+                <i class="fa fa-chevron-left"></i> 常用命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/07/图片加载消耗的内存/" rel="prev" title="图片加载消耗的内存">
+                图片加载消耗的内存 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/person3.jpg" alt="贺祥">
+            
+              <p class="site-author-name" itemprop="name">贺祥</p>
+              <p class="site-description motion-element" itemprop="description">记学学记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">125</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#自备八股文"><span class="nav-number">1.</span> <span class="nav-text">自备八股文</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1、HashMap底层实现原理"><span class="nav-number">2.</span> <span class="nav-text">1、HashMap底层实现原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、TCP三次握手，4此挥手"><span class="nav-number">3.</span> <span class="nav-text">2、TCP三次握手，4此挥手</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-大图加载"><span class="nav-number">4.</span> <span class="nav-text">3.大图加载</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-Glide缓存机制"><span class="nav-number">5.</span> <span class="nav-text">4.Glide缓存机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-OKHTTP"><span class="nav-number">6.</span> <span class="nav-text">5.OKHTTP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-TCP-和-UDP-区别"><span class="nav-number">7.</span> <span class="nav-text">5.TCP 和 UDP 区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-ARouter原理"><span class="nav-number">8.</span> <span class="nav-text">6.ARouter原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-JNI引用"><span class="nav-number">9.</span> <span class="nav-text">7.JNI引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-DVM和JVM的区别"><span class="nav-number">10.</span> <span class="nav-text">8.DVM和JVM的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-ART与DVM的区别"><span class="nav-number">11.</span> <span class="nav-text">9.ART与DVM的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#10-双亲委派"><span class="nav-number">12.</span> <span class="nav-text">10.双亲委派</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#11-Native注册方式"><span class="nav-number">13.</span> <span class="nav-text">11.Native注册方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#12-Launch-Mode-Activity-启动模式"><span class="nav-number">14.</span> <span class="nav-text">12.Launch Mode Activity 启动模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#13-UI优化"><span class="nav-number">15.</span> <span class="nav-text">13.UI优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#14-启动优化"><span class="nav-number">16.</span> <span class="nav-text">14.启动优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#15-内存优化"><span class="nav-number">17.</span> <span class="nav-text">15.内存优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#16-瘦身优化"><span class="nav-number">18.</span> <span class="nav-text">16.瘦身优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#17-组件化"><span class="nav-number">19.</span> <span class="nav-text">17.组件化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#18-垃圾回收算法："><span class="nav-number">20.</span> <span class="nav-text">18.垃圾回收算法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#19-jvm创建对象"><span class="nav-number">21.</span> <span class="nav-text">19.jvm创建对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#20-jvm内存模型"><span class="nav-number">22.</span> <span class="nav-text">20.jvm内存模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#21-Okhttp连接复用"><span class="nav-number">23.</span> <span class="nav-text">21.Okhttp连接复用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-Java深拷贝和浅拷贝的区别"><span class="nav-number">24.</span> <span class="nav-text">22.Java深拷贝和浅拷贝的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#23-px和dp等单位之间的关系"><span class="nav-number">25.</span> <span class="nav-text">23.px和dp等单位之间的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#24-类的加载步骤"><span class="nav-number">26.</span> <span class="nav-text">24.类的加载步骤</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#25-事件传递，事件分发"><span class="nav-number">27.</span> <span class="nav-text">25.事件传递，事件分发</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#26-事件冲突"><span class="nav-number">28.</span> <span class="nav-text">26.事件冲突</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#27-ThreadLocal-原理"><span class="nav-number">29.</span> <span class="nav-text">27.ThreadLocal 原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#28-HTTPS过程"><span class="nav-number">30.</span> <span class="nav-text">28.HTTPS过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#29-DNS解析过程"><span class="nav-number">31.</span> <span class="nav-text">29.DNS解析过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#30-插件化原理"><span class="nav-number">32.</span> <span class="nav-text">30.插件化原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#31-热修复原理："><span class="nav-number">33.</span> <span class="nav-text">31.热修复原理：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Java-内存分配模型"><span class="nav-number">34.</span> <span class="nav-text">Java 内存分配模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#手机ANR-crash"><span class="nav-number">35.</span> <span class="nav-text">手机ANR crash</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#apk-打包重点task"><span class="nav-number">36.</span> <span class="nav-text">apk 打包重点task</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#内存碎片化："><span class="nav-number">37.</span> <span class="nav-text">内存碎片化：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PMS安装过程："><span class="nav-number">38.</span> <span class="nav-text">PMS安装过程：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#共享内存"><span class="nav-number">39.</span> <span class="nav-text">共享内存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#管道"><span class="nav-number">40.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#socket"><span class="nav-number">41.</span> <span class="nav-text">socket</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mmap"><span class="nav-number">42.</span> <span class="nav-text">mmap</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#匿名共享内存"><span class="nav-number">43.</span> <span class="nav-text">匿名共享内存</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#ART虚拟机的运行时堆"><span class="nav-number">43.1.</span> <span class="nav-text">ART虚拟机的运行时堆</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动优化，合并MainActivity和SplashActivity"><span class="nav-number">44.</span> <span class="nav-text">启动优化，合并MainActivity和SplashActivity</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#http和https的区别"><span class="nav-number">45.</span> <span class="nav-text">http和https的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#反射机制"><span class="nav-number">46.</span> <span class="nav-text">反射机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Java序列化"><span class="nav-number">47.</span> <span class="nav-text">Java序列化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ViewModel"><span class="nav-number">48.</span> <span class="nav-text">ViewModel</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Android-各个版本特性"><span class="nav-number">49.</span> <span class="nav-text">Android 各个版本特性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#卡顿监控"><span class="nav-number">50.</span> <span class="nav-text">卡顿监控</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">贺祥</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动「Hosted by Coding Pages」</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

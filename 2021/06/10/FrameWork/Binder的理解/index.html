@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="####  binder是什么binder是跨进程的ipc通信，跟管道，共享内存，信号等不同，它是一个android系统创建的全新的IPC通信，基于binder驱动， 可以跨进程调用函数，传输大图片 binder的优点 性能 inux常用的进程通信比如socket，管道等是需要内核作为中转的，需要两次数据copy，一次从应用层copy到内核，一次从内存copy到应用层。然而binder是给一块物理">
+<meta name="description" content="####  binder是什么binder是跨进程的ipc通信，跟管道，共享内存，信号等不同，它是一个android系统创建的全新的IPC通信，基于binder驱动， 可以跨进程调用函数，传输大图片 binder的优点 性能 linux常用的进程通信比如socket，管道等是需要内核作为中转的，需要两次数据copy，一次从应用层copy到内核，一次从内存copy到应用层。然而binder是给一块物">
 <meta name="keywords" content="Android Studio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android启动binder机制">
 <meta property="og:url" content="http://yoursite.com/2021/06/10/FrameWork/Binder的理解/index.html">
 <meta property="og:site_name" content="Mr.HeXiang Blog">
-<meta property="og:description" content="####  binder是什么binder是跨进程的ipc通信，跟管道，共享内存，信号等不同，它是一个android系统创建的全新的IPC通信，基于binder驱动， 可以跨进程调用函数，传输大图片 binder的优点 性能 inux常用的进程通信比如socket，管道等是需要内核作为中转的，需要两次数据copy，一次从应用层copy到内核，一次从内存copy到应用层。然而binder是给一块物理">
+<meta property="og:description" content="####  binder是什么binder是跨进程的ipc通信，跟管道，共享内存，信号等不同，它是一个android系统创建的全新的IPC通信，基于binder驱动， 可以跨进程调用函数，传输大图片 binder的优点 性能 linux常用的进程通信比如socket，管道等是需要内核作为中转的，需要两次数据copy，一次从应用层copy到内核，一次从内存copy到应用层。然而binder是给一块物">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2023-07-24T14:48:34.475Z">
+<meta property="og:updated_time" content="2023-08-09T07:51:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android启动binder机制">
-<meta name="twitter:description" content="####  binder是什么binder是跨进程的ipc通信，跟管道，共享内存，信号等不同，它是一个android系统创建的全新的IPC通信，基于binder驱动， 可以跨进程调用函数，传输大图片 binder的优点 性能 inux常用的进程通信比如socket，管道等是需要内核作为中转的，需要两次数据copy，一次从应用层copy到内核，一次从内存copy到应用层。然而binder是给一块物理">
+<meta name="twitter:description" content="####  binder是什么binder是跨进程的ipc通信，跟管道，共享内存，信号等不同，它是一个android系统创建的全新的IPC通信，基于binder驱动， 可以跨进程调用函数，传输大图片 binder的优点 性能 linux常用的进程通信比如socket，管道等是需要内核作为中转的，需要两次数据copy，一次从应用层copy到内核，一次从内存copy到应用层。然而binder是给一块物">
 
 
 
@@ -380,7 +380,7 @@
 <p>可以跨进程调用函数，传输大图片</p>
 <h5 id="binder的优点"><a href="#binder的优点" class="headerlink" title="binder的优点"></a>binder的优点</h5><ol>
 <li><p>性能</p>
-<p>inux常用的进程通信比如socket，管道等是需要内核作为中转的，需要两次数据copy，一次从应用层copy到内核，一次从内存copy到应用层。然而binder是给一块物理内存同时映射到内核和目标进程的用户空间，将数据从应用层copy到内核空间时，相当于将数据copy到了另一个进程的用户空间了，只用copy一次。</p>
+<p>linux常用的进程通信比如socket，管道等是需要内核作为中转的，需要两次数据copy，一次从应用层copy到内核，一次从内存copy到应用层。然而binder是给一块物理内存同时映射到内核和目标进程的用户空间，将数据从应用层copy到内核空间时，相当于将数据copy到了另一个进程的用户空间了，只用copy一次。</p>
 </li>
 <li><p>方便易用</p>
 <p>逻辑简单直接，不易出现问题。共享内存虽然性能很好，但远不如binder好用</p>
@@ -554,7 +554,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

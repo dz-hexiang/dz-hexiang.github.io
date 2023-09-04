@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Mr.HeXiang Blog">
 <meta property="og:description" content="Loop循环为什么不卡死网上很多博文写,loop()之所以不卡死,是因为从管道文件中读取数据，主线程被唤醒只是为了读取消息，当消息读取完毕后会再次休眠。(回答的感觉没理解提议) 个人愚见:上面的只是节省了cpu资源,而真正原因之所以不卡死是因为消息能够及时分发屏幕传过来的触摸事件,没有触发anr,loop是死循环,后面的代码不会执行,但它本身不断的从MessageQueue中获取消息的，有消息就处">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-20T01:26:00.553Z">
+<meta property="og:updated_time" content="2019-03-20T01:26:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Loop循环为什么不卡死">
 <meta name="twitter:description" content="Loop循环为什么不卡死网上很多博文写,loop()之所以不卡死,是因为从管道文件中读取数据，主线程被唤醒只是为了读取消息，当消息读取完毕后会再次休眠。(回答的感觉没理解提议) 个人愚见:上面的只是节省了cpu资源,而真正原因之所以不卡死是因为消息能够及时分发屏幕传过来的触摸事件,没有触发anr,loop是死循环,后面的代码不会执行,但它本身不断的从MessageQueue中获取消息的，有消息就处">
@@ -437,8 +437,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/09/String和StringBuffer和StringBuilder类的区别/" rel="next" title="tring和StringBuffer 和 StringBuilder 类的区别">
-                <i class="fa fa-chevron-left"></i> tring和StringBuffer 和 StringBuilder 类的区别
+              <a href="/2019/02/09/LruCache分析/" rel="next" title="LruCache分析">
+                <i class="fa fa-chevron-left"></i> LruCache分析
               </a>
             
           </div>
@@ -447,8 +447,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/09/LruCache分析/" rel="prev" title="LruCache分析">
-                LruCache分析 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/09/DexClassLoader和PathClassLoader的区别/" rel="prev" title="DexClassLoader和PathClassLoader的区别">
+                DexClassLoader和PathClassLoader的区别 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -528,7 +528,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
