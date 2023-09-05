@@ -282,7 +282,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/09/FrameWork/ServcieManger启动和工作原理/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/09/FrameWork/Context和Application的理解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -301,7 +301,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/09/FrameWork/ServcieManger启动和工作原理/" itemprop="url">ServcieManger启动和工作原理</a></h1>
+                <a class="post-title-link" href="/2020/05/09/FrameWork/Context和Application的理解/" itemprop="url">Context和Application的理解</a></h1>
         
 
         <div class="post-meta">
@@ -379,11 +379,26 @@
         
           
             <p>#### </p>
-<h5 id="ServcieManger启动和工作原理"><a href="#ServcieManger启动和工作原理" class="headerlink" title="ServcieManger启动和工作原理"></a>ServcieManger启动和工作原理</h5><ul>
-<li>调用函数 <code>binder_open</code> 打开设备文件 <code>/dev/binder</code> 以及将它映射到本进程的地址空间.</li>
-<li>调用函数 <code>binder_become_context_manager</code> 将自己注册为所有服务的大管家.</li>
-<li>调用函数 <code>binder_loop</code> 来循环等待和处理 Client 进程的通信请求.</li>
-</ul>
+<h4 id="Context的作用"><a href="#Context的作用" class="headerlink" title="Context的作用"></a>Context的作用</h4><p>context是用来提供上下文环境，可以通过它调用系统资源，调用系统服务，如context.startActivity</p>
+<h5 id="Context有几种"><a href="#Context有几种" class="headerlink" title="Context有几种"></a>Context有几种</h5><p>Application，Activity，Service</p>
+<p><strong>Activity</strong>继承自ContextThemeWrapper，</p>
+<p><strong>Application</strong>和<strong>Serivce</strong>继承自ContextWrapper类。</p>
+<p>ContextWrapper内部有一个mBase属性，该类型为ContextImpl类型，它才是真正执行任务的对象，此处用了一个静态代理的方式</p>
+<p><strong>BroadcastReceiver</strong>是一个抽象类，不是Context类型，但是在onReceive方法中会传入一个context对象，当是动态广播的时候，这个传入的context是注册时的那个，当是静态广播的时候，传入的是以Application对象为mBase的ContextWrapper类型对象</p>
+<p><strong>ContentProvider</strong>也不是一个Context类型，但是它内部有一个context属性，该context属性是Application对象，需要提到的是，Application的attachBaseContext方法在contentProvider的onCreate方法之前执行 ，同时，Application的onCreate方法在contentProvider的onCreate方法之后执行</p>
+<h5 id="Context的区别"><a href="#Context的区别" class="headerlink" title="Context的区别"></a>Context的区别</h5><p>需要处理ui的继承ContextThemeWrapper 如Activity的context</p>
+<p>不需要的继承ContextWrapper 如service和application的context</p>
+<h5 id="Context的创建过程"><a href="#Context的创建过程" class="headerlink" title="Context的创建过程"></a>Context的创建过程</h5><p>Application，Activity，Service的创建过程都是先调用构造方法，再调用attach方法，再调用onCreate方法，所以不能在构造方法中获取context对象</p>
+<p><strong>Activity </strong> Context 创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#ActivityThread.java</span><br><span class="line">private Activity performLaunchActivity(ActivityClientRecord r, Intent customIntent) &#123;</span><br><span class="line">       ActivityInfo aInfo = r.activityInfo;</span><br><span class="line"></span><br><span class="line">       ContextImpl appContext = createBaseContextForActivity(r);</span><br><span class="line">       Activity activity = null;</span><br><span class="line">       activity = mInstrumentation.newActivity(cl, component.getClassName(), r.intent);</span><br><span class="line">       activity.attach(appContext, this, getInstrumentation(), r.token,</span><br><span class="line">                       r.ident, app, r.intent, r.activityInfo, title, r.parent,</span><br><span class="line">                       r.embeddedID, r.lastNonConfigurationInstances, config,</span><br><span class="line">                       r.referrer, r.voiceInteractor, window, r.activityConfigCallback,</span><br><span class="line">                       r.assistToken, r.shareableActivityToken);</span><br><span class="line">       if (r.isPersistable()) &#123;</span><br><span class="line">                   mInstrumentation.callActivityOnCreate(activity, r.state, r.persistentState);</span><br><span class="line">               &#125; else &#123;</span><br><span class="line">                   mInstrumentation.callActivityOnCreate(activity, r.state);</span><br><span class="line">               &#125;</span><br><span class="line">       return activity;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Application</strong> Context 创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   #ActivityThread.java</span><br><span class="line">private void handleBindApplication(AppBindData data) &#123;</span><br><span class="line">     final ContextImpl appContext = ContextImpl.createAppContext(this, data.info);</span><br><span class="line">     mInstrumentation.callApplicationOnCreate(app);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Service</strong> Context 创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    #ActivityThread.java</span><br><span class="line">private void handleCreateService(CreateServiceData data) &#123;</span><br><span class="line">        Application app = packageInfo.makeApplicationInner(false, mInstrumentation);</span><br><span class="line">        ContextImpl context = ContextImpl.getImpl(service</span><br><span class="line">                .createServiceBaseContext(this, packageInfo));</span><br><span class="line"></span><br><span class="line">        service.attach(context, this, data.info.name, data.token, app,</span><br><span class="line">                ActivityManager.getService());</span><br><span class="line">        service.onCreate();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Android应用里面有多少个Context？</p>
+</blockquote>
+<p>Activity个数+Application个数+service个数 ，多进程会有多个application</p>
 
           
         
