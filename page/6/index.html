@@ -282,325 +282,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/NDK编译多个平台的FFMPEG/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/22/NDK编译多个平台的FFMPEG/" itemprop="url">NDK编译多个平台的FFMPEG</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-22T17:36:17+08:00">
-                2018-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/音视频/" itemprop="url" rel="index">
-                    <span itemprop="name">音视频</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="NDK编译多个平台的FFMPEG"><a href="#NDK编译多个平台的FFMPEG" class="headerlink" title="NDK编译多个平台的FFMPEG"></a>NDK编译多个平台的FFMPEG</h5><p>编译配置里面的新名词</p>
-<ol>
-<li>Toolchain — tools that are used for compiling and building of sources.</li>
-<li>Sysroot  — sysroot 是一个包含针对您的<code>目标的系统标头和库</code>的目录</li>
-<li>Prefix — directory in which result of building will be written to.</li>
-<li>Cross-prefix — directory of compiler to be used.</li>
-<li>ABI — architecture of processor (i.e. x86, arm-v6, armv8–64 and so om).</li>
-<li>CFLAGS — flags for C-compiler.</li>
-<li>LDFLAGS — flags for linker.</li>
-</ol>
-<h5 id="android支持的7钟CPU架构"><a href="#android支持的7钟CPU架构" class="headerlink" title="android支持的7钟CPU架构"></a>android支持的7钟CPU架构</h5><p>armeabi 第5代 ARM v5TE，使用软件浮点运算，兼容所有ARM设备，通用性强，速度慢（只支持armeabi）</p>
-<p>armeabi-v7a 第7代 ARM v7，使用硬件浮点运算，具有高级扩展功能（支持 armeabi 和 armeabi-v7a，目前大部分手机都是这个架构）</p>
-<p>arm64-v8a 第8代，64位，包含AArch32、AArch64两个执行状态对应32、64bit（支持 armeabi-v7a、armeabi 和 arm64-v8a）</p>
-<p>*x86 intel 32位，一般用于平板（支持 armeabi(性能有所损耗) 和 x86）</p>
-<p>x86_64 intel 64位，一般用于平板（支持 x86 和 x86_64）</p>
-<p>mips 基本没见过（支持 mips）</p>
-<p>mips64 基本没见过（支持 mips 和 mips_64）</p>
-<h5 id="利用独立工具链接生成不同cpu架构的头文件"><a href="#利用独立工具链接生成不同cpu架构的头文件" class="headerlink" title="利用独立工具链接生成不同cpu架构的头文件"></a>利用独立工具链接生成不同cpu架构的头文件</h5><p><a href="https://developer.android.com/ndk/guides/standalone_toolchain" target="_blank" rel="noopener">https://developer.android.com/ndk/guides/standalone_toolchain</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=arm --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/arm</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=arm64 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/arm64</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=x86 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=x86_64 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86_64</span><br></pre></td></tr></table></figure></p>
-<p>另外一种利用toolchain方式生成，生成arm64，android 的api 必须对应21 （Android 5.0    API 21    Lollipop）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--toolchain=aarch64-linux-android-4.9  --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86_64</span><br></pre></td></tr></table></figure></p>
-<h5 id="–arch-有4种选项"><a href="#–arch-有4种选项" class="headerlink" title="–arch 有4种选项"></a>–arch 有4种选项</h5><p> arm arm64 x86 x86_64</p>
-<p>./configure \<br>  –cross-prefix=/home/hx/Downloads/ffmpeg-android/toolchain-android/bin/aarch64-linux-android- \<br>  –sysroot=”/home/hx/Downloads/ffmpeg-android/toolchain-android/sysroot” \<br>  –host=aarch64-linux \<br>  –enable-pic \<br>  –disable-asm \<br>  –enable-static \<br>  –disable-shared \<br>  –disable-opencl \<br>  –prefix=”/home/hx/Downloads/ffmpeg-android/build/arm64-v8a” \<br>  –disable-cli &amp;&amp;<br>   make -j8 &amp;&amp;make install</p>
-<p>./configure –target-os=linux –cross-prefix=/home/hx/Downloads/ffmpeg-android/toolchain-android/bin/aarch64-linux-android- –arch=arm64 –cpu=armv8-a –enable-runtime-cpudetect –sysroot=/home/hx/Downloads/ffmpeg-android/toolchain-android/sysroot –enable-pic –enable-libx264 –enable-libass –enable-libfreetype –enable-libfribidi –enable-libmp3lame –enable-fontconfig –enable-pthreads –disable-debug –enable-version3 –enable-hardcoded-tables –disable-ffplay –disable-ffprobe –enable-gpl –enable-yasm –disable-doc –enable-shared –enable-static –pkg-config=/home/hx/Downloads/ffmpeg-android/ffmpeg-pkg-config –prefix=/home/hx/Downloads/ffmpeg-android/build/arm64-v8a –extra-cflags=-I/home/hx/Downloads/ffmpeg-android/toolchain-android/include  –extra-ldflags=-L/home/hx/Downloads/ffmpeg-android/toolchain-android/lib –extra-libs=’-lpng -lexpat -lm’ –extra-cxxflags= &amp;&amp;make -j 8 &amp;&amp; make install</p>
-<blockquote>
-<p>错误：checking host system type… Invalid configuration `aarch64-linux-android’:<br>解决方法：更新config.sub and config.guess，或者更新整个类库</p>
-</blockquote>
-<p>armeabi 兼容是最全的，armeabi-v7速度比较块，但有些arm的cpu不兼容</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/源码分析ANR超时/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/22/源码分析ANR超时/" itemprop="url">源码分析ANR超时</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-22T17:36:17+08:00">
-                2018-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="ANR超时"><a href="#ANR超时" class="headerlink" title="ANR超时"></a>ANR超时</h4><p>Activity 超时 5秒<br>ActivityManagerService.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// How long we wait until we timeout on key dispatching.</span><br><span class="line">    static final int KEY_DISPATCHING_TIMEOUT = 5*1000;</span><br></pre></td></tr></table></figure></p>
-<p>前台service 超时默认20秒  后台service 超时200秒<br> android framework 源码中 ActiveServices.java</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// How long we wait for a service to finish executing.</span><br><span class="line">static final int SERVICE_TIMEOUT = 20*1000;</span><br><span class="line"></span><br><span class="line">// How long we wait for a service to finish executing.</span><br><span class="line">static final int SERVICE_BACKGROUND_TIMEOUT = SERVICE_TIMEOUT * 10;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void serviceTimeout(ProcessRecord proc) &#123;</span><br><span class="line">       //...</span><br><span class="line">       //proc.execServicesFg 是否前台执行任务</span><br><span class="line"></span><br><span class="line">            final long maxTime =  now -</span><br><span class="line">                    (proc.execServicesFg ? SERVICE_TIMEOUT : SERVICE_BACKGROUND_TIMEOUT);</span><br><span class="line">          //...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>  广播,前台 10秒 后台60秒<br>ActivityManagerService.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// How long we allow a receiver to run before giving up on it.</span><br><span class="line">   static final int BROADCAST_FG_TIMEOUT = 10*1000;</span><br><span class="line">   static final int BROADCAST_BG_TIMEOUT = 60*1000;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/21/ubuntu下编译ffmpeg/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1823,6 +1504,324 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/03/调用jni的两种方法javah和RegisterNatives/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/03/调用jni的两种方法javah和RegisterNatives/" itemprop="url">调用jni的两种方法javah和RegisterNatives</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-03T22:21:28+08:00">
+                2018-02-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JNI/" itemprop="url" rel="index">
+                    <span itemprop="name">JNI</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>调用jni的有两种方法：<br>一种是通过javah 自动生成jni文件<br>一种是加载类库的时候，调用JNIEnv 指针的RegisterNatives方法注册native方法</p>
+<blockquote>
+<p>RegisterNatives方式有3种好处<br>1、jni种函数命名自由，不必像javah自动生成的函数声明那样，必须特定的命名方式；<br>2、效率高。传统方式下，Java类call本地函数时，通常是依靠VM去动态寻找.so中的本地函数(因此它们才需要特定规则的命名格式)，而使用RegisterNatives将本地函数向VM进行登记，可以让其更有效率的找到函数；</p>
+<p>3、运行时动态调整本地函数与Java函数值之间的映射关系，只需要多次call RegisterNatives()方法，并传入不同的映射表参数即可。</p>
+</blockquote>
+<h4 id="一、javah生成jni"><a href="#一、javah生成jni" class="headerlink" title="一、javah生成jni"></a>一、javah生成jni</h4><ol>
+<li><p>java类中声明 native 方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public native String stringFromJNI();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过javah方法生成jni文件。（cmd命令进入包根目录，javah 包名.类名）</p>
+</li>
+</ol>
+<blockquote>
+<p>生成方法会带JNIEXPORT void JNICALL  方法名很长，包名和native方法结合在一起。如：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//返回类型</span><br><span class="line">JNIEXPORT jstring</span><br><span class="line">JNICALL</span><br><span class="line">//生成的方法名字</span><br><span class="line">Java_libyuv_aimissu_com_libyuvtestdemo_MainActivity_stringFromJNI(</span><br><span class="line">        JNIEnv *env,</span><br><span class="line">        jobject /* this */) &#123;</span><br><span class="line">    std::string hello = &quot;Hello from C++&quot;;</span><br><span class="line">    return env-&gt;NewStringUTF(hello.c_str());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="二、RegisterNatives-注册native方法"><a href="#二、RegisterNatives-注册native方法" class="headerlink" title="二、RegisterNatives 注册native方法"></a>二、RegisterNatives 注册native方法</h4>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/03/调用jni的两种方法javah和RegisterNatives/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/03/直播推流方案及过程分解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/03/直播推流方案及过程分解/" itemprop="url">直播推流方案及过程分解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-03T19:36:17+08:00">
+                2018-02-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/音视频/" itemprop="url" rel="index">
+                    <span itemprop="name">音视频</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="直播过程"><a href="#直播过程" class="headerlink" title="直播过程"></a>直播过程</h4><p>1.相机预览及数据采集Camera — 取数据(onPreviewFrame(Byte[] rawFrameData, Camera camera))<br>2.原始帧处理（Rotate旋转/Scale缩放：使用Libyuv/FFmpeg等工具库）<br>3.编码器编码得到相应的h24数据（openh264库编码）<br>4.发送给流媒体服务器 （librtmp库推流）<br>5.服务器接受及转发</p>
+<h4 id="一、数据采集及预览"><a href="#一、数据采集及预览" class="headerlink" title="一、数据采集及预览"></a>一、数据采集及预览</h4><p>1.<a href="SurfaceView%E9%A2%84%E8%A7%88Camera.md">Surfaceview+Camera</a><br>2.GLSurfaceView +SurfaceTexture （openglees 做滤镜美颜功能）</p>
+<h4 id="二、原始帧处理"><a href="#二、原始帧处理" class="headerlink" title="二、原始帧处理"></a>二、原始帧处理</h4><p>onPreviewFrame 默认得到的是NV21格式的数据，需要转换程I420<br>2.1转换I420（YUV420P）</p>
+<blockquote>
+<p>为什么要使用转I420<br>1.Camera预览格式：NV21、YV12 ，默认是NV21 格式<br>2.H264编码必须要用 I420格式的YUV420<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/03/直播推流方案及过程分解/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></blockquote></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1875,7 +1874,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">125</span>
+                  <span class="site-state-item-count">123</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -282,7 +282,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/反转链表/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/屏幕适配/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="贺祥">
@@ -301,7 +301,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/09/反转链表/" itemprop="url">反转链表</a></h1>
+                <a class="post-title-link" href="/2019/02/09/屏幕适配/" itemprop="url">屏幕适配</a></h1>
         
 
         <div class="post-meta">
@@ -378,154 +378,54 @@
       
         
           
-            <h5 id="反转链表"><a href="#反转链表" class="headerlink" title="反转链表"></a>反转链表</h5><p>递归方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">   public ListNode reverseList(ListNode head) &#123;</span><br><span class="line">     if(head == null || head.next == null) return head;</span><br><span class="line">        ListNode p = reverseList(head.next);</span><br><span class="line">        head.next.next = head;</span><br><span class="line">        head.next = null;</span><br><span class="line">        return p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>循环方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public ListNode reverseList(ListNode head) &#123;</span><br><span class="line">      ListNode cur = head, pre = null, next = null;</span><br><span class="line">      while(cur != null)&#123;</span><br><span class="line">          next = cur.next;</span><br><span class="line">          cur.next = pre;</span><br><span class="line">          pre = cur;</span><br><span class="line">          cur = next;</span><br><span class="line">      &#125;</span><br><span class="line">      return pre;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/各大热补丁方案分析和比较/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/各大热补丁方案分析和比较/" itemprop="url">各大热补丁方案分析和比较</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="各大热补丁方案分析和比较"><a href="#各大热补丁方案分析和比较" class="headerlink" title="各大热补丁方案分析和比较"></a>各大热补丁方案分析和比较</h5><p><a href="http://blog.zhaiyifan.cn/2015/11/20/HotPatchCompare/" target="_blank" rel="noopener">http://blog.zhaiyifan.cn/2015/11/20/HotPatchCompare/</a></p>
+            <h5 id="屏幕适配"><a href="#屏幕适配" class="headerlink" title="屏幕适配"></a>屏幕适配</h5><table>
+<thead>
+<tr>
+<th style="text-align:left">密度类型</th>
+<th style="text-align:right">代表的分辨率（px）</th>
+<th style="text-align:center">屏幕密度（dpi）</th>
+<th style="text-align:center">换算（px/dp）</th>
+<th style="text-align:center">比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">低密度（ldpi）</td>
+<td style="text-align:right">240x320</td>
+<td style="text-align:center">120</td>
+<td style="text-align:center">1dp=0.75px</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:left">中密度（mdpi）</td>
+<td style="text-align:right">320x480</td>
+<td style="text-align:center">160</td>
+<td style="text-align:center">1dp=1px</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:left">高密度（hdpi）</td>
+<td style="text-align:right">480x800</td>
+<td style="text-align:center">240</td>
+<td style="text-align:center">1dp=1.5px</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:left">超高密度（xhdpi）</td>
+<td style="text-align:right">720x1280</td>
+<td style="text-align:center">320</td>
+<td style="text-align:center">1dp=2px</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td style="text-align:left">超超高密度（xxhdpi）</td>
+<td style="text-align:right">1080x1920</td>
+<td style="text-align:center">480</td>
+<td style="text-align:center">1dp=3px</td>
+<td style="text-align:center">12</td>
+</tr>
+</tbody>
+</table>
 
           
         
@@ -680,198 +580,6 @@
 <p>1 、 虚拟机栈（栈帧中的本地变量表）中引用的对象。</p>
 <p>2、 本地方法栈中JNI（即一般说的native方法）引用的对象。</p>
 <p>3、 方法区中的静态变量和常量引用的对象。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/屏幕适配/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="贺祥">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/person3.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.HeXiang Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/屏幕适配/" itemprop="url">屏幕适配</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-			  <span class="with-love"><i class="fa fa-user"></i></span>
-			  <span class="author" itemprop="copyrightHolder">贺祥</span>
-			  <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T11:10:23+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="屏幕适配"><a href="#屏幕适配" class="headerlink" title="屏幕适配"></a>屏幕适配</h5><table>
-<thead>
-<tr>
-<th style="text-align:left">密度类型</th>
-<th style="text-align:right">代表的分辨率（px）</th>
-<th style="text-align:center">屏幕密度（dpi）</th>
-<th style="text-align:center">换算（px/dp）</th>
-<th style="text-align:center">比例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">低密度（ldpi）</td>
-<td style="text-align:right">240x320</td>
-<td style="text-align:center">120</td>
-<td style="text-align:center">1dp=0.75px</td>
-<td style="text-align:center">3</td>
-</tr>
-<tr>
-<td style="text-align:left">中密度（mdpi）</td>
-<td style="text-align:right">320x480</td>
-<td style="text-align:center">160</td>
-<td style="text-align:center">1dp=1px</td>
-<td style="text-align:center">4</td>
-</tr>
-<tr>
-<td style="text-align:left">高密度（hdpi）</td>
-<td style="text-align:right">480x800</td>
-<td style="text-align:center">240</td>
-<td style="text-align:center">1dp=1.5px</td>
-<td style="text-align:center">6</td>
-</tr>
-<tr>
-<td style="text-align:left">超高密度（xhdpi）</td>
-<td style="text-align:right">720x1280</td>
-<td style="text-align:center">320</td>
-<td style="text-align:center">1dp=2px</td>
-<td style="text-align:center">8</td>
-</tr>
-<tr>
-<td style="text-align:left">超超高密度（xxhdpi）</td>
-<td style="text-align:right">1080x1920</td>
-<td style="text-align:center">480</td>
-<td style="text-align:center">1dp=3px</td>
-<td style="text-align:center">12</td>
-</tr>
-</tbody>
-</table>
 
           
         
@@ -1869,6 +1577,325 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/NDK编译多个平台的FFMPEG/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/22/NDK编译多个平台的FFMPEG/" itemprop="url">NDK编译多个平台的FFMPEG</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-22T17:36:17+08:00">
+                2018-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/音视频/" itemprop="url" rel="index">
+                    <span itemprop="name">音视频</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="NDK编译多个平台的FFMPEG"><a href="#NDK编译多个平台的FFMPEG" class="headerlink" title="NDK编译多个平台的FFMPEG"></a>NDK编译多个平台的FFMPEG</h5><p>编译配置里面的新名词</p>
+<ol>
+<li>Toolchain — tools that are used for compiling and building of sources.</li>
+<li>Sysroot  — sysroot 是一个包含针对您的<code>目标的系统标头和库</code>的目录</li>
+<li>Prefix — directory in which result of building will be written to.</li>
+<li>Cross-prefix — directory of compiler to be used.</li>
+<li>ABI — architecture of processor (i.e. x86, arm-v6, armv8–64 and so om).</li>
+<li>CFLAGS — flags for C-compiler.</li>
+<li>LDFLAGS — flags for linker.</li>
+</ol>
+<h5 id="android支持的7钟CPU架构"><a href="#android支持的7钟CPU架构" class="headerlink" title="android支持的7钟CPU架构"></a>android支持的7钟CPU架构</h5><p>armeabi 第5代 ARM v5TE，使用软件浮点运算，兼容所有ARM设备，通用性强，速度慢（只支持armeabi）</p>
+<p>armeabi-v7a 第7代 ARM v7，使用硬件浮点运算，具有高级扩展功能（支持 armeabi 和 armeabi-v7a，目前大部分手机都是这个架构）</p>
+<p>arm64-v8a 第8代，64位，包含AArch32、AArch64两个执行状态对应32、64bit（支持 armeabi-v7a、armeabi 和 arm64-v8a）</p>
+<p>*x86 intel 32位，一般用于平板（支持 armeabi(性能有所损耗) 和 x86）</p>
+<p>x86_64 intel 64位，一般用于平板（支持 x86 和 x86_64）</p>
+<p>mips 基本没见过（支持 mips）</p>
+<p>mips64 基本没见过（支持 mips 和 mips_64）</p>
+<h5 id="利用独立工具链接生成不同cpu架构的头文件"><a href="#利用独立工具链接生成不同cpu架构的头文件" class="headerlink" title="利用独立工具链接生成不同cpu架构的头文件"></a>利用独立工具链接生成不同cpu架构的头文件</h5><p><a href="https://developer.android.com/ndk/guides/standalone_toolchain" target="_blank" rel="noopener">https://developer.android.com/ndk/guides/standalone_toolchain</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=arm --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/arm</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=arm64 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/arm64</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=x86 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86</span><br><span class="line"></span><br><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--arch=x86_64 --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86_64</span><br></pre></td></tr></table></figure></p>
+<p>另外一种利用toolchain方式生成，生成arm64，android 的api 必须对应21 （Android 5.0    API 21    Lollipop）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ANDROID_NDK/build/tools/make-standalone-toolchain.sh \</span><br><span class="line">--toolchain=aarch64-linux-android-4.9  --platform=android-21 --install-dir=/home/hx/Downloads/ffmpeg-android/toolchain-android/x86_64</span><br></pre></td></tr></table></figure></p>
+<h5 id="–arch-有4种选项"><a href="#–arch-有4种选项" class="headerlink" title="–arch 有4种选项"></a>–arch 有4种选项</h5><p> arm arm64 x86 x86_64</p>
+<p>./configure \<br>  –cross-prefix=/home/hx/Downloads/ffmpeg-android/toolchain-android/bin/aarch64-linux-android- \<br>  –sysroot=”/home/hx/Downloads/ffmpeg-android/toolchain-android/sysroot” \<br>  –host=aarch64-linux \<br>  –enable-pic \<br>  –disable-asm \<br>  –enable-static \<br>  –disable-shared \<br>  –disable-opencl \<br>  –prefix=”/home/hx/Downloads/ffmpeg-android/build/arm64-v8a” \<br>  –disable-cli &amp;&amp;<br>   make -j8 &amp;&amp;make install</p>
+<p>./configure –target-os=linux –cross-prefix=/home/hx/Downloads/ffmpeg-android/toolchain-android/bin/aarch64-linux-android- –arch=arm64 –cpu=armv8-a –enable-runtime-cpudetect –sysroot=/home/hx/Downloads/ffmpeg-android/toolchain-android/sysroot –enable-pic –enable-libx264 –enable-libass –enable-libfreetype –enable-libfribidi –enable-libmp3lame –enable-fontconfig –enable-pthreads –disable-debug –enable-version3 –enable-hardcoded-tables –disable-ffplay –disable-ffprobe –enable-gpl –enable-yasm –disable-doc –enable-shared –enable-static –pkg-config=/home/hx/Downloads/ffmpeg-android/ffmpeg-pkg-config –prefix=/home/hx/Downloads/ffmpeg-android/build/arm64-v8a –extra-cflags=-I/home/hx/Downloads/ffmpeg-android/toolchain-android/include  –extra-ldflags=-L/home/hx/Downloads/ffmpeg-android/toolchain-android/lib –extra-libs=’-lpng -lexpat -lm’ –extra-cxxflags= &amp;&amp;make -j 8 &amp;&amp; make install</p>
+<blockquote>
+<p>错误：checking host system type… Invalid configuration `aarch64-linux-android’:<br>解决方法：更新config.sub and config.guess，或者更新整个类库</p>
+</blockquote>
+<p>armeabi 兼容是最全的，armeabi-v7速度比较块，但有些arm的cpu不兼容</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/源码分析ANR超时/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺祥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/person3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.HeXiang Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/22/源码分析ANR超时/" itemprop="url">源码分析ANR超时</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+			  <span class="with-love"><i class="fa fa-user"></i></span>
+			  <span class="author" itemprop="copyrightHolder">贺祥</span>
+			  <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-22T17:36:17+08:00">
+                2018-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="ANR超时"><a href="#ANR超时" class="headerlink" title="ANR超时"></a>ANR超时</h4><p>Activity 超时 5秒<br>ActivityManagerService.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// How long we wait until we timeout on key dispatching.</span><br><span class="line">    static final int KEY_DISPATCHING_TIMEOUT = 5*1000;</span><br></pre></td></tr></table></figure></p>
+<p>前台service 超时默认20秒  后台service 超时200秒<br> android framework 源码中 ActiveServices.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// How long we wait for a service to finish executing.</span><br><span class="line">static final int SERVICE_TIMEOUT = 20*1000;</span><br><span class="line"></span><br><span class="line">// How long we wait for a service to finish executing.</span><br><span class="line">static final int SERVICE_BACKGROUND_TIMEOUT = SERVICE_TIMEOUT * 10;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void serviceTimeout(ProcessRecord proc) &#123;</span><br><span class="line">       //...</span><br><span class="line">       //proc.execServicesFg 是否前台执行任务</span><br><span class="line"></span><br><span class="line">            final long maxTime =  now -</span><br><span class="line">                    (proc.execServicesFg ? SERVICE_TIMEOUT : SERVICE_BACKGROUND_TIMEOUT);</span><br><span class="line">          //...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>  广播,前台 10秒 后台60秒<br>ActivityManagerService.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// How long we allow a receiver to run before giving up on it.</span><br><span class="line">   static final int BROADCAST_FG_TIMEOUT = 10*1000;</span><br><span class="line">   static final int BROADCAST_BG_TIMEOUT = 60*1000;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1921,7 +1948,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">125</span>
+                  <span class="site-state-item-count">123</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
